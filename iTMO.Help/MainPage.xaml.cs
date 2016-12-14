@@ -26,5 +26,49 @@ namespace iTMO.Help
         {
             this.InitializeComponent();
         }
+
+        private void btnBar_Click(object sender, RoutedEventArgs e)
+        {
+            if (!MainBar.IsPaneOpen)
+            {
+                MainBar.IsPaneOpen = true;
+                btnBar.Content = "\uE00E";
+            }
+            else
+            {
+                MainBar.IsPaneOpen = false;
+                btnBar.Content = "\uE00F";
+            }
+        }
+
+        private void btnRestartSession_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnJournal_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnTimeTable_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn101_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnTermTimeTable_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

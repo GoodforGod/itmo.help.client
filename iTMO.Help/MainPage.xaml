@@ -8,6 +8,35 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="108*"/>
+            <RowDefinition Height="533*"/>
+        </Grid.RowDefinitions>
+        <SplitView x:Name="MainBar" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="150" Margin="0,0,0,0" Grid.RowSpan="2" FontFamily="Segoe MDL2 Assets">
+            <SplitView.Pane>
+                <StackPanel Background="Gray">
+                    <Button x:Name="btnBar" HorizontalAlignment="Left" Content="&#xE00F;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnBar_Click"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="btnRestartSession" HorizontalAlignment="Left" Content="&#xE72C;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnRestartSession_Click"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="btnJournal" HorizontalAlignment="Left" Content="&#xE2AC;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnJournal_Click"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="btnTimeTable" HorizontalAlignment="Left" Content="&#xE163;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnTimeTable_Click"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="btnTermTimeTable" HorizontalAlignment="Left" Content="&#xE161;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnTermTimeTable_Click"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="btn101" HorizontalAlignment="Left" Content="&#xE70C;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btn101_Click"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="btnSettings" HorizontalAlignment="Left" Content="&#xE115;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnSettings_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </SplitView.Pane>
+        </SplitView>
     </Grid>
 </Page>
+
