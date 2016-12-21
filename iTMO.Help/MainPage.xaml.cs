@@ -32,12 +32,12 @@ namespace iTMO.Help
             if (!MainBar.IsPaneOpen)
             {
                 MainBar.IsPaneOpen = true;
-                btnBar.Content = "\uE00E";
+                BtnBar.Content = "\uE00E";
             }
             else
             {
                 MainBar.IsPaneOpen = false;
-                btnBar.Content = "\uE00F";
+                BtnBar.Content = "\uE00F";
             }
         }
 
