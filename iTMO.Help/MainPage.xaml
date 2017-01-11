@@ -6,6 +6,81 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{ThemeResource ButtonBackground}"/>
+            <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}"/>
+            <Setter Property="Padding" Value="8,4,8,4"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="UseSystemFocusVisuals" Value="True"/>
+            <Setter Property="FocusVisualMargin" Value="-3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#8DB0E8"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#5790E5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundPointerOver}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#8DB0E8"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#EC1946"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundPressed}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundDisabled}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#EC1946"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundDisabled}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
     <Grid Background="#1E51A4">
         <Grid.RowDefinitions>
@@ -28,7 +103,69 @@
                         <Image x:Name="Logo" HorizontalAlignment="Right" Source="/Resources/logo_small.png" Width="100"/>
                     </StackPanel>
 
+                 
                     <StackPanel Orientation="Horizontal" Height="50" Width="150">
+                        <Button Height="50" Width="150" Padding="16,0,0,0" Background="Transparent" >
+                            <Button.Content>
+                                <StackPanel>
+                                    <TextBlock Text="&#xE72C;" HorizontalAlignment="Left" TextAlignment="Center" Width="50" Foreground="#1E51A4" FontSize="18" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets"/>
+                                    <TextBlock Text="Refresh" HorizontalAlignment="Center" TextAlignment="Center" Width="100" Foreground="#1E51A4" Margin="30,-20,0,0" FontFamily="Century Gothic"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        
+                        <Button Height="50" Width="150" Padding="16,0,0,0" Background="Transparent" >
+                            <Button.Content>
+                                <StackPanel>
+                                    <TextBlock Text="&#xE2AC;" HorizontalAlignment="Left" TextAlignment="Center" Width="50" Foreground="#1E51A4" FontSize="18" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets"/>
+                                    <TextBlock Text="Journal" HorizontalAlignment="Center" TextAlignment="Center" Width="100" Foreground="#1E51A4" Margin="30,-20,0,0" FontFamily="Century Gothic"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Height="50" Width="150" Padding="16,0,0,0" Background="Transparent" >
+                            <Button.Content>
+                                <StackPanel>
+                                    <TextBlock Text="&#xE163;" HorizontalAlignment="Left" TextAlignment="Center" Width="50" Foreground="#1E51A4" FontSize="18" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets"/>
+                                    <TextBlock Text="Time Table" HorizontalAlignment="Center" TextAlignment="Center" Width="100" Foreground="#1E51A4" Margin="30,-20,0,0" FontFamily="Century Gothic"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Height="50" Width="150" Padding="16,0,0,0" Background="Transparent" >
+                            <Button.Content>
+                                <StackPanel>
+                                    <TextBlock Text="&#xE161;" HorizontalAlignment="Left" TextAlignment="Center" Width="50" Foreground="#1E51A4" FontSize="18" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets"/>
+                                    <TextBlock Text="Grade Table" HorizontalAlignment="Center" TextAlignment="Center" Width="100" Foreground="#1E51A4" Margin="30,-20,0,0" FontFamily="Century Gothic"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Height="50" Width="150" Padding="16,0,0,0" Background="Transparent" >
+                            <Button.Content>
+                                <StackPanel>
+                                    <TextBlock Text="&#xE70C;" HorizontalAlignment="Left" TextAlignment="Center" Width="50" Foreground="#1E51A4" FontSize="18" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets"/>
+                                    <TextBlock Text="Room 101" HorizontalAlignment="Center" TextAlignment="Center" Width="100" Foreground="#1E51A4" Margin="30,-20,0,0" FontFamily="Century Gothic"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Height="50" Width="150" Padding="16,0,0,0" Background="Transparent" >
+                            <Button.Content>
+                                <StackPanel>
+                                    <TextBlock Text="&#xE115;" HorizontalAlignment="Left" TextAlignment="Center" Width="50" Foreground="#1E51A4" FontSize="18" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets"/>
+                                    <TextBlock Text="Settings" HorizontalAlignment="Center" TextAlignment="Center" Width="100" Foreground="#1E51A4" Margin="30,-20,0,0" FontFamily="Century Gothic"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
                         <Button x:Name="BtnRestartSession" 
                                 HorizontalAlignment="Left" 
                                 HorizontalContentAlignment="Left" 
@@ -41,88 +178,6 @@
                                 FontFamily="Segoe MDL2 Assets" 
                                 Click="btnRestartSession_Click"/>
                         <TextBlock Text="Refresh" Foreground="#1E51A4" FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Grid>
-                            <Button x:Name="BtnJournal" 
-                                HorizontalAlignment="Left" 
-                                HorizontalContentAlignment="Left" 
-                                Foreground="#1E51A4"  
-                                Content="&#xE2AC;" 
-                                Height="50" 
-                                Width="150" 
-                                Padding="16,0,0,0"
-                                Background="Transparent" 
-                                FontFamily="Segoe MDL2 Assets" 
-                                Click="btnJournal_Click"/>
-                        </Grid>
-                        <TextBlock Text="Journal" AllowDrop="False"  Foreground="#1E51A4" FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="BtnTimeTable" 
-                                HorizontalAlignment="Left" 
-                                HorizontalContentAlignment="Left" 
-                                Foreground="#1E51A4"  
-                                Content="&#xE163;" 
-                                Height="50" 
-                                Width="150" 
-                                Padding="16,0,0,0"
-                                Background="Transparent" 
-                                FontFamily="Segoe MDL2 Assets" 
-                                Click="btnTimeTable_Click"/>
-                        <TextBlock Text="Time Table"  Foreground="#1E51A4" FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="BtnTermTimeTable" 
-                                HorizontalAlignment="Left" 
-                                HorizontalContentAlignment="Left" 
-                                Foreground="#1E51A4"  
-                                Content="&#xE161;" 
-                                Height="50" 
-                                Width="150" 
-                                Padding="16,0,0,0"
-                                Background="Transparent" 
-                                FontFamily="Segoe MDL2 Assets" 
-                                Click="btnTermTimeTable_Click"/>
-                        <TextBlock Text="Grade Time"  Foreground="#1E51A4" FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="Btn101" 
-                                HorizontalAlignment="Left" 
-                                HorizontalContentAlignment="Left" 
-                                Content="&#xE70C;" 
-                                Foreground="#1E51A4"  
-                                Height="50" 
-                                Width="150" 
-                                Padding="16,0,0,0"
-                                Background="Transparent" 
-                                FontFamily="Segoe MDL2 Assets" 
-                                Click="btn101_Click"/>
-                        <TextBlock Text="Room 101" Foreground="#1E51A4"  FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="BtnSettings" 
-                                HorizontalAlignment="Left" 
-                                HorizontalContentAlignment="Left" 
-                                Content="&#xE115;" 
-                                Foreground="#1E51A4"  
-                                Height="50" 
-                                Width="150" 
-                                Padding="16,0,0,0"
-                                Background="Transparent" 
-                                FontFamily="Segoe MDL2 Assets" 
-                                Click="btnSettings_Click"/>
-                        <TextBlock Text="Settings" Foreground="#1E51A4"  FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <Button Height="50" Width="150" Padding="16,0,0,0" Background="Transparent" >
-                            <Button.Content>
-                                <StackPanel>
-                                    <TextBlock HorizontalAlignment="Left" TextAlignment="Center" Width="50" Foreground="#1E51A4" FontSize="18" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets" Text="&#xE115;"/>
-                                    <TextBlock Text="Settings" HorizontalAlignment="Center" Foreground="#1E51A4" Width="100" FontFamily="Century Gothic" Margin="30,-20,0,0" TextAlignment="Center"/>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
                     </StackPanel>
                     <StackPanel>
                        <Image x:Name="Credits" Height="250" HorizontalAlignment="Right" Width="100"/>
