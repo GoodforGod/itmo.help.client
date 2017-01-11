@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -24,6 +26,24 @@ namespace iTMO.Help
     {
         public MainPage()
         {
+            ApplicationViewTitleBar tb = ApplicationView.GetForCurrentView().TitleBar;
+
+            Color red = Color.FromArgb(0xff, 0xec, 0x19, 0x46);
+            Color blue = Color.FromArgb(0xff, 0x1e, 0x51, 0xa4);
+            Color white = Colors.White;
+            Color darkWhite = Color.FromArgb(0xff, 0xd6, 0xd6, 0xd6);
+            tb.BackgroundColor = white;
+            tb.ButtonBackgroundColor = white;
+            tb.ButtonForegroundColor = red;
+            tb.ButtonHoverBackgroundColor = darkWhite;
+            tb.ButtonHoverForegroundColor = blue;
+            tb.ForegroundColor = blue;
+
+            tb.ButtonInactiveBackgroundColor = darkWhite;
+            tb.ButtonInactiveForegroundColor = red;
+            tb.InactiveBackgroundColor = darkWhite;
+            tb.InactiveForegroundColor = blue;
+
             this.InitializeComponent();
         }
 

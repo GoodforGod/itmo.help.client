@@ -4,7 +4,7 @@
   <mp:PhoneIdentity PhoneProductId="e18f3a0a-28c5-4ea1-b4cd-0d6dc2c4ccbe" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>iTMO.Help</DisplayName>
-    <PublisherDisplayName>goodf</PublisherDisplayName>
+    <PublisherDisplayName>GoodforGod</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -15,9 +15,12 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="iTMO.Help.App">
-      <uap:VisualElements DisplayName="iTMO.Help" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="iTMO.Help" BackgroundColor="transparent">
+      <uap:VisualElements DisplayName="iTMO.Help" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="iTMO.Help" BackgroundColor="#1E51A4">
         <uap:LockScreen Notification="badge" BadgeLogo="Assets\BadgeLogo.png" />
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\Square71x71Logo.png" Square310x310Logo="Assets\Square310x310Logo.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square310x310Logo" />
+          </uap:ShowNameOnTiles>
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#1E51A4" />
       </uap:VisualElements>

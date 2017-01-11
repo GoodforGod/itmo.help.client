@@ -14,34 +14,115 @@
         </Grid.RowDefinitions>
         <SplitView x:Name="MainBar" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="150" Margin="0,0,0,0" Grid.RowSpan="2" FontFamily="Segoe MDL2 Assets">
             <SplitView.Pane>
-                <StackPanel>
+                <StackPanel Background="White">
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="BtnBar" HorizontalAlignment="Left" Foreground="#EC1946" Content="&#xE00F;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnBar_Click"/>
+                        <Button x:Name="BtnBar" 
+                                HorizontalAlignment="Left" 
+                                Foreground="#EC1946" 
+                                Content="&#xE00F;" 
+                                Height="50" 
+                                Width="50" 
+                                Background="Transparent" 
+                                FontFamily="Segoe MDL2 Assets" 
+                                Click="btnBar_Click"/>
                         <Image x:Name="Logo" HorizontalAlignment="Right" Source="/Resources/logo_small.png" Width="100"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="BtnRestartSession" HorizontalAlignment="Left" Foreground="#1E51A4"  Content="&#xE72C;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnRestartSession_Click"/>
-                        <Button x:Name="BtnRestartSession2" Content="Refresh" Foreground="#1E51A4"  HorizontalAlignment="Stretch" Background="Transparent" VerticalAlignment="Stretch" Width="100" Click="btnSettings_Click"/>
+
+                    <StackPanel Orientation="Horizontal" Height="50" Width="150">
+                        <Button x:Name="BtnRestartSession" 
+                                HorizontalAlignment="Left" 
+                                HorizontalContentAlignment="Left" 
+                                Foreground="#1E51A4" 
+                                Content="&#xE72C;" 
+                                Height="50" 
+                                Width="150" 
+                                Padding="16,0,0,0"
+                                Background="Transparent" 
+                                FontFamily="Segoe MDL2 Assets" 
+                                Click="btnRestartSession_Click"/>
+                        <TextBlock Text="Refresh" Foreground="#1E51A4" FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="BtnJournal" HorizontalAlignment="Left" Foreground="#1E51A4"  Content="&#xE2AC;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnJournal_Click"/>
-                        <Button x:Name="BtnJournal2" Content="Journal" Foreground="#1E51A4"  HorizontalAlignment="Stretch" Background="Transparent" VerticalAlignment="Stretch" Width="100" Click="btnSettings_Click"/>
+                        <Grid>
+                            <Button x:Name="BtnJournal" 
+                                HorizontalAlignment="Left" 
+                                HorizontalContentAlignment="Left" 
+                                Foreground="#1E51A4"  
+                                Content="&#xE2AC;" 
+                                Height="50" 
+                                Width="150" 
+                                Padding="16,0,0,0"
+                                Background="Transparent" 
+                                FontFamily="Segoe MDL2 Assets" 
+                                Click="btnJournal_Click"/>
+                        </Grid>
+                        <TextBlock Text="Journal" AllowDrop="False"  Foreground="#1E51A4" FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="BtnTimeTable" HorizontalAlignment="Left" Foreground="#1E51A4"  Content="&#xE163;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnTimeTable_Click"/>
-                        <Button x:Name="BtnTimeTable2" Content="Time-Table" Foreground="#1E51A4"  HorizontalAlignment="Stretch" Background="Transparent" VerticalAlignment="Stretch" Width="100" Click="btnSettings_Click"/>
+                        <Button x:Name="BtnTimeTable" 
+                                HorizontalAlignment="Left" 
+                                HorizontalContentAlignment="Left" 
+                                Foreground="#1E51A4"  
+                                Content="&#xE163;" 
+                                Height="50" 
+                                Width="150" 
+                                Padding="16,0,0,0"
+                                Background="Transparent" 
+                                FontFamily="Segoe MDL2 Assets" 
+                                Click="btnTimeTable_Click"/>
+                        <TextBlock Text="Time Table"  Foreground="#1E51A4" FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="BtnTermTimeTable" HorizontalAlignment="Left" Foreground="#1E51A4"  Content="&#xE161;" Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnTermTimeTable_Click"/>
-                        <Button x:Name="BtnTermTimeTable2" Content="Term-Table" Foreground="#1E51A4"  HorizontalAlignment="Stretch" Background="Transparent" VerticalAlignment="Stretch" Width="100" Click="btnSettings_Click"/>
+                        <Button x:Name="BtnTermTimeTable" 
+                                HorizontalAlignment="Left" 
+                                HorizontalContentAlignment="Left" 
+                                Foreground="#1E51A4"  
+                                Content="&#xE161;" 
+                                Height="50" 
+                                Width="150" 
+                                Padding="16,0,0,0"
+                                Background="Transparent" 
+                                FontFamily="Segoe MDL2 Assets" 
+                                Click="btnTermTimeTable_Click"/>
+                        <TextBlock Text="Grade Time"  Foreground="#1E51A4" FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="Btn101" HorizontalAlignment="Left" Content="&#xE70C;" Foreground="#1E51A4"  Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btn101_Click"/>
-                        <Button x:Name="Btn1012" Content="Room 101" HorizontalAlignment="Stretch" Foreground="#1E51A4"  VerticalAlignment="Stretch" Background="Transparent" Width="100" Click="btnSettings_Click"/>
+                        <Button x:Name="Btn101" 
+                                HorizontalAlignment="Left" 
+                                HorizontalContentAlignment="Left" 
+                                Content="&#xE70C;" 
+                                Foreground="#1E51A4"  
+                                Height="50" 
+                                Width="150" 
+                                Padding="16,0,0,0"
+                                Background="Transparent" 
+                                FontFamily="Segoe MDL2 Assets" 
+                                Click="btn101_Click"/>
+                        <TextBlock Text="Room 101" Foreground="#1E51A4"  FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="BtnSettings" HorizontalAlignment="Left" Content="&#xE115;" Foreground="#1E51A4"  Height="50" Width="50" Background="Transparent" FontFamily="Segoe MDL2 Assets" Click="btnSettings_Click"/>
-                        <Button x:Name="BtnSettings2" Content="Setting" HorizontalAlignment="Stretch" Foreground="#1E51A4"  VerticalAlignment="Stretch" Background="Transparent" Width="100" Click="btnSettings_Click"/>
+                        <Button x:Name="BtnSettings" 
+                                HorizontalAlignment="Left" 
+                                HorizontalContentAlignment="Left" 
+                                Content="&#xE115;" 
+                                Foreground="#1E51A4"  
+                                Height="50" 
+                                Width="150" 
+                                Padding="16,0,0,0"
+                                Background="Transparent" 
+                                FontFamily="Segoe MDL2 Assets" 
+                                Click="btnSettings_Click"/>
+                        <TextBlock Text="Settings" Foreground="#1E51A4"  FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Button Height="50" Width="150" Padding="16,0,0,0" Background="Transparent" >
+                            <Button.Content>
+                                <StackPanel>
+                                    <TextBlock HorizontalAlignment="Left" TextAlignment="Center" Width="50" Foreground="#1E51A4" FontSize="18" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets" Text="&#xE115;"/>
+                                    <TextBlock Text="Settings" HorizontalAlignment="Center" Foreground="#1E51A4" Width="100" FontFamily="Century Gothic" Margin="30,-20,0,0" TextAlignment="Center"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
                     </StackPanel>
                     <StackPanel>
                        <Image x:Name="Credits" Height="250" HorizontalAlignment="Right" Width="100"/>
