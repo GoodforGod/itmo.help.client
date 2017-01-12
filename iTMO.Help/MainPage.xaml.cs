@@ -26,39 +26,35 @@ namespace iTMO.Help
     {
         public MainPage()
         {
-            ApplicationViewTitleBar tb = ApplicationView.GetForCurrentView().TitleBar;
-
-            Color red = Color.FromArgb(0xff, 0xec, 0x19, 0x46);
-            Color blue = Color.FromArgb(0xff, 0x1e, 0x51, 0xa4);
-            Color white = Colors.White;
-            Color darkWhite = Color.FromArgb(0xff, 0xd6, 0xd6, 0xd6);
-            tb.BackgroundColor = white;
-            tb.ButtonBackgroundColor = white;
-            tb.ButtonForegroundColor = red;
-            tb.ButtonHoverBackgroundColor = darkWhite;
-            tb.ButtonHoverForegroundColor = blue;
-            tb.ForegroundColor = blue;
-
-            tb.ButtonInactiveBackgroundColor = darkWhite;
-            tb.ButtonInactiveForegroundColor = red;
-            tb.InactiveBackgroundColor = darkWhite;
-            tb.InactiveForegroundColor = blue;
+            ChangeApplicationColorSchema();
 
             this.InitializeComponent();
         }
 
+        private void ChangeApplicationColorSchema()
+        {
+            ApplicationViewTitleBar tb = ApplicationView.GetForCurrentView().TitleBar;
+
+            Color red       = Color.FromArgb(0xff, 0xec, 0x19, 0x46);
+            Color blue      = Color.FromArgb(0xff, 0x1e, 0x51, 0xa4);
+            Color white     = Colors.White;
+            Color grey = Color.FromArgb(0xff, 0xd6, 0xd6, 0xd6);
+            tb.BackgroundColor              = white;
+            tb.ButtonBackgroundColor        = white;
+            tb.ButtonForegroundColor        = red;
+            tb.ButtonHoverBackgroundColor   = grey;
+            tb.ButtonHoverForegroundColor   = blue;
+            tb.ForegroundColor              = blue;
+
+            tb.ButtonInactiveBackgroundColor = grey;
+            tb.ButtonInactiveForegroundColor = red;
+            tb.InactiveBackgroundColor      = grey;
+            tb.InactiveForegroundColor      = blue;
+        }
+
         private void btnBar_Click(object sender, RoutedEventArgs e)
         {
-            if (!MainBar.IsPaneOpen)
-            {
-                MainBar.IsPaneOpen = true;
-                BtnBar.Content = "\uE00E";
-            }
-            else
-            {
-                MainBar.IsPaneOpen = false;
-                BtnBar.Content = "\uE00F";
-            }
+            MainBar.IsPaneOpen = !MainBar.IsPaneOpen;
         }
 
         private void btnRestartSession_Click(object sender, RoutedEventArgs e)

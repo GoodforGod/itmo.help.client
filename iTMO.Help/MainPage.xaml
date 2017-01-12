@@ -94,7 +94,7 @@
                         <Button x:Name="BtnBar" 
                                 HorizontalAlignment="Left" 
                                 Foreground="#EC1946" 
-                                Content="&#xE00F;" 
+                                Content="&#xE71D;" 
                                 Height="50" 
                                 Width="50" 
                                 Background="Transparent" 
@@ -164,20 +164,6 @@
                                 </StackPanel>
                             </Button.Content>
                         </Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="BtnRestartSession" 
-                                HorizontalAlignment="Left" 
-                                HorizontalContentAlignment="Left" 
-                                Foreground="#1E51A4" 
-                                Content="&#xE72C;" 
-                                Height="50" 
-                                Width="150" 
-                                Padding="16,0,0,0"
-                                Background="Transparent" 
-                                FontFamily="Segoe MDL2 Assets" 
-                                Click="btnRestartSession_Click"/>
-                        <TextBlock Text="Refresh" Foreground="#1E51A4" FontFamily="Century Gothic" TextAlignment="Center" Padding="0,16,0,0" Margin="-100,0,0,0"/>
                     </StackPanel>
                     <StackPanel>
                        <Image x:Name="Credits" Height="250" HorizontalAlignment="Right" Width="100"/>
