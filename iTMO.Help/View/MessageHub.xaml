@@ -7,13 +7,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="#1E51A4">
         <Pivot>
-            <PivotItem Header="de">
-                <Grid/>
+            <PivotItem Header="DE" HorizontalAlignment="Center">
+                <Grid>
+                    <TextBlock Text="Test 1"/>
+                </Grid>
             </PivotItem>
-            <PivotItem Header="isu">
-                <Grid/>
+            <PivotItem Header="ISU" HorizontalAlignment="Center">
+                <Grid>
+                    <TextBlock Text="Test 2"/>
+                </Grid>
             </PivotItem>
         </Pivot>
 

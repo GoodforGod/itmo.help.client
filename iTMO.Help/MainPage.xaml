@@ -23,7 +23,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <SplitView x:Name="MainBar" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="150" Grid.RowSpan="2" FontFamily="Segoe MDL2 Assets">
+        <SplitView x:Name="MBar" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="150" Grid.RowSpan="2" FontFamily="Segoe MDL2 Assets">
             <SplitView.Pane>
                 <StackPanel Background="White">
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal">
@@ -53,7 +53,7 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <Button Height="50" Width="150" Background="Transparent">
+                    <Button Height="50" Width="150" Background="Transparent" Click="btnSchedule_Click">
                         <Button.Content>
                             <StackPanel>
                                 <TextBlock Text="&#xE163;" HorizontalAlignment="Left" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets"/>
@@ -61,7 +61,7 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <Button Height="50" Width="150" Background="Transparent" >
+                    <Button Height="50" Width="150" Background="Transparent" Click="btnMessage_Click">
                         <Button.Content>
                             <StackPanel>
                                 <TextBlock Text="&#xE119;" HorizontalAlignment="Left" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets"/>
@@ -77,15 +77,28 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
+                    <Button Height="50" Width="150" Background="Transparent" VerticalAlignment="Bottom" Click="btnSettings_Click">
+                        <StackPanel>
+                            <TextBlock Text="&#xE115;" HorizontalAlignment="Left" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets"/>
+                            <TextBlock Text="Settings" Width="100" Margin="30,-20,0,0"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </SplitView.Pane>
+            <SplitView.Content>
+                <Frame x:Name="MContent">
+                    <Frame.ContentTransitions>
+                        <TransitionCollection>
+                            <NavigationThemeTransition>
+                                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                                    <EntranceNavigationTransitionInfo/>
+                                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                            </NavigationThemeTransition>
+                        </TransitionCollection>
+                    </Frame.ContentTransitions>
+                </Frame>
+            </SplitView.Content>
         </SplitView>
-        <Button Height="50" Width="150" Background="Transparent" VerticalAlignment="Bottom" Grid.Row="1">
-            <StackPanel>
-                <TextBlock Text="&#xE115;" HorizontalAlignment="Left" Margin="-20,0,0,0" FontFamily="Segoe MDL2 Assets"/>
-                <TextBlock Text="Settings" Width="100" Margin="30,-20,0,0"/>
-            </StackPanel>
-        </Button>
     </Grid>
 </Page>
 

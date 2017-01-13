@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using iTMO.Help.View;
+using iTMO.Help.Model;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -25,10 +26,12 @@ namespace iTMO.Help
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private Menu MenuDictionary;
+
         public MainPage()
         {
             SetApplicationTopColorSchema();
-
+            MenuDictionary = new Menu();
             this.InitializeComponent();
         }
 
@@ -55,23 +58,24 @@ namespace iTMO.Help
 
         private void btnBar_Click(object sender, RoutedEventArgs e)
         {
-            this.MainBar.IsPaneOpen = !this.MainBar.IsPaneOpen;
+            this.MBar.IsPaneOpen = !this.MBar.IsPaneOpen;
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void btnJournal_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(JournalHub));
+            MContent.Navigate(MenuDictionary.Menus[MenuTypes.JournalHub].Page);
         }
 
         private void btnSchedule_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(ScheduleHub));
+            MContent.Navigate(MenuDictionary.Menus[MenuTypes.ScheduleHub].Page);
         }
+
 
         private void btn101_Click(object sender, RoutedEventArgs e)
         {
@@ -80,7 +84,12 @@ namespace iTMO.Help
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
+            MContent.Navigate(MenuDictionary.Menus[MenuTypes.Settings].Page);
+        }
 
+        private void btnMessage_Click(object sender, RoutedEventArgs e)
+        {
+            MContent.Navigate(MenuDictionary.Menus[MenuTypes.MessageHub].Page);
         }
     }
 }
