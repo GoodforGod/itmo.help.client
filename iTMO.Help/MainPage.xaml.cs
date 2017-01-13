@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using iTMO.Help.View;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -26,12 +27,12 @@ namespace iTMO.Help
     {
         public MainPage()
         {
-            ChangeApplicationColorSchema();
+            SetApplicationTopColorSchema();
 
             this.InitializeComponent();
         }
 
-        private void ChangeApplicationColorSchema()
+        private void SetApplicationTopColorSchema()
         {
             ApplicationViewTitleBar tb = ApplicationView.GetForCurrentView().TitleBar;
 
@@ -54,22 +55,22 @@ namespace iTMO.Help
 
         private void btnBar_Click(object sender, RoutedEventArgs e)
         {
-            MainBar.IsPaneOpen = !MainBar.IsPaneOpen;
+            this.MainBar.IsPaneOpen = !this.MainBar.IsPaneOpen;
         }
 
-        private void btnRestartSession_Click(object sender, RoutedEventArgs e)
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
         private void btnJournal_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(JournalHub));
         }
 
-        private void btnTimeTable_Click(object sender, RoutedEventArgs e)
+        private void btnSchedule_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(ScheduleHub));
         }
 
         private void btn101_Click(object sender, RoutedEventArgs e)
@@ -78,11 +79,6 @@ namespace iTMO.Help
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnTermTimeTable_Click(object sender, RoutedEventArgs e)
         {
 
         }
