@@ -7,6 +7,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/StyleResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="TextBlock"       BasedOn="{StaticResource RegularTextBlock}"/>
+            <Style TargetType="Pivot"           BasedOn="{StaticResource PivotCustom}"/>
+            <Style TargetType="PivotHeaderItem" BasedOn="{StaticResource PivotHeaderCustom}"/>
+        </ResourceDictionary>
+    </Page.Resources>
+    
     <Grid Background="#1E51A4">
         <Pivot HorizontalAlignment="Center" HorizontalContentAlignment="Center">
             <PivotItem Header="Journal" HorizontalAlignment="Center">
@@ -16,9 +27,10 @@
             </PivotItem>
             <PivotItem Header="Changes" HorizontalAlignment="Center">
                 <Grid>
-                    <TextBlock Text="Test 2"/>
+                    <TextBlock Text="Test 2" Foreground="White"/>
                 </Grid>
             </PivotItem>
         </Pivot>
     </Grid>
 </Page>
+    

@@ -12,30 +12,19 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using iTMO.Help.Controller;
-using iTMO.Help.Model;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace iTMO.Help.View
+namespace iTMO.Help.Model
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ScheduleHub : Page
+    public sealed partial class The101 : Page
     {
-        public ScheduleHub()
+        public The101()
         {
             this.InitializeComponent();
-        }
-
-        private async void ExamBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ScheduleExam data = await HttpController.RetrieveScheduleExam();
-            if (data != null && data.faculties[0].departments[0].groups != null)
-            {
-                //Exams.ItemsSource = data.faculties[0].departments[0].groups;
-            }
         }
     }
 }

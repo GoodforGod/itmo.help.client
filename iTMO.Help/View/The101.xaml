@@ -1,8 +1,8 @@
 ﻿<Page
-    x:Class="iTMO.Help.View.SettingsHub"
+    x:Class="iTMO.Help.Model.The101"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:iTMO.Help.View"
+    xmlns:local="using:iTMO.Help.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -13,20 +13,13 @@
                 <ResourceDictionary Source="/Themes/StyleResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="TextBlock"   BasedOn="{StaticResource RegularTextBlock}"/>
+            <Style TargetType="Pivot"       BasedOn="{StaticResource PivotTemple}"/>
         </ResourceDictionary>
     </Page.Resources>
 
     <Grid Background="#1E51A4">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <CheckBox Name="Autologin">
-                <TextBlock Text="Auto Login" Foreground="White"/>
-            </CheckBox>
-            <CheckBox Name="Autogroup" RelativePanel.AlignBottomWith="Autologin">
-                <TextBlock Text="Automaticly Choose Group" Foreground="White"/>
-            </CheckBox>
-        <Button HorizontalAlignment="Center">
-            <TextBlock Text="Test"/>
-        </Button>
+            <TextBlock Text="The 101 Chair"/>
         </StackPanel>
     </Grid>
 </Page>

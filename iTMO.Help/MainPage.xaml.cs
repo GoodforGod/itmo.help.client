@@ -26,12 +26,11 @@ namespace iTMO.Help
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private Menu MenuDictionary;
+        private MenuOpt Menu = new MenuOpt();
 
         public MainPage()
         {
             SetApplicationTopColorSchema();
-            MenuDictionary = new Menu();
             this.InitializeComponent();
         }
 
@@ -68,28 +67,27 @@ namespace iTMO.Help
 
         private void btnJournal_Click(object sender, RoutedEventArgs e)
         {
-            MContent.Navigate(MenuDictionary.Menus[MenuTypes.JournalHub].Page);
+            MContent.Navigate(Menu.Options[MenuTypes.JournalHub].Page);
         }
 
         private void btnSchedule_Click(object sender, RoutedEventArgs e)
         {
-            MContent.Navigate(MenuDictionary.Menus[MenuTypes.ScheduleHub].Page);
+            MContent.Navigate(Menu.Options[MenuTypes.ScheduleHub].Page);
         }
-
 
         private void btn101_Click(object sender, RoutedEventArgs e)
         {
-
+            MContent.Navigate(Menu.Options[MenuTypes.The101].Page);
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            MContent.Navigate(MenuDictionary.Menus[MenuTypes.Settings].Page);
+            MContent.Navigate(Menu.Options[MenuTypes.Settings].Page);
         }
 
         private void btnMessage_Click(object sender, RoutedEventArgs e)
         {
-            MContent.Navigate(MenuDictionary.Menus[MenuTypes.MessageHub].Page);
+            MContent.Navigate(Menu.Options[MenuTypes.MessageHub].Page);
         }
     }
 }

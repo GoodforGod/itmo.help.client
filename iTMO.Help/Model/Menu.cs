@@ -12,28 +12,29 @@ namespace iTMO.Help.Model
         JournalHub,
         MessageHub,
         ScheduleHub,
+        The101,
         Settings
     }
 
-    class Menu
+    class MenuOpt
     {
-        public Dictionary<MenuTypes, MenuItem> Menus;
-
-        public Menu()
+        public Dictionary<MenuTypes, MenuItem> Options = new Dictionary<MenuTypes, MenuItem>()
         {
-            Menus = new Dictionary<MenuTypes, MenuItem>()
-            {
-                { MenuTypes.JournalHub, new MenuItem(typeof(JournalHub)) },
-                { MenuTypes.MessageHub, new MenuItem(typeof(MessageHub)) },
-                { MenuTypes.ScheduleHub, new MenuItem(typeof(ScheduleHub)) },
-                { MenuTypes.Settings, new MenuItem(typeof(SettingsHub)) }
-            };
-        }
+            { MenuTypes.JournalHub, new MenuItem(typeof(JournalHub)) },
+            { MenuTypes.MessageHub, new MenuItem(typeof(MessageHub)) },
+            { MenuTypes.ScheduleHub, new MenuItem(typeof(ScheduleHub)) },
+            { MenuTypes.The101,     new MenuItem(typeof(The101)) },
+            { MenuTypes.Settings,   new MenuItem(typeof(SettingsHub)) }
+        };
     }
 
     class MenuItem
     {
+        public string Title { get; set; }
+        public string Icon { get; set; }
         public Type Page { get; set; }
+
+        public MenuItem() { }
         public MenuItem(Type page) { this.Page = page; }
     }
 }

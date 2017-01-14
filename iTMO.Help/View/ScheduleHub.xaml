@@ -7,21 +7,62 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/StyleResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="TextBlock"   BasedOn="{StaticResource RegularTextBlock}"/>
+            <Style TargetType="Pivot"           BasedOn="{StaticResource PivotCustom}"/>
+            <Style TargetType="PivotHeaderItem" BasedOn="{StaticResource PivotHeaderCustom}"/>
+        </ResourceDictionary>
+    </Page.Resources>
+
     <Grid Background="#1E51A4">
         <Pivot>
-            <PivotItem Header="Schedule" HorizontalAlignment="Center">
+            <PivotItem Header="Schedule" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
                 <Grid>
-                    
-                    <TextBlock Text="Test 1"/>
+                    <StackPanel>
+                        <TextBlock x:Name="Schedule" HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <ProgressRing x:Name="ScheduleProgressRing"
+                                  IsActive="True"
+                                  Width="50"
+                                  Height="50"
+                                  Foreground="White"/>
                 </Grid>
             </PivotItem>
-            <PivotItem Header="Exams" HorizontalContentAlignment="Center">
+            <PivotItem Header="Exams" 
+                       HorizontalContentAlignment="Center" 
+                       HorizontalAlignment="Center">
                 <Grid>
-                    
-                    <TextBlock Text="Test 2"/>
+                    <StackPanel>
+                        <Button x:Name="ExamBtn" Click="ExamBtn_Click">
+                            <TextBlock Text="TEST"/>
+                        </Button>
+                        <ListView Name="Exams">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{x:Bind}" Grid.Column="1" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+
+                    <ProgressRing x:Name="ExamProgressRing"
+                                  IsActive="True"
+                                  Width="50"
+                                  Height="50"
+                                  Foreground="White"/>
                 </Grid>
             </PivotItem>
         </Pivot>
-
     </Grid>
 </Page>

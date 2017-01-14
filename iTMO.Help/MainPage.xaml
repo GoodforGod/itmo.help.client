@@ -10,10 +10,10 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/styles/StyleResources.xaml"/>
+                <ResourceDictionary Source="Themes/StyleResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="Button"      BasedOn="{StaticResource ButtonStyle}" />
-            <Style TargetType="TextBlock"   BasedOn="{StaticResource TextBlockBarStyle}"/>
+            <Style TargetType="Button"      BasedOn="{StaticResource BarButton}" />
+            <Style TargetType="TextBlock"   BasedOn="{StaticResource BarTextBlock}"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -86,7 +86,7 @@
                 </StackPanel>
             </SplitView.Pane>
             <SplitView.Content>
-                <Frame x:Name="MContent">
+                <Frame Name="MContent">
                     <Frame.ContentTransitions>
                         <TransitionCollection>
                             <NavigationThemeTransition>

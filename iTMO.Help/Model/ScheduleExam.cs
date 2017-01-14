@@ -8,58 +8,58 @@ namespace iTMO.Help.Model
 {
     public class Teacher
     {
-        public string TeacherName   { get; set; }
-        public object TeacherId     { get; set; }
+        public string teacher_name { get; set; }
+        public object teacher_id { get; set; }
     }
 
     public class Auditory
     {
-        public string Type              { get; set; }
-        public string AuditoryName      { get; set; }
-        public object AuditoryAddress   { get; set; }
+        public string type { get; set; }
+        public string auditory_name { get; set; }
+        public object auditory_address { get; set; }
     }
 
     public class ExamsSchedule
     {
-        public string           Subject     { get; set; }
-        public int              Type        { get; set; }
-        public string           TypeName    { get; set; }
-        public string           ExamTime    { get; set; }
-        public string           ExamDate    { get; set; }
-        public int              ExamDay     { get; set; }
-        public string           ExamDayText { get; set; }
-        public string           AdviceTime  { get; set; }
-        public string           AdviceDate  { get; set; }
-        public int              AdviceDay   { get; set; }
-        public string           AdviceDayText { get; set; }
-        public List<object>     Dates       { get; set; }
-        public List<Teacher>    Teachers    { get; set; }
-        public List<Auditory>   Auditories  { get; set; }
+        public string subject { get; set; }
+        public int type { get; set; }
+        public string type_name { get; set; }
+        public string exam_time { get; set; }
+        public string exam_date { get; set; }
+        public int exam_day { get; set; }
+        public string exam_day_text { get; set; }
+        public string advice_time { get; set; }
+        public string advice_date { get; set; }
+        public int advice_day { get; set; }
+        public string advice_day_text { get; set; }
+        public List<object> dates { get; set; }
+        public List<Teacher> teachers { get; set; }
+        public List<Auditory> auditories { get; set; }
     }
 
     public class Group
     {
-        public string               GroupName       { get; set; }
-        public List<object>         StudySchedule   { get; set; }
-        public List<ExamsSchedule>  ExamSchedule    { get; set; }
+        public string group_name { get; set; }
+        public List<object> study_schedule { get; set; }
+        public List<ExamsSchedule> exams_schedule { get; set; }
     }
 
     public class Department
     {
-        public string       DepartmentName { get; set; }
-        public int          DepartmeneId   { get; set; }
-        public List<Group>  Groups         { get; set; }
+        public string department_name { get; set; }
+        public int department_id { get; set; }
+        public List<Group> groups { get; set; }
     }
 
     public class Faculty
     {
-        public string           FacultyName { get; set; }
-        public int              FacultyId   { get; set; }
-        public List<Department> Departments { get; set; }
+        public string faculty_name { get; set; }
+        public int faculty_id { get; set; }
+        public List<Department> departments { get; set; }
     }
 
     public class ScheduleExam
     {
-        public List<Faculty> Faculties { get; set; }
+        public List<Faculty> faculties { get; set; }
     }
 }
