@@ -12,7 +12,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Themes/StyleResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="TextBlock"   BasedOn="{StaticResource RegularTextBlock}"/>
+            <Style TargetType="TextBlock"       BasedOn="{StaticResource RegularTextBlock}"/>
             <Style TargetType="Pivot"           BasedOn="{StaticResource PivotCustom}"/>
             <Style TargetType="PivotHeaderItem" BasedOn="{StaticResource PivotHeaderCustom}"/>
         </ResourceDictionary>
@@ -20,26 +20,27 @@
 
     <Grid Background="#1E51A4">
         <Pivot>
-            <PivotItem Header="Schedule" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
+            <PivotItem Header="All" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
                 <Grid>
                     <StackPanel>
-                        <TextBlock x:Name="Schedule" HorizontalAlignment="Center"/>
+                        <TextBlock Text="All" HorizontalAlignment="Center"/>
                     </StackPanel>
 
-                    <ProgressRing x:Name="ScheduleProgressRing"
+                    <ProgressRing x:Name="AllProgressRing"
                                   IsActive="True"
+                                  Margin="0,-50,0,0"
                                   Width="50"
                                   Height="50"
                                   Foreground="White"/>
                 </Grid>
             </PivotItem>
-            <PivotItem Header="Exams" 
+            <PivotItem Header="Even" 
                        HorizontalContentAlignment="Center" 
                        HorizontalAlignment="Center">
                 <Grid>
                     <StackPanel>
                         <Button x:Name="ExamBtn" Click="ExamBtn_Click">
-                            <TextBlock Text="TEST"/>
+                            <TextBlock Text="Even"/>
                         </Button>
                         <ListView Name="Exams">
                             <ListView.ItemTemplate>
@@ -56,11 +57,28 @@
                         </ListView>
                     </StackPanel>
 
-                    <ProgressRing x:Name="ExamProgressRing"
+                    <ProgressRing x:Name="EvenProgressRing"
                                   IsActive="True"
+                                  Margin="0,-50,0,0"
                                   Width="50"
                                   Height="50"
                                   Foreground="White"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Odd" 
+                       HorizontalContentAlignment="Center" 
+                       HorizontalAlignment="Center">
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="Odd"/>
+                    </StackPanel>
+
+                    <ProgressRing x:Name="OddProgressRing"
+                                      IsActive="True"
+                                      Margin="0,-50,0,0"
+                                      Width="50"
+                                      Height="50"
+                                      Foreground="White"/>
                 </Grid>
             </PivotItem>
         </Pivot>

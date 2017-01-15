@@ -18,14 +18,26 @@
 
     <Grid Background="#1E51A4">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+                <TextBlock Text="Login" FontSize="10" Margin="-5"/>
+                <TextBox x:Name="Login" TextAlignment="Center" Foreground="White" FontFamily="Century Gothic" Padding="5" Margin="5"/>
+                <TextBlock Text="Password" FontSize="10" Margin="-5"/>
+                <PasswordBox x:Name="Password" Margin="5"/>
+            </StackPanel>
             <CheckBox Name="Autologin">
                 <TextBlock Text="Auto Login" Foreground="White"/>
             </CheckBox>
             <CheckBox Name="Autogroup" RelativePanel.AlignBottomWith="Autologin">
-                <TextBlock Text="Automaticly Choose Group" Foreground="White"/>
+                <TextBlock Text="Current Group" Foreground="White"/>
+            </CheckBox>
+            <CheckBox Name="Autosemester" RelativePanel.AlignBottomWith="Autologin">
+                <TextBlock Text="Current Semester" Foreground="White"/>
+            </CheckBox>
+            <CheckBox Name="Notified" RelativePanel.AlignBottomWith="Autologin">
+                <TextBlock Text="Notification" Foreground="White"/>
             </CheckBox>
         <Button HorizontalAlignment="Center">
-            <TextBlock Text="Test"/>
+            <TextBlock Text="Contact"/>
         </Button>
         </StackPanel>
     </Grid>

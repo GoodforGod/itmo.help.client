@@ -17,8 +17,6 @@ namespace iTMO.Help.Model
         public bool isAutoLogin         { get; set; }
         public bool isAutoTermSelect    { get; set; }
         public bool isAutoGroupSelect   { get; set; }
-        public bool isNotification      { get; set; }
-
-        public User() { }
+        public bool isNotified          { get; set; }
     }
 }

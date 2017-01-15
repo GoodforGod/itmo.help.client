@@ -26,8 +26,6 @@ namespace iTMO.Help
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private MenuOpt Menu = new MenuOpt();
-
         public MainPage()
         {
             SetApplicationTopColorSchema();
@@ -37,11 +35,13 @@ namespace iTMO.Help
         private void SetApplicationTopColorSchema()
         {
             ApplicationViewTitleBar tb = ApplicationView.GetForCurrentView().TitleBar;
-
             Color red       = Color.FromArgb(0xff, 0xec, 0x19, 0x46);
-            Color blue      = Color.FromArgb(0xff, 0x1e, 0x51, 0xa4);
+            Color blue      = Color.FromArgb(0xff, 0x09, 0x43, 0xa0);
+            Color lightBlue = Color.FromArgb(0xff, 0x9a, 0xb9, 0xea);
+            Color whiteBlue = Color.FromArgb(0xff, 0xc0, 0xd0, 0xe8);
             Color white     = Colors.White;
-            Color grey = Color.FromArgb(0xff, 0xd6, 0xd6, 0xd6);
+            Color grey      = Color.FromArgb(0xff, 0xd6, 0xd6, 0xd6);
+
             tb.BackgroundColor              = white;
             tb.ButtonBackgroundColor        = white;
             tb.ButtonForegroundColor        = red;
@@ -49,15 +49,21 @@ namespace iTMO.Help
             tb.ButtonHoverForegroundColor   = blue;
             tb.ForegroundColor              = blue;
 
-            tb.ButtonInactiveBackgroundColor = grey;
+            tb.ButtonPressedBackgroundColor = lightBlue;
+            tb.ButtonHoverBackgroundColor   = whiteBlue;
             tb.ButtonInactiveForegroundColor = red;
             tb.InactiveBackgroundColor      = grey;
             tb.InactiveForegroundColor      = blue;
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            MenuListOpts.ItemsSource = MenuOptions;
+        }
+
         private void btnBar_Click(object sender, RoutedEventArgs e)
         {
-            this.MBar.IsPaneOpen = !this.MBar.IsPaneOpen;
+            MBar.IsPaneOpen = !MBar.IsPaneOpen;
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
@@ -65,29 +71,12 @@ namespace iTMO.Help
             
         }
 
-        private void btnJournal_Click(object sender, RoutedEventArgs e)
+        private void MenuListOpts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MContent.Navigate(Menu.Options[MenuTypes.JournalHub].Page);
-        }
+            var list = sender as ListView;
+            var item = list.SelectedItem as MenuItem;
 
-        private void btnSchedule_Click(object sender, RoutedEventArgs e)
-        {
-            MContent.Navigate(Menu.Options[MenuTypes.ScheduleHub].Page);
-        }
-
-        private void btn101_Click(object sender, RoutedEventArgs e)
-        {
-            MContent.Navigate(Menu.Options[MenuTypes.The101].Page);
-        }
-
-        private void btnSettings_Click(object sender, RoutedEventArgs e)
-        {
-            MContent.Navigate(Menu.Options[MenuTypes.Settings].Page);
-        }
-
-        private void btnMessage_Click(object sender, RoutedEventArgs e)
-        {
-            MContent.Navigate(Menu.Options[MenuTypes.MessageHub].Page);
+            MContent.Navigate(item.Page);
         }
     }
 }

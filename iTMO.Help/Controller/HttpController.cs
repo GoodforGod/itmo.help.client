@@ -22,6 +22,18 @@ namespace iTMO.Help.Controller
         ScheduleExamTeacher
     }
 
+    class DataResponse
+    {
+        public string   Data    { get; set; }
+        public bool     isValid { get; set; }
+
+        public DataResponse(string data, bool isValid)
+        {
+            this.Data = data;
+            this.isValid = isValid;
+        }
+    }
+
     class HttpController
     {
         private static HttpClient httpClient = new HttpClient();
@@ -89,7 +101,7 @@ namespace iTMO.Help.Controller
             return result.ToString();
         }
 
-        public static async Task<string> RequestIsu(RequestTypes type, params string[] opts)
+        public static async Task<DataResponse> ProccessRequest(RequestTypes type, params string[] opts)
         {
             HttpResponseMessage response = null;
             string result = null;
@@ -101,14 +113,14 @@ namespace iTMO.Help.Controller
             }
             catch(Exception ex)
             {
-                if(response != null)
-                    Debug.WriteLine(response.Content);
+                if(response != null && response.Content != null)
+                    Debug.WriteLine(ex.ToString() + " | IN :" + response.Content);
             }
 
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
-                    return result;
+                    return new DataResponse(result, true);
 
                 case HttpStatusCode.NotFound:
                     break;
@@ -128,56 +140,40 @@ namespace iTMO.Help.Controller
             return null;
         }
 
-        public static Task<Journal> RetrieveJournal()
+        public static async Task<DataResponse> RetrieveData(RequestTypes type, params string[] opts)
         {
+            DataResponse result = null;
+
             try
             {
+                switch (type)
+                {
+                    case RequestTypes.Journal:
+                    case RequestTypes.JournalChangeLog:
+                    case RequestTypes.MessagesFromDe:
+                        break;
+
+                    default:
+                        result = await ProccessRequest(type, opts);
+                        break;
+                }
             }
+
             catch(Exception ex)
             {
-
+                Debug.WriteLine(ex.ToString() + " | IN : " + result.Data);
             }
             return null;
         }
 
-        public static Task<JournalChangeLog> RetrieveJournalChangeLog()
+        public static async Task<string> RetrieveScheduleExam()
         {
+            var result = await ProccessRequest(RequestTypes.ScheduleExam, "P3310");
+
             try
             {
+               // return JsonConvert.DeserializeObject<ScheduleExam>(result);
             }
-            catch(Exception ex)
-            {
-
-            }
-            return null;
-        }
-
-        public static Task<MessageDe> RetrieveMessagesFromDe()
-        {
-            try
-            {
-            }
-            catch(Exception ex)
-            {
-
-            }
-            return null;
-        }
-
-        public static async Task<Schedule> RetrieveSchedule()
-        {
-            var result = await RequestIsu(RequestTypes.Schedule, "P3310");
-
-            try                 { return JsonConvert.DeserializeObject<Schedule>(result); }
-            catch(Exception ex) { Debug.WriteLine(result); }
-            return null;
-        }
-
-        public static async Task<ScheduleExam> RetrieveScheduleExam()
-        {
-            var result = await RequestIsu(RequestTypes.ScheduleExam, "P3310");
-
-            try                 { return JsonConvert.DeserializeObject<ScheduleExam>(result); }
             catch(Exception ex) { Debug.WriteLine(result); }
             return null;
         }
