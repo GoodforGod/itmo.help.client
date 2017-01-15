@@ -106,6 +106,8 @@
     <Compile Include="Model\De\MessageDE.cs" />
     <Compile Include="Model\Isu\Schedule.cs" />
     <Compile Include="Model\Isu\ScheduleExam.cs" />
+    <Compile Include="Model\ViewReady\ExamVR.cs" />
+    <Compile Include="Model\ViewReady\ScheduleVR.cs" />
     <Compile Include="View\ExamHub.xaml.cs">
       <DependentUpon>ExamHub.xaml</DependentUpon>
     </Compile>

@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:iTMO.Help.View"
+    xmlns:data="using:iTMO.Help.Model.ViewReady"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -12,13 +13,64 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Themes/StyleResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="TextBlock"   BasedOn="{StaticResource RegularTextBlock}"/>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource RegularTextBlock}"/>
         </ResourceDictionary>
     </Page.Resources>
 
     <Grid Background="#1E51A4">
+        <StackPanel>
         <StackPanel HorizontalAlignment="Center">
-            <TextBlock Text="Exams"/>
+            <Button Name="test" Click="test_Click" Margin="5">
+                <TextBlock Text="GET EXAMS"/>
+            </Button>
+            <TextBlock Name="Count" Margin="5"/>
+        </StackPanel>
+        
+        <ListView Name="ExamList">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="data:ExamVR">
+                    <UserControl>
+                        <RelativePanel HorizontalAlignment="Center">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup>
+                                    <VisualState x:Name="Narrow">
+                                        <VisualState.StateTriggers>
+                                            <AdaptiveTrigger MinWindowWidth="0"/>
+                                        </VisualState.StateTriggers>
+                                        <VisualState.Setters>
+                                            <Setter Target="TTeacher.(RelativePanel.Below)" Value="TSubject"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState>
+                                        <VisualState.StateTriggers>
+                                            <AdaptiveTrigger MinWindowWidth="700"/>
+                                        </VisualState.StateTriggers>
+                                        <VisualState.Setters>
+                                            <Setter Target="TTeacher.(RelativePanel.RightOf)" Value="TSubject"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                            </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <TextBlock x:Name="TSubject"
+                                       Style="{StaticResource RegularTextBlock}" 
+                                       Text="{x:Bind Subject}" 
+                                       Margin="5"/>
+                            <TextBlock x:Name="TTeacher" 
+                                       Style="{StaticResource RegularTextBlock}" 
+                                       Text="{x:Bind Teacher}" 
+                                       Margin="5"/>
+                        </RelativePanel>
+                    </UserControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ProgressRing x:Name="AllProgressRing"
+                                  IsActive="True"
+                                  Margin="0,-50,0,0"
+                                  Width="50"
+                                  Height="50"
+                                  Foreground="White"/>
         </StackPanel>
     </Grid>
 </Page>

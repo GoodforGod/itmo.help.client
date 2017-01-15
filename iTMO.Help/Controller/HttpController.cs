@@ -38,6 +38,8 @@ namespace iTMO.Help.Controller
     {
         private static HttpClient httpClient = new HttpClient();
 
+        private static bool isAuthiticated = false;
+
         private static string BuildDeAuthUri(string login, string pass)
         {
             StringBuilder result = new StringBuilder("https://de.ifmo.ru/servlet/");
@@ -105,6 +107,7 @@ namespace iTMO.Help.Controller
         {
             HttpResponseMessage response = null;
             string result = null;
+            bool isValid = false;
 
             try
             {
@@ -119,25 +122,14 @@ namespace iTMO.Help.Controller
 
             switch (response.StatusCode)
             {
-                case HttpStatusCode.OK:
-                    return new DataResponse(result, true);
-
-                case HttpStatusCode.NotFound:
-                    break;
-
-                case HttpStatusCode.NotAcceptable:
-                    break;
-
-                case HttpStatusCode.BadRequest:
-                    break;
-
-                case HttpStatusCode.Forbidden:
-                    break;
-
-                default:
-                    break;
+                case HttpStatusCode.OK:             isValid = true;                                                                 break;
+                case HttpStatusCode.NotFound:       result = "Resource not found, ops... [ 404 ]";                                  break;
+                case HttpStatusCode.NotAcceptable:  result = "Think that schedule is unavaliable for now... Or check the group may be?"; break;
+                case HttpStatusCode.BadRequest:     result = "Server got some unexpected error...  [ ITMO : Students] | [ 0 : 1 ]"; break;
+                case HttpStatusCode.Forbidden:      result = "Think that we are outdated... Contact Developers or check ITMO site"; break;
+                default:                            result = "Somethink extraodinary happened... Contact developer";                break;
             }
-            return null;
+            return new DataResponse(result, isValid);
         }
 
         public static async Task<DataResponse> RetrieveData(RequestTypes type, params string[] opts)
@@ -155,14 +147,11 @@ namespace iTMO.Help.Controller
 
                     default:
                         result = await ProccessRequest(type, opts);
-                        break;
+                        return result;
                 }
             }
+            catch(Exception ex) { Debug.WriteLine(ex.ToString() + " | IN : " + result.Data); }
 
-            catch(Exception ex)
-            {
-                Debug.WriteLine(ex.ToString() + " | IN : " + result.Data);
-            }
             return null;
         }
 
