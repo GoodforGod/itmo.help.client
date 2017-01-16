@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controller\CommunicateController.cs" />
     <Compile Include="Controller\DatabaseController.cs" />
     <Compile Include="Controller\SerializeContoller.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -103,11 +104,14 @@
     <Compile Include="Model\De\Journal.cs" />
     <Compile Include="Model\De\JournalChangeLog.cs" />
     <Compile Include="Model\MenuList.cs" />
-    <Compile Include="Model\De\MessageDE.cs" />
+    <Compile Include="Model\De\MessageDe.cs" />
     <Compile Include="Model\Isu\Schedule.cs" />
     <Compile Include="Model\Isu\ScheduleExam.cs" />
     <Compile Include="Model\ViewReady\ExamVR.cs" />
     <Compile Include="Model\ViewReady\ScheduleVR.cs" />
+    <Compile Include="View\BlankPage1.xaml.cs">
+      <DependentUpon>BlankPage1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ExamHub.xaml.cs">
       <DependentUpon>ExamHub.xaml</DependentUpon>
     </Compile>
@@ -162,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\BlankPage1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ExamHub.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -192,7 +200,11 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <SDKReference Include="SQLite.UWP.2015, Version=3.16.2">
+      <Name>SQLite for Universal Windows Platform</Name>
+    </SDKReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

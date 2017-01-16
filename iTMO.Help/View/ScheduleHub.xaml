@@ -22,9 +22,14 @@
         <Pivot>
             <PivotItem Header="All" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
                 <Grid>
-                    <StackPanel>
-                        <TextBlock Text="All" HorizontalAlignment="Center"/>
-                    </StackPanel>
+                    <AutoSuggestBox Name="AllSearchBox" 
+                                    PlaceholderText="Group"
+                                    Width="200"
+                                    QueryIcon="Find"
+                                    Margin="5" 
+                                    Style="{StaticResource ExamSearch}"
+                                    QuerySubmitted="AllSearchBox_QuerySubmitted"/>
+
 
                     <ProgressRing x:Name="AllProgressRing"
                                   IsActive="True"
@@ -38,24 +43,13 @@
                        HorizontalContentAlignment="Center" 
                        HorizontalAlignment="Center">
                 <Grid>
-                    <StackPanel>
-                        <Button x:Name="ExamBtn" Click="ExamBtn_Click">
-                            <TextBlock Text="Even"/>
-                        </Button>
-                        <ListView Name="Exams">
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="x:String">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{x:Bind}" Grid.Column="1" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackPanel>
+                    <AutoSuggestBox Name="EvenSearchBox" 
+                                    PlaceholderText="Group"
+                                    Width="200"
+                                    QueryIcon="Find"
+                                    Margin="5" 
+                                    Style="{StaticResource ExamSearch}"
+                                    QuerySubmitted="AllSearchBox_QuerySubmitted"/>
 
                     <ProgressRing x:Name="EvenProgressRing"
                                   IsActive="True"
@@ -69,9 +63,14 @@
                        HorizontalContentAlignment="Center" 
                        HorizontalAlignment="Center">
                 <Grid>
-                    <StackPanel>
-                        <TextBlock Text="Odd"/>
-                    </StackPanel>
+                    <AutoSuggestBox Name="OddSearchBox" 
+                                    PlaceholderText="Group"
+                                    Width="200"
+                                    QueryIcon="Find"
+                                    Margin="5" 
+                                    Style="{StaticResource ExamSearch}"
+                                    QuerySubmitted="AllSearchBox_QuerySubmitted"/>
+
 
                     <ProgressRing x:Name="OddProgressRing"
                                       IsActive="True"

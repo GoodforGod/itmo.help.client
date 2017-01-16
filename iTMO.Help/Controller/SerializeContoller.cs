@@ -10,8 +10,8 @@ namespace iTMO.Help.Controller
     {
         public static List<ExamVR> ToExamViewReady(string data)
         {
-            ScheduleExam exams = null;
-            List<ExamVR> listExamVr = new List<ExamVR>();
+            ScheduleExam exams      = null;
+            List<ExamVR> listExamVR = new List<ExamVR>();
 
             try
             {
@@ -27,7 +27,7 @@ namespace iTMO.Help.Controller
                     {
                         try
                         {
-                            listExamVr.Add(new ExamVR
+                            listExamVR.Add(new ExamVR
                             {
                                 DateAdviceStr   = exam.advice_date,
                                 DateExamStr     = exam.exam_date,
@@ -41,48 +41,81 @@ namespace iTMO.Help.Controller
                                 RoomExam        = exam.auditories[0].auditory_name,
                             });
                         }
-                        catch(ArgumentNullException ex)
-                        {
-                            
-                        }
-                        catch(FormatException ex)
-                        {
-
-                        }
+                        catch(ArgumentNullException ex) { listExamVR.Add(new ExamVR { Subject = "INVALID" }); }
+                        catch(FormatException ex)       { listExamVR.Add(new ExamVR { Subject = "INVALID" }); }
                     }
                 }
                 else throw new ArgumentNullException("Somethink is missing in JSON Response! ITMO API STOP IT PLEASE!");
+            }
+            catch(JsonSerializationException ex)    { new List<ExamVR>() { new ExamVR() { Subject = "JSON PARSE ERROR" } }; }
 
-                return listExamVr;
-            }
-            catch(JsonSerializationException ex)
-            {
-                new List<ExamVR>() { new ExamVR() { Subject = "JSON PARSE ERROR" } };
-            }
-            catch(Exception ex)
-            {
-                new List<ExamVR>() { new ExamVR() { Subject = "UNKNOWN PARSE ERROR" } };
-            }
-            return listExamVr;
+            return listExamVR;
         }
 
-        public static ScheduleVR ToScheduleViewReady(string data)
+        public static List<ScheduleVR> ToScheduleViewReady(string data)
         {
-            Schedule schedule = null;
+            Schedule            schedule        = null;
+            List<ScheduleVR>    listScheduleVR  = new List<ScheduleVR>();
 
             try
             {
+                schedule = JsonConvert.DeserializeObject<Schedule>(data);
 
+                if(schedule == null)
+                {
+
+                }
             }
             catch (JsonSerializationException ex)
             {
 
             }
-            catch (Exception ex)
+            return listScheduleVR;
+        }
+
+        public static Journal ToJournalView(string data)
+        {
+            Journal journal = null;
+
+            try
+            {
+                journal = JsonConvert.DeserializeObject<Journal>(data);
+            }
+            catch (JsonSerializationException ex)
             {
 
             }
-            return null;
+            return journal;
+        }
+
+        public static JournalChangeLog ToJournalChangeLogView(string data)
+        {
+            JournalChangeLog journalChangeLog = null;
+
+            try
+            {
+                journalChangeLog = JsonConvert.DeserializeObject<JournalChangeLog>(data);
+            }
+            catch (JsonSerializationException ex)
+            {
+
+            }
+            return journalChangeLog;
+        }
+
+        public static MessageDe ToMessageDeView(string data)
+        {
+            MessageDe messages = null;
+
+            try
+            {
+                messages = JsonConvert.DeserializeObject<MessageDe>(data);
+            }
+            catch (JsonSerializationException ex)
+            {
+
+            }
+            return messages;
         }
     }
 }

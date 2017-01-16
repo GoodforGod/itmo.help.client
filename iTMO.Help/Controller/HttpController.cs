@@ -106,13 +106,17 @@ namespace iTMO.Help.Controller
         public static async Task<DataResponse> ProccessRequest(RequestTypes type, params string[] opts)
         {
             HttpResponseMessage response = null;
-            string result = null;
-            bool isValid = false;
+            string              result  = null;
+            bool                isValid = false;
 
             try
             {
-                response = await httpClient.GetAsync(BuildUri(type, opts));
-                result = await response.Content.ReadAsStringAsync();
+                response    = await httpClient.GetAsync(BuildUri(type, opts));
+                result      = await response.Content.ReadAsStringAsync();
+            }
+            catch(HttpRequestException ex)
+            {
+
             }
             catch(Exception ex)
             {
@@ -152,18 +156,6 @@ namespace iTMO.Help.Controller
             }
             catch(Exception ex) { Debug.WriteLine(ex.ToString() + " | IN : " + result.Data); }
 
-            return null;
-        }
-
-        public static async Task<string> RetrieveScheduleExam()
-        {
-            var result = await ProccessRequest(RequestTypes.ScheduleExam, "P3310");
-
-            try
-            {
-               // return JsonConvert.DeserializeObject<ScheduleExam>(result);
-            }
-            catch(Exception ex) { Debug.WriteLine(result); }
             return null;
         }
     }

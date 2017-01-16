@@ -18,59 +18,101 @@
     </Page.Resources>
 
     <Grid Background="#1E51A4">
-        <StackPanel>
-        <StackPanel HorizontalAlignment="Center">
-            <Button Name="test" Click="test_Click" Margin="5">
-                <TextBlock Text="GET EXAMS"/>
-            </Button>
-            <TextBlock Name="Count" Margin="5"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+            <AutoSuggestBox Name="SearchAutoSuggestBox" 
+                            PlaceholderText="Group"
+                            Width="200"
+                            QueryIcon="Find"
+                            Margin="5" 
+                            Style="{StaticResource ExamSearch}"
+                            QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted">
+            </AutoSuggestBox>
         </StackPanel>
-        
-        <ListView Name="ExamList">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="data:ExamVR">
-                    <UserControl>
-                        <RelativePanel HorizontalAlignment="Center">
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup>
-                                    <VisualState x:Name="Narrow">
-                                        <VisualState.StateTriggers>
-                                            <AdaptiveTrigger MinWindowWidth="0"/>
-                                        </VisualState.StateTriggers>
-                                        <VisualState.Setters>
-                                            <Setter Target="TTeacher.(RelativePanel.Below)" Value="TSubject"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                    <VisualState>
-                                        <VisualState.StateTriggers>
-                                            <AdaptiveTrigger MinWindowWidth="700"/>
-                                        </VisualState.StateTriggers>
-                                        <VisualState.Setters>
-                                            <Setter Target="TTeacher.(RelativePanel.RightOf)" Value="TSubject"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                            </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
+        <TextBlock x:Name="Message" HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ListView Name="ExamList">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:ExamVR">
+                        <UserControl>
+                            <RelativePanel MinWidth="400">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup>
+                                        <VisualState x:Name="Narrow">
+                                            <VisualState.StateTriggers>
+                                                <AdaptiveTrigger MinWindowWidth="0"/>
+                                            </VisualState.StateTriggers>
+                                            <VisualState.Setters>
+                                                <Setter Target="TTeacher.(RelativePanel.Below)" Value="TSubject"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState>
+                                            <VisualState.StateTriggers>
+                                                <AdaptiveTrigger MinWindowWidth="700"/>
+                                            </VisualState.StateTriggers>
+                                            <VisualState.Setters>
+                                                <Setter Target="TTeacher.(RelativePanel.RightOf)" Value="TSubject"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                    <TextBlock x:Name="Subject" 
+                                               Style="{StaticResource RegularTextBlock}" 
+                                               Text="{x:Bind Subject}" 
+                                               Margin="5"
+                                               RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+                                    <TextBlock x:Name="Teacher" 
+                                               Style="{StaticResource RegularTextBlock}" 
+                                               Text="{x:Bind Teacher}" 
+                                               Margin="5"
+                                               RelativePanel.LeftOf="Room"
+                                               RelativePanel.AlignVerticalCenterWith="Room" />
+                                    <TextBlock x:Name="Room" 
+                                               Style="{StaticResource RegularTextBlock}" 
+                                               Text="{x:Bind RoomExam}" 
+                                               Margin="5"
+                                               RelativePanel.AlignRightWithPanel="True"
+                                               RelativePanel.AlignVerticalCenterWithPanel="True" />
 
-                            <TextBlock x:Name="TSubject"
-                                       Style="{StaticResource RegularTextBlock}" 
-                                       Text="{x:Bind Subject}" 
-                                       Margin="5"/>
-                            <TextBlock x:Name="TTeacher" 
-                                       Style="{StaticResource RegularTextBlock}" 
-                                       Text="{x:Bind Teacher}" 
-                                       Margin="5"/>
-                        </RelativePanel>
-                    </UserControl>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <ProgressRing x:Name="AllProgressRing"
-                                  IsActive="True"
-                                  Margin="0,-50,0,0"
-                                  Width="50"
-                                  Height="50"
-                                  Foreground="White"/>
+                                    <StackPanel RelativePanel.AlignVerticalCenterWithPanel="True">
+                                        <TextBlock x:Name="Time"  
+                                                   Style="{StaticResource RegularTextBlock}" 
+                                                   Text="{x:Bind TimeExam}" 
+                                                   Margin="5"
+                                                   RelativePanel.Below="Date"/>
+                                        <TextBlock x:Name="Date"  
+                                                   Style="{StaticResource RegularTextBlock}" 
+                                                   Text="{x:Bind DateExamStr}" 
+                                                   Margin="5" />
+                                    </StackPanel>
+                                    <TextBlock x:Name="RoomAdvice" 
+                                               Style="{StaticResource RegularTextBlock}" 
+                                               Text="{x:Bind RoomAdvice}" 
+                                               Margin="5"
+                                               RelativePanel.AlignRightWithPanel="True"
+                                               RelativePanel.Below="Room"/>
+                                    <TextBlock x:Name="TimeAdvice"  
+                                               Style="{StaticResource RegularTextBlock}" 
+                                               Text="{x:Bind TimeAdvice}" 
+                                               Margin="5"
+                                               RelativePanel.LeftOf="RoomAdvice"
+                                               RelativePanel.AlignVerticalCenterWith="RoomAdvice"/>
+                                    <TextBlock x:Name="DateAdvice" 
+                                               Style="{StaticResource RegularTextBlock}" 
+                                               Text="{x:Bind DateAdviceStr}" 
+                                               Margin="5"
+                                               RelativePanel.LeftOf="TimeAdvice"
+                                               RelativePanel.AlignVerticalCenterWith="RoomAdvice"/>
+                            </RelativePanel>
+                        </UserControl>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ProgressRing x:Name="ExamRing"
+                          IsActive="True"
+                          Margin="0,-50,0,0"
+                          Width="50"
+                          Height="50"
+                          Foreground="White"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using iTMO.Help.View;
 using iTMO.Help.Model;
+using iTMO.Help.Controller;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -30,6 +31,7 @@ namespace iTMO.Help
         {
             SetApplicationTopColorSchema();
             this.InitializeComponent();
+            CreateInitialeUser();
         }
 
         private void SetApplicationTopColorSchema()
@@ -56,6 +58,12 @@ namespace iTMO.Help
             tb.InactiveForegroundColor      = blue;
         }
 
+        private void CreateInitialeUser()
+        {
+            if (DatabaseController.Me.DUser == null)
+                DatabaseController.Me.DUser = new User { Id = 1 };
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             MenuListOpts.ItemsSource = MenuOptions;
@@ -66,17 +74,12 @@ namespace iTMO.Help
             MBar.IsPaneOpen = !MBar.IsPaneOpen;
         }
 
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
         private void MenuListOpts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var list = sender as ListView;
             var item = list.SelectedItem as MenuItem;
 
-            MContent.Navigate(item.Page);
+            FrameContent.Navigate(item.Page);
         }
     }
 }

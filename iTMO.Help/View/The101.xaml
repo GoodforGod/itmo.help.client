@@ -18,7 +18,14 @@
 
     <Grid Background="#1E51A4">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="The 101 Chair"/>
+            <TextBlock Text="The 101 Chair" Margin="5"/>
+            
+            <ProgressRing x:Name="ProgressRing"
+                          IsActive="True"
+                          Width="50"
+                          Margin="5"
+                          Height="50"
+                          Foreground="White"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -12,8 +12,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using iTMO.Help.Controller;
-using iTMO.Help.Model;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,25 +20,11 @@ namespace iTMO.Help.View
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ScheduleHub : Page
+    public sealed partial class BlankPage1 : Page
     {
-        public ScheduleHub()
+        public BlankPage1()
         {
             this.InitializeComponent();
-        }
-
-        private async void AllSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            DataResponse data = await HttpController.RetrieveData( RequestTypes.Schedule, AllSearchBox.Text);
-
-            if (data != null)
-            {
-
-            }
-            else
-            {
-
-            }
         }
     }
 }

@@ -18,27 +18,43 @@
 
     <Grid Background="#1E51A4">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel>
-                <TextBlock Text="Login" FontSize="10" Margin="-5"/>
-                <TextBox x:Name="Login" TextAlignment="Center" Foreground="White" FontFamily="Century Gothic" Padding="5" Margin="5"/>
-                <TextBlock Text="Password" FontSize="10" Margin="-5"/>
-                <PasswordBox x:Name="Password" Margin="5"/>
+            <StackPanel MinWidth="200" MaxWidth="390" Width="auto">
+                <TextBox x:Name="Login" 
+                         TextAlignment="Center" 
+                         Foreground="White" 
+                         FontFamily="Century Gothic" 
+                         PlaceholderText="Login"
+                         Margin="5" 
+                         TextChanged="Login_TextChanged"/>
+                <PasswordBox x:Name="Password" 
+                             Margin="5"
+                             PlaceholderText="Password"
+                             PasswordChanged="Password_PasswordChanged"/>
+                <TextBox x:Name="Group" 
+                         TextAlignment="Center" 
+                         Foreground="White" 
+                         FontFamily="Century Gothic" 
+                         PlaceholderText="Group"
+                         Margin="5" 
+                         TextChanged="Group_TextChanged"/>
+                <StackPanel HorizontalAlignment="Center">
+                    <CheckBox Name="AutoLogin" Click="AutoLogin_Click">
+                        <TextBlock Text="Auto Login" Foreground="White"/>
+                    </CheckBox>
+                    <CheckBox Name="AutoGroup" RelativePanel.AlignBottomWith="Autologin" Click="AutoGroup_Click">
+                        <TextBlock Text="Current Group" Foreground="White"/>
+                    </CheckBox>
+                    <CheckBox Name="AutoTerm" RelativePanel.AlignBottomWith="Autologin" Click="AutoTerm_Click">
+                        <TextBlock Text="Current Semester" Foreground="White"/>
+                    </CheckBox>
+                    <CheckBox Name="IsNotified" RelativePanel.AlignBottomWith="Autologin" Click="IsNotified_Click">
+                        <TextBlock Text="Notification" Foreground="White"/>
+                    </CheckBox>
+                </StackPanel>
             </StackPanel>
-            <CheckBox Name="Autologin">
-                <TextBlock Text="Auto Login" Foreground="White"/>
-            </CheckBox>
-            <CheckBox Name="Autogroup" RelativePanel.AlignBottomWith="Autologin">
-                <TextBlock Text="Current Group" Foreground="White"/>
-            </CheckBox>
-            <CheckBox Name="Autosemester" RelativePanel.AlignBottomWith="Autologin">
-                <TextBlock Text="Current Semester" Foreground="White"/>
-            </CheckBox>
-            <CheckBox Name="Notified" RelativePanel.AlignBottomWith="Autologin">
-                <TextBlock Text="Notification" Foreground="White"/>
-            </CheckBox>
-        <Button HorizontalAlignment="Center">
-            <TextBlock Text="Contact"/>
-        </Button>
+            <Button HorizontalAlignment="Center" Margin="5" Width="auto">
+                <TextBlock Text="Contact Developer" HorizontalAlignment="Center" Width="auto" TextAlignment="Center"/>
+            </Button>
         </StackPanel>
     </Grid>
 </Page>

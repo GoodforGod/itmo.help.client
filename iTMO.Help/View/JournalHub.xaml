@@ -22,12 +22,25 @@
         <Pivot HorizontalAlignment="Center" HorizontalContentAlignment="Center">
             <PivotItem Header="Journal" HorizontalAlignment="Center">
                 <Grid>
-                    <TextBlock Text="Test 1"/>
+                    <StackPanel>
+                        <ComboBox MinWidth="150" MaxWidth="320" HorizontalAlignment="Center">
+                            <ComboBoxItem>
+                                <TextBlock Text="All" Width="auto" Style="{StaticResource BarTextBlock}"/>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock Text="Find Part" Width="auto" Style="{StaticResource BarTextBlock}"/>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock Text="Last Part" Width="auto" Style="{StaticResource BarTextBlock}"/>
+                            </ComboBoxItem>
+                        </ComboBox>
+                        <TextBlock Text="Journal Page"/>
+                    </StackPanel>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Changes" HorizontalAlignment="Center">
                 <Grid>
-                    <TextBlock Text="Test 2" Foreground="White"/>
+                    <TextBlock Text="Changes Page" Foreground="White"/>
                 </Grid>
             </PivotItem>
         </Pivot>
