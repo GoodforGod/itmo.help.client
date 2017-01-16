@@ -26,7 +26,6 @@ namespace iTMO.Help.View
     /// </summary>
     public sealed partial class ExamHub : Page
     {
-        DataResponse response = null;
         List<ExamVR> exams = new List<ExamVR>();
 
         public ExamHub()
@@ -48,7 +47,10 @@ namespace iTMO.Help.View
         private void FullFillPage()
         {
             if (DatabaseController.Me.DExams != null)
+            {
                 ExamList.ItemsSource = exams = DatabaseController.Me.DExams;
+                ExamRing.IsActive = false;
+            }
             if (DatabaseController.Me.DUser != null && DatabaseController.Me.DUser.GroupLastUsed != null)
                 SearchAutoSuggestBox.Text = DatabaseController.Me.DUser.GroupLastUsed;
         }
@@ -57,22 +59,25 @@ namespace iTMO.Help.View
         {
             if (string.IsNullOrEmpty(SearchAutoSuggestBox.Text) || string.IsNullOrWhiteSpace(SearchAutoSuggestBox.Text))
                 return;
+            Message.Text = "";
+            ExamRing.IsActive = true;
 
-            response = await HttpController.RetrieveData(RequestTypes.ScheduleExam, SearchAutoSuggestBox.Text);
+            DataResponse response = await HttpController.RetrieveData(RequestTypes.ScheduleExam, SearchAutoSuggestBox.Text);
 
             if (response.isValid)
             {
                 var usr = DatabaseController.Me.DUser;
                 usr.GroupLastUsed = SearchAutoSuggestBox.Text;
                 DatabaseController.Me.DUser = usr;
-                ExamRing.IsActive = false;
-                var list = exams = SerializeContoller.ToExamViewReady(response.Data);
-                ExamList.ItemsSource = list;
+
+                var exams = SerializeContoller.ToExamViewReady(response.Data);
+                ExamList.ItemsSource = exams.Data;
             }
             else
             {
-
+                Message.Text = response.Data;
             }
+            ExamRing.IsActive = false;
         }
     }
 }

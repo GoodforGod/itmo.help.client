@@ -40,16 +40,23 @@ namespace iTMO.Help.View
         {
             if ((User = DatabaseController.Me.DUser) != null)
             {
-                IsNotified.IsChecked = User.isNotified;
-                AutoGroup.IsChecked = User.isAutoGroupSelect;
-                AutoLogin.IsChecked = User.isAutoLogin;
-                AutoTerm.IsChecked  = User.isAutoTermSelect;
-                if (string.IsNullOrEmpty(User.Password))
-                    Password.Password   = User.Password;
-                if (string.IsNullOrEmpty(User.Login))
-                    Login.Text          = User.Login;
-                if (string.IsNullOrEmpty(User.Group))
-                    Group.Text          = User.Group;
+                try
+                {
+                    IsNotified.IsChecked = User.isNotified;
+                    AutoGroup.IsChecked = User.isAutoGroupSelect;
+                    AutoLogin.IsChecked = User.isAutoLogin;
+                    AutoTerm.IsChecked = User.isAutoTermSelect;
+                    if (IsInputValid(User.Password))
+                        Password.Password = User.Password;
+                    if (IsInputValid(User.Login))
+                        Login.Text = User.Login;
+                    if (IsInputValid(User.Group))
+                        Group.Text = User.Group;
+                }
+                catch(Exception ex)
+                {
+
+                }
             }
         }
 

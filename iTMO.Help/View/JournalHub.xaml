@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:iTMO.Help.View"
+    xmlns:data="using:iTMO.Help.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -22,25 +23,139 @@
         <Pivot HorizontalAlignment="Center" HorizontalContentAlignment="Center">
             <PivotItem Header="Journal" HorizontalAlignment="Center">
                 <Grid>
-                    <StackPanel>
-                        <ComboBox MinWidth="150" MaxWidth="320" HorizontalAlignment="Center">
-                            <ComboBoxItem>
-                                <TextBlock Text="All" Width="auto" Style="{StaticResource BarTextBlock}"/>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock Text="Find Part" Width="auto" Style="{StaticResource BarTextBlock}"/>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock Text="Last Part" Width="auto" Style="{StaticResource BarTextBlock}"/>
-                            </ComboBoxItem>
-                        </ComboBox>
-                        <TextBlock Text="Journal Page"/>
-                    </StackPanel>
+                    <RelativePanel>
+                        <StackPanel x:Name="Toppers" 
+                                    Orientation="Horizontal"
+                                    RelativePanel.AlignHorizontalCenterWithPanel="True">
+                            <ComboBox x:Name="GroupsBox"
+                                      Margin="5"
+                                      MinWidth="150" 
+                                      MaxWidth="320"
+                                      HorizontalAlignment="Center">
+                                <ComboBoxItem>
+                                    <TextBlock Text="Current" Width="auto" Style="{StaticResource BarTextBlock}"/>
+                                </ComboBoxItem>
+                            </ComboBox>
+                            <ComboBox x:Name="TermBox" 
+                                  Margin="5"
+                                  MinWidth="150" 
+                                  MaxWidth="320" 
+                                  HorizontalAlignment="Center">
+                                <ComboBoxItem>
+                                    <TextBlock Text="All" Width="auto" Style="{StaticResource BarTextBlock}"/>
+                                </ComboBoxItem>
+                                <ComboBoxItem>
+                                    <TextBlock Text="Find Part" Width="auto" Style="{StaticResource BarTextBlock}"/>
+                                </ComboBoxItem>
+                                <ComboBoxItem>
+                                    <TextBlock Text="Last Part" Width="auto" Style="{StaticResource BarTextBlock}"/>
+                                </ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                        <ListView Name="ExamList" 
+                                  ScrollViewer.IsVerticalRailEnabled="True" 
+                                  ScrollViewer.VerticalScrollMode="Auto" 
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                  RelativePanel.Below="Toppers">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="data:Journal">
+                                    <UserControl>
+                                        <RelativePanel MinWidth="400" MaxWidth="900" Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup>
+                                                    <VisualState x:Name="Narrow">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="0"/>
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Target="TTeacher.(RelativePanel.Below)" Value="TSubject"/>
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                    <VisualState>
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="700"/>
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Target="TTeacher.(RelativePanel.RightOf)" Value="TSubject"/>
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                            <TextBlock x:Name="Subject" 
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind Subject}" 
+                                                       Margin="5"
+                                                       RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+                                            <TextBlock x:Name="Teacher" 
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind Teacher}" 
+                                                       Margin="5"
+                                                       RelativePanel.LeftOf="Room"
+                                                       RelativePanel.AlignVerticalCenterWith="Room" />
+                                            <TextBlock x:Name="Room" 
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind RoomExam}" 
+                                                       Margin="5"
+                                                       RelativePanel.AlignRightWithPanel="True"
+                                                       RelativePanel.AlignVerticalCenterWithPanel="True" />
+
+                                            <StackPanel RelativePanel.AlignVerticalCenterWithPanel="True">
+                                                <TextBlock x:Name="Time"  
+                                                           Style="{StaticResource ListTextBlock}" 
+                                                           Text="{x:Bind TimeExam}" 
+                                                           Margin="5"
+                                                           RelativePanel.Below="Date"/>
+                                                <TextBlock x:Name="Date"  
+                                                           Style="{StaticResource ListTextBlock}" 
+                                                           Text="{x:Bind DateExamStr}" 
+                                                           Margin="5" />
+                                            </StackPanel>
+                                            <TextBlock x:Name="RoomAdvice" 
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind RoomAdvice}" 
+                                                       Margin="5"
+                                                       RelativePanel.AlignRightWithPanel="True"
+                                                       RelativePanel.Below="Room"/>
+                                            <TextBlock x:Name="TimeAdvice"  
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind TimeAdvice}" 
+                                                       Margin="5"
+                                                       RelativePanel.LeftOf="RoomAdvice"
+                                                       RelativePanel.AlignVerticalCenterWith="RoomAdvice"/>
+                                            <TextBlock x:Name="DateAdvice" 
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind DateAdviceStr}" 
+                                                       Margin="5"
+                                                       RelativePanel.LeftOf="TimeAdvice"
+                                                       RelativePanel.AlignVerticalCenterWith="RoomAdvice"/>
+                                        </RelativePanel>
+                                    </UserControl>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </RelativePanel>
+                    <TextBlock x:Name="JournalMessage" VerticalAlignment="Center"/>
+                    <ProgressRing x:Name="JournalRing"
+                                  IsActive="True"
+                                  Margin="0,-50,0,0"
+                                  Width="50"
+                                  Height="50"
+                                  VerticalAlignment="Center"
+                                  Foreground="White"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Changes" HorizontalAlignment="Center">
                 <Grid>
                     <TextBlock Text="Changes Page" Foreground="White"/>
+                    <TextBlock x:Name="JournalLogMessage" VerticalAlignment="Center"/>
+                    <ProgressRing x:Name="JournalLogRing"
+                                  IsActive="True"
+                                  Margin="0,-50,0,0"
+                                  Width="50"
+                                  Height="50"
+                                  VerticalAlignment="Center"
+                                  Foreground="White"/>
                 </Grid>
             </PivotItem>
         </Pivot>

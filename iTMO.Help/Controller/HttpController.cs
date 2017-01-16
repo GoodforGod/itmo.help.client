@@ -47,7 +47,7 @@ namespace iTMO.Help.Controller
             return result.ToString();
         }
 
-        public static string BuildUri(RequestTypes request, params string[] opts)
+        private static string BuildUri(RequestTypes request, params string[] opts)
         {
             StringBuilder result = new StringBuilder();
 
@@ -103,6 +103,28 @@ namespace iTMO.Help.Controller
             return result.ToString();
         }
 
+        private static async Task<DataResponse> AuthOnDe()
+        {
+            HttpResponseMessage response = null;
+            string              result   = null;
+            bool                isValid  = false;
+
+            try
+            {
+                var usr = DatabaseController.Me.DUser;
+                if (!string.IsNullOrEmpty(usr.Login) && !string.IsNullOrEmpty(usr.Password))
+                {
+                    response = await httpClient.GetAsync(BuildDeAuthUri(usr.Login, usr.Password));
+                    result = await response.Content.ReadAsStringAsync();
+                }
+                else result = "Empty Login or Password";
+            }
+            catch (HttpRequestException ex)     { result = "Some Network Connectivity Error.. Check your Network"; }
+            catch (Exception ex)                { result = "Some unexpected error.."; }
+
+            return new DataResponse(result, isValid);
+        }
+
         public static async Task<DataResponse> ProccessRequest(RequestTypes type, params string[] opts)
         {
             HttpResponseMessage response = null;
@@ -116,22 +138,29 @@ namespace iTMO.Help.Controller
             }
             catch(HttpRequestException ex)
             {
-
+                result = "Some Network Connectivity Error.. Check your Network";
             }
             catch(Exception ex)
             {
-                if(response != null && response.Content != null)
-                    Debug.WriteLine(ex.ToString() + " | IN :" + response.Content);
+                result = "Some unexpected error..";
             }
 
-            switch (response.StatusCode)
+            if (response != null)
             {
-                case HttpStatusCode.OK:             isValid = true;                                                                 break;
-                case HttpStatusCode.NotFound:       result = "Resource not found, ops... [ 404 ]";                                  break;
-                case HttpStatusCode.NotAcceptable:  result = "Think that schedule is unavaliable for now... Or check the group may be?"; break;
-                case HttpStatusCode.BadRequest:     result = "Server got some unexpected error...  [ ITMO : Students] | [ 0 : 1 ]"; break;
-                case HttpStatusCode.Forbidden:      result = "Think that we are outdated... Contact Developers or check ITMO site"; break;
-                default:                            result = "Somethink extraodinary happened... Contact developer";                break;
+                switch (response.StatusCode)
+                {
+                    case HttpStatusCode.OK:
+                        if (response.Content != null)
+                            isValid = true;
+                        else
+                            result = "Invalid Group";
+                        break;
+                    case HttpStatusCode.NotFound:       result = "Resource not found, ops... [ 404 ]"; break;
+                    case HttpStatusCode.NotAcceptable:  result = "Think that schedule is unavaliable for now... Or check the group may be?"; break;
+                    case HttpStatusCode.BadRequest:     result = "Server got some unexpected error...  [ ITMO : Students] | [ 0 : 1 ]"; break;
+                    case HttpStatusCode.Forbidden:      result = "Think that we are outdated... Contact Developers or check ITMO site"; break;
+                    default:                            result = "Somethink extraodinary happened... Contact developer"; break;
+                }
             }
             return new DataResponse(result, isValid);
         }
@@ -140,23 +169,21 @@ namespace iTMO.Help.Controller
         {
             DataResponse result = null;
 
-            try
+            switch (type)
             {
-                switch (type)
-                {
-                    case RequestTypes.Journal:
-                    case RequestTypes.JournalChangeLog:
-                    case RequestTypes.MessagesFromDe:
-                        break;
+                case RequestTypes.Journal:
+                case RequestTypes.JournalChangeLog:
+                case RequestTypes.MessagesFromDe:
+                    result = await AuthOnDe();
+                    //result = await ProccessRequest(type, opts);
+                    break;
 
-                    default:
-                        result = await ProccessRequest(type, opts);
-                        return result;
-                }
+                default:
+                    result = await ProccessRequest(type, opts);
+                    break;
             }
-            catch(Exception ex) { Debug.WriteLine(ex.ToString() + " | IN : " + result.Data); }
 
-            return null;
+            return result;
         }
     }
 }

@@ -26,5 +26,10 @@ namespace iTMO.Help.View
         {
             this.InitializeComponent();
         }
+
+        private void SearchAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+
+        }
     }
 }

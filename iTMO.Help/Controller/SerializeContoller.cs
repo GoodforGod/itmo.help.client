@@ -6,20 +6,31 @@ using System.Collections.Generic;
 
 namespace iTMO.Help.Controller
 {
+    class SerializeData<TValue>
+    {
+        public TValue   Data    { get; set; }
+        public bool     IsValid { get; set; } = false;
+        public string   Message { get; set; }
+    }
+
     class SerializeContoller
     {
-        public static List<ExamVR> ToExamViewReady(string data)
+        public static SerializeData<List<ExamVR>> ToExamViewReady(string data)
         {
+            SerializeData<List<ExamVR>> serializedData = new SerializeData<List<ExamVR>>();
             ScheduleExam exams      = null;
-            List<ExamVR> listExamVR = new List<ExamVR>();
+            List<ExamVR> dataList = new List<ExamVR>();
 
             try
             {
                 exams = JsonConvert.DeserializeObject<ScheduleExam>(data);
 
-                if (exams.faculties != null
+                if (exams.faculties != null 
+                    && exams.faculties.Capacity != 0 
                     && exams.faculties[0].departments != null
+                    && exams.faculties[0].departments.Capacity != 0
                     && exams.faculties[0].departments[0].groups != null
+                    && exams.faculties[0].departments[0].groups.Capacity != 0
                     && exams.faculties[0].departments[0].groups[0].exams_schedule != null)
                 {
                     var examScheduleList = exams.faculties[0].departments[0].groups[0].exams_schedule;
@@ -27,7 +38,7 @@ namespace iTMO.Help.Controller
                     {
                         try
                         {
-                            listExamVR.Add(new ExamVR
+                            dataList.Add(new ExamVR
                             {
                                 DateAdviceStr   = exam.advice_date,
                                 DateExamStr     = exam.exam_date,
@@ -41,15 +52,19 @@ namespace iTMO.Help.Controller
                                 RoomExam        = exam.auditories[0].auditory_name,
                             });
                         }
-                        catch(ArgumentNullException ex) { listExamVR.Add(new ExamVR { Subject = "INVALID" }); }
-                        catch(FormatException ex)       { listExamVR.Add(new ExamVR { Subject = "INVALID" }); }
+                        catch (ArgumentNullException ex) { }
+                        catch (FormatException ex)       { }
                     }
+                    serializedData.Data = dataList;
+                    serializedData.IsValid = true;
                 }
-                else throw new ArgumentNullException("Somethink is missing in JSON Response! ITMO API STOP IT PLEASE!");
+                else throw new ArgumentNullException("Group number is probably Invalid!");
             }
-            catch(JsonSerializationException ex)    { new List<ExamVR>() { new ExamVR() { Subject = "JSON PARSE ERROR" } }; }
+            catch (JsonSerializationException ex)   { serializedData.Message = "Json Parse Error"; }
+            catch (ArgumentNullException ex)        { serializedData.Message = ex.Message; }
+            catch (Exception ex)                    { serializedData.Message = "Unexpected Server Response"; }
 
-            return listExamVR;
+            return serializedData;
         }
 
         public static List<ScheduleVR> ToScheduleViewReady(string data)
