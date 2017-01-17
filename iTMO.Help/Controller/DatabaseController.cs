@@ -17,7 +17,8 @@ namespace iTMO.Help.Controller
         private static object syncRoot = new object();
         private volatile static DatabaseController _Me;
         public static           DatabaseController  Me
-        { get {
+        {
+            get {
                     if (_Me == null)
                     {
                         lock (syncRoot)
@@ -34,7 +35,8 @@ namespace iTMO.Help.Controller
         // Store Part
         private volatile User _DUser;
         public           User  DUser
-        { get {
+        {
+            get {
                 if (_DUser != null)
                     return _DUser;
 

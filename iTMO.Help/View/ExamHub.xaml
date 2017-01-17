@@ -18,7 +18,7 @@
     </Page.Resources>
 
     <Grid Background="#1E51A4">
-        <RelativePanel>
+        <RelativePanel x:Name="MainPanel" Margin="5">
             <AutoSuggestBox Name="SearchAutoSuggestBox" 
                             PlaceholderText="Group"
                             Width="200"
@@ -39,11 +39,17 @@
                       ScrollViewer.VerticalScrollMode="Auto" 
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       RelativePanel.AlignHorizontalCenterWithPanel="True"
-                      RelativePanel.Below="SearchAutoSuggestBox">
+                      RelativePanel.Below="SearchAutoSuggestBox"
+                      MaxWidth="{Binding ActualWidth, ElementName = MainPanel}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="data:ExamVR">
                         <UserControl>
-                            <RelativePanel MinWidth="400" MaxWidth="900" Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
+                            <RelativePanel Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup>
                                         <VisualState x:Name="Narrow">

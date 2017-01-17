@@ -31,7 +31,7 @@ namespace iTMO.Help.View
         public ExamHub()
         {
             this.InitializeComponent();
-            FullFillPage();
+            RestorePage();
         }
 
         protected override void OnNavigatingFrom( NavigatingCancelEventArgs e)
@@ -41,12 +41,12 @@ namespace iTMO.Help.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            FullFillPage();
+            RestorePage();
         }
 
-        private void FullFillPage()
+        private void RestorePage()
         {
-            if (DatabaseController.Me.DExams != null)
+            if (DatabaseController.Me.DExams != null && DatabaseController.Me.DExams.Count != 0)
             {
                 ExamList.ItemsSource = exams = DatabaseController.Me.DExams;
                 ExamRing.IsActive = false;
@@ -55,29 +55,38 @@ namespace iTMO.Help.View
                 SearchAutoSuggestBox.Text = DatabaseController.Me.DUser.GroupLastUsed;
         }
 
-        private async void SearchAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private async void ProccessExamVR()
         {
             if (string.IsNullOrEmpty(SearchAutoSuggestBox.Text) || string.IsNullOrWhiteSpace(SearchAutoSuggestBox.Text))
                 return;
+
             Message.Text = "";
             ExamRing.IsActive = true;
 
-            DataResponse response = await HttpController.RetrieveData(RequestTypes.ScheduleExam, SearchAutoSuggestBox.Text);
+            DataResponse<string> response = await HttpController.RetrieveData(RequestTypes.ScheduleExam, SearchAutoSuggestBox.Text);
 
             if (response.isValid)
             {
-                var usr = DatabaseController.Me.DUser;
-                usr.GroupLastUsed = SearchAutoSuggestBox.Text;
-                DatabaseController.Me.DUser = usr;
+                var dataVR = SerializeContoller.ToExamViewReady(response.Data);
 
-                var exams = SerializeContoller.ToExamViewReady(response.Data);
-                ExamList.ItemsSource = exams.Data;
+                if (dataVR.IsValid)
+                {
+                    var usr = DatabaseController.Me.DUser;
+                    usr.GroupLastUsed = SearchAutoSuggestBox.Text;
+                    DatabaseController.Me.DUser = usr;
+
+                    ExamList.ItemsSource = exams = dataVR.Data;
+                }
+                else Message.Text = dataVR.Message;
             }
-            else
-            {
-                Message.Text = response.Data;
-            }
+            else Message.Text = response.Data;
+
             ExamRing.IsActive = false;
+        }
+
+        private void SearchAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            ProccessExamVR();
         }
     }
 }

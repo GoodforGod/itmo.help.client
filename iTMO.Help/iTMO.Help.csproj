@@ -108,6 +108,7 @@
     <Compile Include="Model\Isu\Schedule.cs" />
     <Compile Include="Model\Isu\ScheduleExam.cs" />
     <Compile Include="Model\ViewReady\ExamVR.cs" />
+    <Compile Include="Model\ViewReady\JournalVR.cs" />
     <Compile Include="Model\ViewReady\ScheduleVR.cs" />
     <Compile Include="View\BlankPage1.xaml.cs">
       <DependentUpon>BlankPage1.xaml</DependentUpon>

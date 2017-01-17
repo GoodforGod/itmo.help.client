@@ -67,8 +67,9 @@ namespace iTMO.Help.Controller
             return serializedData;
         }
 
-        public static List<ScheduleVR> ToScheduleViewReady(string data)
+        public static SerializeData<List<ScheduleVR>> ToScheduleViewReady(string data)
         {
+            SerializeData<List<ScheduleVR>> serializedData = new SerializeData<List<ScheduleVR>>();
             Schedule            schedule        = null;
             List<ScheduleVR>    listScheduleVR  = new List<ScheduleVR>();
 
@@ -85,26 +86,29 @@ namespace iTMO.Help.Controller
             {
 
             }
-            return listScheduleVR;
+            return serializedData;
         }
 
-        public static Journal ToJournalView(string data)
+        public static SerializeData<Journal> ToJournalView(string data)
         {
+            SerializeData<Journal> serializedData = new SerializeData<Journal>();
             Journal journal = null;
 
             try
             {
-                journal = JsonConvert.DeserializeObject<Journal>(data);
+                serializedData.Data = journal = JsonConvert.DeserializeObject<Journal>(data);
+                serializedData.IsValid = true;
             }
             catch (JsonSerializationException ex)
             {
 
             }
-            return journal;
+            return serializedData;
         }
 
-        public static JournalChangeLog ToJournalChangeLogView(string data)
+        public static SerializeData<JournalChangeLog> ToJournalChangeLogView(string data)
         {
+            SerializeData<JournalChangeLog> serializedData = new SerializeData<JournalChangeLog>();
             JournalChangeLog journalChangeLog = null;
 
             try
@@ -115,11 +119,12 @@ namespace iTMO.Help.Controller
             {
 
             }
-            return journalChangeLog;
+            return serializedData;
         }
 
-        public static MessageDe ToMessageDeView(string data)
+        public static SerializeData<MessageDe> ToMessageDeView(string data)
         {
+            SerializeData<MessageDe> serializedData = new SerializeData<MessageDe>();
             MessageDe messages = null;
 
             try
@@ -130,7 +135,7 @@ namespace iTMO.Help.Controller
             {
 
             }
-            return messages;
+            return serializedData;
         }
     }
 }

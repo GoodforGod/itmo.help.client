@@ -31,7 +31,7 @@ namespace iTMO.Help.View
 
         private async void AllSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            DataResponse data = await HttpController.RetrieveData( RequestTypes.Schedule, AllSearchBox.Text);
+            DataResponse<string> data = await HttpController.RetrieveData( RequestTypes.Schedule, AllSearchBox.Text);
 
             if (data != null)
             {

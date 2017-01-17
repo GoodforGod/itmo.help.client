@@ -38,33 +38,82 @@ namespace iTMO.Help.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            FullFillPage();
+            RestorePage();
         }
 
-        private void FullFillPage()
+        private void RestorePage()
         {
-            if (DatabaseController.Me.DJournal != null)
+            if ((Journal = DatabaseController.Me.DJournal) != null)
             {
-                //ExamList.ItemsSource = Journal = DatabaseController.Me.DJournal;
+                JournalList.ItemsSource = Journal.years[TermBox.SelectedIndex].subjects;
                 JournalRing.IsActive = false;
-                JournalLogRing.IsActive = false;
             }
         }
 
-        private async void ProccessJournal()
+        private async void ProccessJournalVR()
         {
-            DataResponse response = await HttpController.RetrieveData(RequestTypes.Journal, "","");
+            string login = null;
+            string pass = null;
+
+            JournalMessage.Text = "";
+
+            if ((string.IsNullOrEmpty(login = DatabaseController.Me.DUser.Login)
+                || string.IsNullOrEmpty(pass = DatabaseController.Me.DUser.Password)))
+            {
+                var result = await JournalFormDialog.ShowAsync();
+
+                if (string.IsNullOrEmpty(login = Login.Text) 
+                    || string.IsNullOrWhiteSpace(pass = Password.Password))
+                {
+                    JournalMessage.Text = "Fill Login And Password Correctly";
+                    return;
+                }
+            }
+
+            JournalRing.IsActive = true;
+
+            DataResponse<string> response = await HttpController.RetrieveData(RequestTypes.Journal, login, pass);
 
             if (response.isValid)
             {
-                var exams = SerializeContoller.ToExamViewReady(response.Data);
-                //ExamList.ItemsSource = exams.Data;
+                var dataVR = SerializeContoller.ToJournalView(response.Data);
+
+                if (dataVR.IsValid)
+                {
+                    Journal = dataVR.Data;
+                    JournalList.ItemsSource = dataVR.Data.years[TermBox.SelectedIndex].subjects;
+                }
+                else JournalMessage.Text = dataVR.Message;
             }
-            else
-            {
-                JournalMessage.Text     = response.Data;
-                JournalLogMessage.Text  = response.Data;
-            }
+            else JournalMessage.Text = response.Data;
+
+            Login.Text = Password.Password = "";
+
+            JournalRing.IsActive = false;
+        }
+
+        private void TermBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void GroupsBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ProccessJournalVR();
+        }
+
+        private void JournalFormDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+        }
+
+        private void JournalFormDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            JournalRing.IsActive = false;
         }
     }
 }
