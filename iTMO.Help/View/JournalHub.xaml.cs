@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -24,7 +25,8 @@ namespace iTMO.Help.View
     /// </summary>
     public sealed partial class JournalHub : Page
     {
-        private Journal Journal = null;
+        private Journal DJournal = null;
+        private List<JournalChangeLog> JournalChangeLog = null;
 
         public JournalHub()
         {
@@ -33,7 +35,8 @@ namespace iTMO.Help.View
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            DatabaseController.Me.DJournal = Journal;
+            DatabaseController.Me.DJournal = DJournal;
+            DatabaseController.Me.DJournalChangeLog = JournalChangeLog;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -43,63 +46,148 @@ namespace iTMO.Help.View
 
         private void RestorePage()
         {
-            if ((Journal = DatabaseController.Me.DJournal) != null)
+            if ((DJournal = DatabaseController.Me.DJournal) != null)
             {
-                JournalList.ItemsSource = Journal.years[TermBox.SelectedIndex].subjects;
-                JournalRing.IsActive = false;
+                if(DJournal.years != null)
+                    GroupsBox.ItemsSource = DJournal.years;
+
+                var selected = GroupsBox.SelectedIndex - 1;
+                if (selected < 0)
+                    selected = 0;
+                JournalList.ItemsSource = DJournal.years[selected].subjects;
+            }
+            if((JournalChangeLog = DatabaseController.Me.DJournalChangeLog) != null)
+            {
+                JournalLogList.ItemsSource = JournalChangeLog;
             }
         }
 
         private async void ProccessJournalVR()
         {
-            string login = null;
-            string pass = null;
-
             JournalMessage.Text = "";
+            JournalList.Items.Clear();
 
-            if ((string.IsNullOrEmpty(login = DatabaseController.Me.DUser.Login)
-                || string.IsNullOrEmpty(pass = DatabaseController.Me.DUser.Password)))
+            var user_data = await CollectUserData();
+
+            if(!user_data.IsValid)
             {
-                var result = await JournalFormDialog.ShowAsync();
-
-                if (string.IsNullOrEmpty(login = Login.Text) 
-                    || string.IsNullOrWhiteSpace(pass = Password.Password))
-                {
-                    JournalMessage.Text = "Fill Login And Password Correctly";
-                    return;
-                }
+                JournalMessage.Text = user_data.Message;
+                return;
             }
 
             JournalRing.IsActive = true;
 
-            DataResponse<string> response = await HttpController.RetrieveData(RequestTypes.Journal, login, pass);
-
+            DataResponse<string> response = await HttpController.RetrieveData(RequestTypes.Journal, 
+                                                                                user_data.Login, 
+                                                                                user_data.Password);
             if (response.isValid)
             {
                 var dataVR = SerializeContoller.ToJournalView(response.Data);
 
                 if (dataVR.IsValid)
                 {
-                    Journal = dataVR.Data;
-                    JournalList.ItemsSource = dataVR.Data.years[TermBox.SelectedIndex].subjects;
+                    DJournal = dataVR.Data;
+                    GroupsBox.ItemsSource = DJournal.years;
+
+                    var selectedGrp = GroupsBox.SelectedIndex - 1;
+                    if (selectedGrp < 0)
+                        selectedGrp = 0;
+
+                    JournalList.ItemsSource = dataVR.Data.years[selectedGrp].subjects;
                 }
                 else JournalMessage.Text = dataVR.Message;
             }
             else JournalMessage.Text = response.Data;
 
-            Login.Text = Password.Password = "";
+            JournalRing.IsActive = false;
+        }
+
+        private async void ProccesJournalChangeLogVR()
+        {
+            JournalMessage.Text = "";
+            JournalLogList.Items.Clear();
+
+            var user_data = await CollectUserData();
+
+            if(!user_data.IsValid)
+            {
+                JournalMessage.Text = user_data.Message;
+                return;
+            }
+
+            int days = 14;
+
+            if (int.TryParse(SearchAutoSuggestBox.Text, out days))
+            {
+                JournalRing.IsActive = true;
+
+                DataResponse<string> response = await HttpController.RetrieveData(RequestTypes.JournalChangeLog, 
+                                                                                    user_data.Login, 
+                                                                                    user_data.Password, days.ToString());
+                if (response.isValid)
+                {
+                    var dataVR = SerializeContoller.ToJournalChangeLogView(response.Data);
+
+                    if (dataVR.IsValid)
+                    {
+                        JournalChangeLog = dataVR.Data;
+                        JournalLogList.ItemsSource = dataVR.Data;
+                    }
+                    else JournalMessage.Text = dataVR.Message;
+                }
+                else JournalMessage.Text = response.Data;
+            }
+            else JournalMessage.Text = "Invalid Days Input";
 
             JournalRing.IsActive = false;
         }
 
+        private async Task<CheckResponse> CollectUserData()
+        {
+            CheckResponse response = new CheckResponse();
+
+            if ((string.IsNullOrEmpty(response.Login = DatabaseController.Me.DUser.Login)
+              || string.IsNullOrEmpty(response.Password = DatabaseController.Me.DUser.Password)))
+            {
+                if (response.Login != null)
+                    Login.Text = response.Login;
+                if (response.Password != null)
+                    Password.Password = response.Password;
+
+                switch (await JournalFormDialog.ShowAsync())
+                {
+                    case ContentDialogResult.Primary:
+                        if (string.IsNullOrEmpty(response.Login = Login.Text)
+                            || string.IsNullOrWhiteSpace(response.Password = Password.Password))
+                            response.Message = "Fill Login And Password Correctly";
+                        else
+                            response.IsValid = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else response.IsValid = true;
+
+            Login.Text = Password.Password = "";
+            return response;
+        }
+
         private void TermBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(DJournal != null && DJournal.years != null && DJournal.years.Count != 0)
+            {
 
+            }
         }
 
         private void GroupsBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (DJournal != null 
+                && DJournal.years != null 
+                && DJournal.years.Count != 0 
+                && DJournal.years.Count >= GroupsBox.SelectedIndex)
+                    JournalList.ItemsSource = DJournal.years[GroupsBox.SelectedIndex - 1];
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -113,7 +201,12 @@ namespace iTMO.Help.View
 
         private void JournalFormDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            JournalRing.IsActive = false;
+
+        }
+
+        private void SearchAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            ProccesJournalChangeLogVR();
         }
     }
 }

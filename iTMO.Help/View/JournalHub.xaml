@@ -22,7 +22,7 @@
     <Grid Background="#1E51A4">
         <Pivot HorizontalAlignment="Center" HorizontalContentAlignment="Center">
             <PivotItem Header="Journal" HorizontalAlignment="Center">
-                <RelativePanel x:Name="MainPanel" Margin="5" Width="auto">
+                <RelativePanel x:Name="MainJournalPanel" Margin="5" Width="auto">
                     <StackPanel x:Name="Toppers" 
                                 Orientation="Horizontal"
                                 RelativePanel.AlignHorizontalCenterWithPanel="True">
@@ -31,11 +31,14 @@
                                   MinWidth="150" 
                                   MaxWidth="320"
                                   HorizontalAlignment="Center"
-                                  SelectedIndex="0"
                                   SelectionChanged="GroupsBox_SelectionChanged">
-                            <ComboBoxItem>
-                                <TextBlock Text="Current" Width="auto" Style="{StaticResource BarTextBlock}"/>
-                            </ComboBoxItem>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="data:Year">
+                                    <StackPanel Orientation="Horizontal" Width="Auto" Height="Auto">
+                                        <TextBlock Text="{x:Bind group}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
                         </ComboBox>
                         <ComboBox x:Name="TermBox" 
                                   Margin="5"
@@ -54,6 +57,7 @@
                                 <TextBlock Text="Last Part" Width="auto" Style="{StaticResource BarTextBlock}"/>
                             </ComboBoxItem>
                         </ComboBox>
+
                         <Button x:Name="TestBtn" 
                                 Click="Button_Click" 
                                 RelativePanel.AlignHorizontalCenterWithPanel="True">
@@ -61,25 +65,6 @@
                         </Button>
                     </StackPanel>
 
-                    <ContentDialog x:Name="JournalFormDialog"
-                                   VerticalAlignment="Stretch"
-                                   Title="Fill Form to Procced"
-                                   PrimaryButtonText="OK"
-                                   Margin="5"
-                                   PrimaryButtonClick="JournalFormDialog_PrimaryButtonClick"
-                                   SecondaryButtonClick="JournalFormDialog_SecondaryButtonClick"
-                                   IsPrimaryButtonEnabled="{Binding IsChecked, ElementName=checkBoxAgree, Mode=OneWay}"
-                                   SecondaryButtonText="Cancel">
-                        <StackPanel>
-                            <TextBox x:Name="Login" 
-                                     Margin="5"
-                                     PlaceholderText="Login"/>
-                            <PasswordBox x:Name="Password" 
-                                         Margin="5"
-                                         PlaceholderText="Password"/>
-                        </StackPanel>
-                    </ContentDialog>
-                    
                     <ListView x:Name="JournalList"
                               Margin="5"
                               ScrollViewer.IsVerticalRailEnabled="True" 
@@ -87,7 +72,7 @@
                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                               RelativePanel.AlignHorizontalCenterWithPanel="True"
                               RelativePanel.Below="Toppers"
-                              MaxWidth ="{Binding ActualWidth, ElementName=MainPanel }">
+                              MaxWidth ="{Binding ActualWidth, ElementName=MainJournalPanel }">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -152,38 +137,134 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    
-                    <TextBlock x:Name="JournalMessage" 
-                               RelativePanel.AlignHorizontalCenterWithPanel="True"
-                               RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                    <ProgressRing x:Name="JournalRing"
-                                  IsActive="True"
-                                  Margin="0,-50,0,0"
-                                  Width="50"
-                                  Height="50"
-                                  RelativePanel.AlignHorizontalCenterWithPanel="True"
-                                  RelativePanel.AlignVerticalCenterWithPanel="True"
-                                  RelativePanel.Below="JournalMessage"
-                                  Foreground="White"/>
                 </RelativePanel>
             </PivotItem>
             
             <!-- Second Pivot -->
             
             <PivotItem Header="Changes" HorizontalAlignment="Center">
-                <Grid>
-                    <TextBlock Text="Changes Page" Foreground="White"/>
-                    <TextBlock x:Name="JournalLogMessage" VerticalAlignment="Center"/>
-                    <ProgressRing x:Name="JournalLogRing"
-                                  IsActive="True"
-                                  Margin="0,-50,0,0"
-                                  Width="50"
-                                  Height="50"
-                                  VerticalAlignment="Center"
-                                  Foreground="White"/>
-                </Grid>
+                <RelativePanel x:Name="MainJournalLogPanel" Width="auto" MinWidth="400">
+
+                    <AutoSuggestBox x:Name="SearchAutoSuggestBox" 
+                                    PlaceholderText="Group"
+                                    Width="200"
+                                    Text="14"
+                                    QueryIcon="Find"
+                                    Margin="5" 
+                                    RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                    Style="{StaticResource ExamSearch}"
+                                    QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted">
+                    </AutoSuggestBox>
+
+                    <ListView x:Name="JournalLogList"
+                              Margin="5"
+                              ScrollViewer.IsVerticalRailEnabled="True" 
+                              ScrollViewer.VerticalScrollMode="Auto" 
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              RelativePanel.AlignHorizontalCenterWithPanel="True"
+                              RelativePanel.Below="SearchAutoSuggestBox"
+                              MaxWidth ="{Binding ActualWidth, ElementName=MainJournalLogPanel }">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="data:JournalChangeLog">
+                                <UserControl>
+                                    <RelativePanel MaxWidth="900" Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup>
+                                                <VisualState x:Name="Narrow">
+                                                    <VisualState.StateTriggers>
+                                                        <AdaptiveTrigger MinWindowWidth="0"/>
+                                                    </VisualState.StateTriggers>
+                                                    <VisualState.Setters>
+                                                        <Setter Target="TTeacher.(RelativePanel.Below)" Value="TSubject"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                                <VisualState>
+                                                    <VisualState.StateTriggers>
+                                                        <AdaptiveTrigger MinWindowWidth="700"/>
+                                                    </VisualState.StateTriggers>
+                                                    <VisualState.Setters>
+                                                        <Setter Target="TTeacher.(RelativePanel.RightOf)" Value="TSubject"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <TextBlock x:Name="variable" 
+                                                   Style="{StaticResource ListTextBlock}" 
+                                                   Text="{x:Bind var.name}" 
+                                                   Margin="5"
+                                                   RelativePanel.AlignLeftWithPanel="True"
+                                                   RelativePanel.AlignTopWithPanel="True"/>
+                                        <TextBlock x:Name="MaxText" 
+                                                   Text="Earned : "
+                                                   Style="{StaticResource ListTextBlock}" 
+                                                   Margin="5"
+                                                   RelativePanel.AlignLeftWithPanel="True"
+                                                   RelativePanel.Below="variable"
+                                                   />
+                                        <TextBlock x:Name="max" 
+                                                   Style="{StaticResource ListTextBlock}" 
+                                                   Text="{x:Bind var.max}" 
+                                                   Margin="5"
+                                                   RelativePanel.AlignVerticalCenterWith="MaxText"
+                                                   RelativePanel.RightOf="MaxText"/>
+                                        <TextBlock x:Name="limit" 
+                                                   Style="{StaticResource ListTextBlock}" 
+                                                   Text="{x:Bind var.min}" 
+                                                   Margin="5"
+                                                   RelativePanel.AlignRightWithPanel="True"
+                                                   RelativePanel.Below="value"/>
+                                        <TextBlock x:Name="value" 
+                                                   Style="{StaticResource ListTextBlock}" 
+                                                   Text="{x:Bind var.threshold}" 
+                                                   Margin="5"
+                                                   RelativePanel.AlignRightWithPanel="True"/>
+                                    </RelativePanel>
+                                </UserControl>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </RelativePanel>
             </PivotItem>
         </Pivot>
+        
+        <ContentDialog x:Name="JournalFormDialog"
+                       VerticalAlignment="Stretch"
+                       Title="Fill Form to Procced"
+                       PrimaryButtonText="OK"
+                       Margin="5"
+                       PrimaryButtonClick="JournalFormDialog_PrimaryButtonClick"
+                       SecondaryButtonClick="JournalFormDialog_SecondaryButtonClick"
+                       IsPrimaryButtonEnabled="{Binding IsChecked, ElementName=checkBoxAgree, Mode=OneWay}"
+                       SecondaryButtonText="Cancel">
+            <StackPanel>
+                <TextBox x:Name="Login" 
+                         Margin="5"
+                         PlaceholderText="Login"/>
+                <PasswordBox x:Name="Password" 
+                             Margin="5"
+                             PasswordRevealMode="Visible"
+                             IsPasswordRevealButtonEnabled="True"
+                             PlaceholderText="Password"/>
+            </StackPanel>
+        </ContentDialog>
+
+        <TextBlock x:Name="JournalMessage" 
+                   RelativePanel.AlignHorizontalCenterWithPanel="True"
+                   RelativePanel.AlignVerticalCenterWithPanel="True"/>
+
+        <ProgressRing x:Name="JournalRing"
+                      IsActive="False"
+                      Margin="0,-50,0,0"
+                      Width="50"
+                      Height="50"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Foreground="White"/>
     </Grid>
 </Page>
     

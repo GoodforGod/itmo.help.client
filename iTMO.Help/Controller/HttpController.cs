@@ -26,7 +26,7 @@ namespace iTMO.Help.Controller
 
     class DataResponse<TValue>
     {
-        public TValue Data    { get; set; }
+        public TValue   Data    { get; set; }
         public bool     isValid { get; set; }
 
         public DataResponse(TValue data, bool isValid)
@@ -42,17 +42,10 @@ namespace iTMO.Help.Controller
 
         private static bool isAuthiticated = false;
 
-        private static string BuildDeAuthUri(string login, string pass)
-        {
-            StringBuilder result = new StringBuilder("https://de.ifmo.ru/servlet/");
-            result.AppendFormat("?Rule=LOGON&LOGIN={0}&PASSWD={1}", login, pass);
-            return result.ToString();
-        }
-
         private static HttpRequestMessage BuildRequest(RequestTypes type, params string[] opts)
         {
-            HttpRequestMessage request = null;
-            StringBuilder resultUri = new StringBuilder();
+            HttpRequestMessage  request = null;
+            StringBuilder       resultUri = new StringBuilder();
 
             string ApiKey       = "/AYPlvngDDdVoZdJgPAKoeHQnWUDrvOwEHpEXxNGNfaAKsugiJyCGxotWsTdqCdHL/";
 
@@ -76,8 +69,8 @@ namespace iTMO.Help.Controller
             {
                 case RequestTypes.AuthDe:           resultUri.AppendFormat(deAuthLink, opts[0], opts[1]);                           break;
                 case RequestTypes.Journal:          resultUri.Append(deBaseLink + journal);                                         break;
-                case RequestTypes.JournalChangeLog: resultUri.AppendFormat(deBaseLink + journalChangeLog, opts[0]);                 break;
-                case RequestTypes.MessagesFromDe:   resultUri.AppendFormat(deBaseLink + messageDe, opts[0], opts[1]);               break;
+                case RequestTypes.JournalChangeLog: resultUri.AppendFormat(deBaseLink + journalChangeLog, opts[2]);                 break;
+                case RequestTypes.MessagesFromDe:   resultUri.AppendFormat(deBaseLink + messageDe, opts[2], opts[3]);               break;
                 case RequestTypes.Schedule:         resultUri.Append(isuBaseLink + schedule + common + group + ApiKey + opts[0]);   break;
                 case RequestTypes.ScheduleExam:     resultUri.Append(isuBaseLink + exams + common + group + ApiKey + opts[0]);      break;
                 case RequestTypes.ScheduleTeacher:  resultUri.Append(isuBaseLink + schedule + common + teacher + ApiKey + opts[0]); break;
@@ -94,22 +87,20 @@ namespace iTMO.Help.Controller
 
         private static async Task<DataResponse<HttpStatusCode>> AuthOnDe(params string[] opts)
         {
-            HttpStatusCode      result   = HttpStatusCode.ExpectationFailed;
-            bool                isValid  = false;
+            DataResponse<HttpStatusCode> authResult = new DataResponse<HttpStatusCode>(HttpStatusCode.Unauthorized, false);
 
-            if(opts.Length != 2)
-                return new DataResponse<HttpStatusCode>(result, isValid);
-
-            try
+            if (opts.Length > 1)
             {
-                var response = await httpClient.SendAsync(BuildRequest(RequestTypes.AuthDe, opts));
-                result = response.StatusCode;
-                isAuthiticated = true;
+                try
+                {
+                    var response = await httpClient.SendAsync(BuildRequest(RequestTypes.AuthDe, opts));
+                    authResult.Data = response.StatusCode;
+                    isAuthiticated = true;
+                }
+                catch (HttpRequestException ex) { authResult.Data = HttpStatusCode.RequestTimeout; }
+                catch (Exception ex)            { authResult.Data = HttpStatusCode.ExpectationFailed; }
             }
-            catch (HttpRequestException ex)     { result = HttpStatusCode.RequestTimeout; }
-            catch (Exception ex)                { result = HttpStatusCode.ExpectationFailed; }
-
-            return new DataResponse<HttpStatusCode>(result, isValid);
+            return authResult;
         }
 
         public static async Task<DataResponse<string>> ProccessRequest(RequestTypes type, params string[] opts)
@@ -123,29 +114,19 @@ namespace iTMO.Help.Controller
                 response    = await httpClient.SendAsync(BuildRequest(type, opts));
                 result      = await response.Content.ReadAsStringAsync();
             }
-            catch(HttpRequestException ex)
-            {
-                result = "Some Network Connectivity Error.. Check your Network";
-            }
-            catch(Exception ex)
-            {
-                result = "Some unexpected error..";
-            }
+            catch(HttpRequestException ex)  { result = "Some Network Connectivity Error.. Check your Network"; }
+            catch(Exception ex)             { result = "Some unexpected error.."; }
 
             if (response != null)
             {
                 switch (response.StatusCode)
                 {
-                    case HttpStatusCode.OK:
-                        if (response.Content != null)
-                            isValid = true;
-                        else
-                            result = "Invalid Group";
-                        break;
+                    case HttpStatusCode.OK: isValid = true; break;
                     case HttpStatusCode.NotFound:       result = "Resource not found, ops... [ 404 ]"; break;
                     case HttpStatusCode.NotAcceptable:  result = "Think that schedule is unavaliable for now... Or check the group may be?"; break;
                     case HttpStatusCode.BadRequest:     result = "Server got some unexpected error...  [ ITMO : Students] | [ 0 : 1 ]"; break;
                     case HttpStatusCode.Forbidden:      result = "Think that we are outdated... Contact Developers or check ITMO site"; break;
+                    case HttpStatusCode.NoContent:      result = "Invalid Login/Password"; break;
                     default:                            result = "Somethink extraodinary happened... Contact developer"; break;
                 }
             }
@@ -168,17 +149,11 @@ namespace iTMO.Help.Controller
                         {
                             case HttpStatusCode.OK: break;
                             case HttpStatusCode.ExpectationFailed:
-                                return result = new DataResponse<string>(authResult.Data.ToString(), false);
                             default:
                                 return result = new DataResponse<string>(authResult.Data.ToString(), false);
                         }
                     }
-                    if(opts.Length == 3)
-                        result = await ProccessRequest(type, opts[2]);
-                    else
-                        result = await ProccessRequest(type);
-
-                    //result = await ProccessRequest(type, opts);
+                    result = await ProccessRequest(type, opts);
                     break;
 
                 default:

@@ -24,8 +24,17 @@ namespace iTMO.Help
 
     public class MenuItem
     {
-        public string   Title   { get; set; }
-        public string   Icon    { get; set; }
+        public string   Title   { get; set; } = "";
+        public string   Icon    { get; set; } = "";
         public Type     Page    { get; set; }
     }
+
+    public class CheckResponse
+    {
+        public bool     IsValid   { get; set; } = false;
+        public string   Login     { get; set; }
+        public string   Password  { get; set; }
+        public string   Message   { get; set; } = "";
+    }
+
 }

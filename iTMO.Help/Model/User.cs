@@ -7,7 +7,7 @@ namespace iTMO.Help.Model
         [PrimaryKey, AutoIncrement]
         public int Id                   { get; set; }
         public string Login             { get; set; }
-        public string Password          { get; set; }
+        public string Password          { get; set; } 
         public string Group             { get; set; }
         public string GroupLastUsed     { get; set; }
         public int    JournalTerm       { get; set; }
@@ -16,5 +16,6 @@ namespace iTMO.Help.Model
         public bool isAutoTermSelect    { get; set; }
         public bool isAutoGroupSelect   { get; set; }
         public bool isNotified          { get; set; }
+        public bool isMsgDeUnreadableOnly { get; set; }
     }
 }

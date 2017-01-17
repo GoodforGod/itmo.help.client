@@ -28,7 +28,8 @@
                          TextChanged="Login_TextChanged"/>
                 <PasswordBox x:Name="Password" 
                              Margin="5"
-                             PlaceholderText="Password"
+                             PasswordRevealMode="Visible"
+                             IsPasswordRevealButtonEnabled="True"
                              PasswordChanged="Password_PasswordChanged"/>
                 <TextBox x:Name="Group" 
                          TextAlignment="Center" 

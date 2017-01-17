@@ -5,18 +5,18 @@ namespace iTMO.Help.Model
 {
     public class Var
     {
-        public string Name      { get; set; }
-        public string Min       { get; set; }
-        public string Max       { get; set; }
-        public string Threshold { get; set; }
+        public string name      { get; set; } = "";
+        public string min       { get; set; } = "";
+        public string max       { get; set; } = "";
+        public string threshold { get; set; } = "";
     }
 
     public class JournalChangeLog
     {
-        public string Subject   { get; set; }
-        public Var    Var       { get; set; }
-        public string Value     { get; set; }
-        public string Date      { get; set; }
-        public string Sign      { get; set; }
+        public string subject { get; set; } = "";
+        public Var    var       { get; set; }
+        public string value     { get; set; } = "";
+        public string date      { get; set; } = "";
+        public string sign      { get; set; } = "";
     }
 }

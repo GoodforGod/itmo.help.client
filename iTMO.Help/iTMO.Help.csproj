@@ -103,12 +103,11 @@
     </Compile>
     <Compile Include="Model\De\Journal.cs" />
     <Compile Include="Model\De\JournalChangeLog.cs" />
-    <Compile Include="Model\MenuList.cs" />
+    <Compile Include="Model\AppModels.cs" />
     <Compile Include="Model\De\MessageDe.cs" />
     <Compile Include="Model\Isu\Schedule.cs" />
     <Compile Include="Model\Isu\ScheduleExam.cs" />
     <Compile Include="Model\ViewReady\ExamVR.cs" />
-    <Compile Include="Model\ViewReady\JournalVR.cs" />
     <Compile Include="Model\ViewReady\ScheduleVR.cs" />
     <Compile Include="View\BlankPage1.xaml.cs">
       <DependentUpon>BlankPage1.xaml</DependentUpon>

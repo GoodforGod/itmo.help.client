@@ -92,49 +92,41 @@ namespace iTMO.Help.Controller
         public static SerializeData<Journal> ToJournalView(string data)
         {
             SerializeData<Journal> serializedData = new SerializeData<Journal>();
-            Journal journal = null;
 
             try
             {
-                serializedData.Data = journal = JsonConvert.DeserializeObject<Journal>(data);
+                if((serializedData.Data = JsonConvert.DeserializeObject<Journal>(data)) == null 
+                    || serializedData.Data.years == null
+                    || serializedData.Data.years.Count == 0)
                 serializedData.IsValid = true;
             }
-            catch (JsonSerializationException ex)
-            {
-
-            }
+            catch (JsonSerializationException ex) { serializedData.Message = ex.Message; }
             return serializedData;
         }
 
-        public static SerializeData<JournalChangeLog> ToJournalChangeLogView(string data)
+        public static SerializeData<List<JournalChangeLog>> ToJournalChangeLogView(string data)
         {
-            SerializeData<JournalChangeLog> serializedData = new SerializeData<JournalChangeLog>();
-            JournalChangeLog journalChangeLog = null;
+            SerializeData<List<JournalChangeLog>> serializedData = new SerializeData<List<JournalChangeLog>>();
 
             try
             {
-                journalChangeLog = JsonConvert.DeserializeObject<JournalChangeLog>(data);
+                serializedData.Data = JsonConvert.DeserializeObject<List<JournalChangeLog>>(data);
+                serializedData.IsValid = true;
             }
-            catch (JsonSerializationException ex)
-            {
-
-            }
+            catch (JsonSerializationException ex) { serializedData.Message = ex.Message; }
             return serializedData;
         }
 
         public static SerializeData<MessageDe> ToMessageDeView(string data)
         {
             SerializeData<MessageDe> serializedData = new SerializeData<MessageDe>();
-            MessageDe messages = null;
 
             try
             {
-                messages = JsonConvert.DeserializeObject<MessageDe>(data);
+                if((serializedData.Data = JsonConvert.DeserializeObject<MessageDe>(data)) == null)
+                serializedData.IsValid = true;
             }
-            catch (JsonSerializationException ex)
-            {
-
-            }
+            catch (JsonSerializationException ex) { serializedData.Message = ex.Message; }
             return serializedData;
         }
     }

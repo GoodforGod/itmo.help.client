@@ -51,16 +51,16 @@ namespace iTMO.Help.Controller
                     DataBaseConnection.Update(_DUser = value);
             } }
 
-        public          List<ExamVR>      DExams           { get { return _DExams;     }        set { _DExams = value;         } }
-        public volatile List<ExamVR>     _DExams;
-        public          List<ScheduleVR>  DSchedule        { get { return _DSchedule;  }        set { _DSchedule = value;      } }
-        public volatile List<ScheduleVR> _DSchedule;
-        public          Journal          DJournal          { get { return _DJournal;   }        set { _DJournal = value;       } }
-        public volatile Journal         _DJournal;
-        public          MessageDe       DMessageDe         { get { return _DMessageDe; }        set { _DMessageDe = value;     } }
-        public volatile MessageDe      _DMessageDe;
-        public          JournalChangeLog DJournalChangeLog { get { return _DJournalChangeLog; } set { _DJournalChangeLog = value; } }
-        public volatile JournalChangeLog _DJournalChangeLog;
+        public          List<ExamVR>            DExams            { get { return _DExams;     }        set { _DExams = value;         } }
+        public volatile List<ExamVR>           _DExams; 
+        public          List<ScheduleVR>        DSchedule         { get { return _DSchedule;  }        set { _DSchedule = value;      } }
+        public volatile List<ScheduleVR>       _DSchedule;
+        public          Journal                 DJournal          { get { return _DJournal;   }        set { _DJournal = value;       } }
+        public volatile Journal                _DJournal;
+        public          MessageDe               DMessageDe        { get { return _DMessageDe; }        set { _DMessageDe = value;     } }
+        public volatile MessageDe              _DMessageDe;
+        public          List<JournalChangeLog>  DJournalChangeLog { get { return _DJournalChangeLog; } set { _DJournalChangeLog = value; } }
+        public volatile List<JournalChangeLog> _DJournalChangeLog;
 
         // DB part
         private static string       PathToBase = Path.Combine(ApplicationData.Current.LocalFolder.Path, "iTMO.db.sqlite");

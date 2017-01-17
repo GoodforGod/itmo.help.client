@@ -47,17 +47,15 @@ namespace iTMO.Help.View
         private void RestorePage()
         {
             if (DatabaseController.Me.DExams != null && DatabaseController.Me.DExams.Count != 0)
-            {
                 ExamList.ItemsSource = exams = DatabaseController.Me.DExams;
-                ExamRing.IsActive = false;
-            }
             if (DatabaseController.Me.DUser != null && DatabaseController.Me.DUser.GroupLastUsed != null)
                 SearchAutoSuggestBox.Text = DatabaseController.Me.DUser.GroupLastUsed;
         }
 
         private async void ProccessExamVR()
         {
-            if (string.IsNullOrEmpty(SearchAutoSuggestBox.Text) || string.IsNullOrWhiteSpace(SearchAutoSuggestBox.Text))
+            if (string.IsNullOrEmpty(SearchAutoSuggestBox.Text) 
+                || string.IsNullOrWhiteSpace(SearchAutoSuggestBox.Text))
                 return;
 
             Message.Text = "";
