@@ -25,7 +25,7 @@ namespace iTMO.Help.View
     /// </summary>
     public sealed partial class CustomHub : Page
     {
-        private ObservableCollection<JournalCustom> JournalCustom = new ObservableCollection<JournalCustom>();
+        private List<JournalCustom> JournalCustom = null;
 
         public CustomHub()
         {
@@ -34,9 +34,8 @@ namespace iTMO.Help.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            List<JournalCustom> jounals;
-            if ((jounals = DatabaseController.Me.GetCustomJournals()) != null)
-                JournalCustomList.ItemsSource = JournalCustom = new ObservableCollection<JournalCustom>(jounals);
+            if ((JournalCustom = DatabaseController.Me.GetCustomJournals()) != null)
+                JournalCustomList.ItemsSource = new ObservableCollection<JournalCustom>(JournalCustom);
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)

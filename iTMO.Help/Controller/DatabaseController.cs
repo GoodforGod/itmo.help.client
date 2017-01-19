@@ -4,6 +4,7 @@ using SQLite.Net;
 using SQLite.Net.Platform.WinRT;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Windows.Storage;
@@ -55,18 +56,23 @@ namespace iTMO.Help.Controller
                 DataBaseConnection.Update(_DUser = value);
             } }
 
-        public          List<JournalCustom>     DJournalCustom    { get { return _DJournalCustom; }    set { _DJournalCustom = value; } }
-        private volatile List<JournalCustom> _DJournalCustom = new List<JournalCustom>();
-        public          List<ExamVR>            DExams            { get { return _DExams;     }        set { _DExams = value;         } }
-        public volatile List<ExamVR>           _DExams; 
-        public          List<ScheduleVR>        DSchedule         { get { return _DSchedule;  }        set { _DSchedule = value;      } }
-        public volatile List<ScheduleVR>       _DSchedule;
-        public          Journal                 DJournal          { get { return _DJournal;   }        set { _DJournal = value;       } }
-        public volatile Journal                _DJournal;
-        public          MessageDe               DMessageDe        { get { return _DMessageDe; }        set { _DMessageDe = value;     } }
-        public volatile MessageDe              _DMessageDe;
+        public           List<JournalCustom>    DJournalCustom    { get { return _DJournalCustom; } set { _DJournalCustom = value; } }
+        private volatile List<JournalCustom>  _DJournalCustom = null;
+
+        public          List<ExamVR>           DExams            { get { return _DExams;     } set { _DExams = value;         } }
+        public volatile List<ExamVR>          _DExams = null;
+
+        public          List<ScheduleVR>       DSchedule         { get { return _DSchedule;  } set { _DSchedule = value;      } }
+        public volatile List<ScheduleVR>      _DSchedule = null;
+
+        public          Journal                DJournal          { get { return _DJournal;   } set { _DJournal = value;       } }
+        public volatile Journal               _DJournal = null;
+
+        public          MessageDe              DMessageDe        { get { return _DMessageDe; } set { _DMessageDe = value;     } }
+        public volatile MessageDe             _DMessageDe = null;
+
         public          List<JournalChangeLog>  DJournalChangeLog { get { return _DJournalChangeLog; } set { _DJournalChangeLog = value; } }
-        public volatile List<JournalChangeLog> _DJournalChangeLog;
+        public volatile List<JournalChangeLog> _DJournalChangeLog = null;
 
         // DB part
         private static string       PathToBase = Path.Combine(ApplicationData.Current.LocalFolder.Path, "iTMO.db.sqlite");

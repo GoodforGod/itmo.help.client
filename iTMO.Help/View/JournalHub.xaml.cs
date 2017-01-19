@@ -2,6 +2,7 @@
 using iTMO.Help.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,7 +18,7 @@ namespace iTMO.Help.View
     public sealed partial class JournalHub : Page
     {
         private Journal DJournal = null;
-        private List<JournalChangeLog> JournalChangeLog = null;
+        private List<JournalChangeLog> DJournalChangeLog = null;
 
         public JournalHub()
         {
@@ -26,26 +27,32 @@ namespace iTMO.Help.View
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            DatabaseController.Me.DJournal = DJournal;
-            DatabaseController.Me.DJournalChangeLog = JournalChangeLog;
+            if(DJournal != null)
+                DatabaseController.Me.DJournal = DJournal;
+            if(DJournalChangeLog != null)
+                DatabaseController.Me.DJournalChangeLog = DJournalChangeLog;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if ((DJournal = DatabaseController.Me.DJournal) != null)
+            try
             {
-                if (DJournal.years != null)
-                    GroupsBox.ItemsSource = DJournal.years;
+                if ((DJournal = DatabaseController.Me.DJournal) != null)
+                {
+                    if (DJournal.years != null)
+                        GroupsBox.ItemsSource = DJournal.years;
 
-                var selected = GroupsBox.SelectedIndex - 1;
-                if (selected < 0)
-                    selected = 0;
-                JournalList.ItemsSource = DJournal.years[selected].subjects;
+                    var selected = GroupsBox.SelectedIndex - 1;
+                    if (selected < 0)
+                        selected = 0;
+                    JournalList.ItemsSource = new ObservableCollection<Subject>(DJournal.years[selected].subjects);
+                }
+                if ((DJournalChangeLog = DatabaseController.Me.DJournalChangeLog) != null)
+                {
+                    JournalLogList.ItemsSource = DJournalChangeLog;
+                }
             }
-            if ((JournalChangeLog = DatabaseController.Me.DJournalChangeLog) != null)
-            {
-                JournalLogList.ItemsSource = JournalChangeLog;
-            }
+            catch(Exception ex) { }
         }
 
         private async void ProccessJournalVR()
@@ -81,7 +88,7 @@ namespace iTMO.Help.View
                     if (selectedGrp < 0)
                         selectedGrp = 0;
 
-                    JournalList.ItemsSource = dataVR.Data.years[selectedGrp].subjects;
+                    JournalList.ItemsSource = new ObservableCollection<Subject>(dataVR.Data.years[selectedGrp].subjects);
                 }
                 else JournalMessage.Text = dataVR.Message;
             }
@@ -119,11 +126,9 @@ namespace iTMO.Help.View
                     var dataVR = SerializeContoller.ToJournalChangeLogView(response.Data);
 
                     if (dataVR.IsValid)
-                    {
-                        JournalChangeLog = dataVR.Data;
-                        JournalLogList.ItemsSource = dataVR.Data;
-                    }
-                    else JournalMessage.Text = dataVR.Message;
+                        JournalLogList.ItemsSource = new ObservableCollection<Model.JournalChangeLog>(DJournalChangeLog = dataVR.Data);
+                    else
+                        JournalMessage.Text = dataVR.Message;
                 }
                 else JournalMessage.Text = response.Data;
             }
@@ -180,29 +185,45 @@ namespace iTMO.Help.View
 
         private void TermBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(DJournal != null && DJournal.years != null && DJournal.years.Count != 0)
+            try
             {
+                if (DJournal != null && DJournal.years != null && DJournal.years.Count != 0)
+                {
 
+                }
             }
+            catch(Exception ex) { }
         }
 
         private void GroupsBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (DJournal != null 
-                && DJournal.years != null 
-                && DJournal.years.Count != 0 
-                && DJournal.years.Count >= GroupsBox.SelectedIndex)
-                    JournalList.ItemsSource = DJournal.years[GroupsBox.SelectedIndex - 1];
+            try
+            {
+                if (DJournal != null
+                    && DJournal.years != null
+                    && DJournal.years.Count != 0
+                    && DJournal.years.Count >= GroupsBox.SelectedIndex)
+                    JournalList.ItemsSource = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex - 1].subjects);
+            }
+            catch(Exception ex) { }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ProccessJournalVR();
+            try
+            {
+                ProccessJournalVR();
+            }
+            catch(Exception ex) { }
         }
 
         private void SearchAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            ProccesJournalChangeLogVR();
+            try
+            {
+                ProccesJournalChangeLogVR();
+            }
+            catch(Exception ex) { }
         }
     }
 }

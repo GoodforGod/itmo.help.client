@@ -64,7 +64,9 @@
                         </ComboBox>
 
                         <Button x:Name="RefreshBtn" 
-                                Click="Button_Click" 
+                                Click="Button_Click"
+                                Width="auto"
+                                Height="auto"
                                 RelativePanel.AlignHorizontalCenterWithPanel="True">
                             <TextBlock Text="Refresh" Width="auto"/>
                         </Button>
@@ -76,8 +78,8 @@
                               ScrollViewer.VerticalScrollMode="Auto" 
                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                               RelativePanel.AlignHorizontalCenterWithPanel="True"
-                              RelativePanel.Below="Toppers"
-                              MaxWidth ="{Binding ActualWidth, ElementName=MainJournalPanel }">
+                              RelativePanel.Below="Toppers">
+                              <!--MaxWidth ="{Binding ActualWidth, ElementName=MainJournalPanel }"-->
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -118,8 +120,7 @@
                                                    Style="{StaticResource ListTextBlock}" 
                                                    Margin="5"
                                                    RelativePanel.AlignLeftWithPanel="True"
-                                                   RelativePanel.Below="Subject"
-                                                   />
+                                                   RelativePanel.Below="Subject" />
                                         <TextBlock x:Name="Term" 
                                                    Style="{StaticResource ListTextBlock}" 
                                                    Text="{x:Bind semester}" 

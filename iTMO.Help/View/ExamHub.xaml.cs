@@ -3,6 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using iTMO.Help.Controller;
 using iTMO.Help.Model.ViewReady;
+using System.Collections.ObjectModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -13,7 +14,7 @@ namespace iTMO.Help.View
     /// </summary>
     public sealed partial class ExamHub : Page
     {
-        List<ExamVR> exams = new List<ExamVR>();
+        List<ExamVR> exams = null;
 
         public ExamHub()
         {
@@ -60,7 +61,7 @@ namespace iTMO.Help.View
                     usr.GroupLastUsed = SearchAutoSuggestBox.Text;
                     DatabaseController.Me.DUser = usr;
 
-                    ExamList.ItemsSource = exams = dataVR.Data;
+                    ExamList.ItemsSource = new ObservableCollection<ExamVR>(exams = dataVR.Data);
                 }
                 else Message.Text = dataVR.Message;
             }
