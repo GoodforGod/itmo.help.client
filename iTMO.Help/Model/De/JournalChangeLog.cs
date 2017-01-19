@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace iTMO.Help.Model
+﻿namespace iTMO.Help.Model
 {
     public class Var
     {

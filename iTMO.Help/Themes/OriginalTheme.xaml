@@ -1,0 +1,42 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:iTMO.Help.Themes">
+
+    <SolidColorBrush x:Key="LightBlue"      Color="#AECDFC"/>
+    <SolidColorBrush x:Key="SlightlyBlue"   Color="#7CAEF9"/>
+    <SolidColorBrush x:Key="MediumBlue"     Color="#306CCC"/>
+    <SolidColorBrush x:Key="DeepBlue"       Color="#1E51A4"/>
+    <SolidColorBrush x:Key="LightWhite"     Color="White"/>
+    <SolidColorBrush x:Key="SlightlyWhite"  Color="#E0E0E0"/>
+    <SolidColorBrush x:Key="MediumWhite"    Color="#CCCCCC"/>
+    <SolidColorBrush x:Key="Gray"           Color="#DDDDDD"/>
+    <SolidColorBrush x:Key="LightPink"      Color="#FFBFCE"/>
+    <SolidColorBrush x:Key="SlightlyPink"   Color="#FF9BB4"/>
+    <SolidColorBrush x:Key="MediumPink"     Color="#FF7593"/>
+    <SolidColorBrush x:Key="DeepPink"       Color="#EC1946"/>
+    
+    
+    <!-- Colors -->
+        <!--
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+            <x:String x:Key="LightBlue">    &#xE071;</x:String>
+            <x:String x:Key="MediumBlue">   &#xE0BA;</x:String>
+            <x:String x:Key="DeepBlue">     &#xE0BA;</x:String>
+            <x:String x:Key="LightWhite">   &#xE0BA;</x:String>
+            <x:String x:Key="MediumWhite">  &#xE0BA;</x:String>
+            <x:String x:Key="Gray">         &#xE0BA;</x:String>
+            <x:String x:Key="LightPink">    &#xE0BA;</x:String>
+            <x:String x:Key="MediumPink">   &#xE0BA;</x:String>
+            <x:String x:Key="DeepPink">     &#xE0BA;</x:String>
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="Dark">
+        </ResourceDictionary>
+
+     
+    </ResourceDictionary.ThemeDictionaries>
+        -->
+
+</ResourceDictionary>

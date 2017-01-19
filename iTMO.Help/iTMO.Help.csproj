@@ -109,8 +109,8 @@
     <Compile Include="Model\Isu\ScheduleExam.cs" />
     <Compile Include="Model\ViewReady\ExamVR.cs" />
     <Compile Include="Model\ViewReady\ScheduleVR.cs" />
-    <Compile Include="View\BlankPage1.xaml.cs">
-      <DependentUpon>BlankPage1.xaml</DependentUpon>
+    <Compile Include="View\CustomHub.xaml.cs">
+      <DependentUpon>CustomHub.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ExamHub.xaml.cs">
       <DependentUpon>ExamHub.xaml</DependentUpon>
@@ -129,9 +129,6 @@
     </Compile>
     <Compile Include="View\ScheduleHub.xaml.cs">
       <DependentUpon>ScheduleHub.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\SettingsHub.xaml.cs">
-      <DependentUpon>SettingsHub.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +163,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\BlankPage1.xaml">
+    <Page Include="Themes\StyleBasicResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Themes\OriginalTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="View\CustomHub.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -178,7 +185,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\StyleResources.xaml">
+    <Page Include="Themes\StyleComplexResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -192,10 +199,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ScheduleHub.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\SettingsHub.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

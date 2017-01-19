@@ -2,18 +2,9 @@
 using iTMO.Help.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -41,14 +32,9 @@ namespace iTMO.Help.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            RestorePage();
-        }
-
-        private void RestorePage()
-        {
             if ((DJournal = DatabaseController.Me.DJournal) != null)
             {
-                if(DJournal.years != null)
+                if (DJournal.years != null)
                     GroupsBox.ItemsSource = DJournal.years;
 
                 var selected = GroupsBox.SelectedIndex - 1;
@@ -56,7 +42,7 @@ namespace iTMO.Help.View
                     selected = 0;
                 JournalList.ItemsSource = DJournal.years[selected].subjects;
             }
-            if((JournalChangeLog = DatabaseController.Me.DJournalChangeLog) != null)
+            if ((JournalChangeLog = DatabaseController.Me.DJournalChangeLog) != null)
             {
                 JournalLogList.ItemsSource = JournalChangeLog;
             }
@@ -82,6 +68,8 @@ namespace iTMO.Help.View
                                                                                 user_data.Password);
             if (response.isValid)
             {
+                RememberUserData(user_data);
+
                 var dataVR = SerializeContoller.ToJournalView(response.Data);
 
                 if (dataVR.IsValid)
@@ -99,7 +87,7 @@ namespace iTMO.Help.View
             }
             else JournalMessage.Text = response.Data;
 
-            JournalRing.IsActive = false;
+            RememberMeBox.IsChecked = JournalRing.IsActive = false;
         }
 
         private async void ProccesJournalChangeLogVR()
@@ -126,6 +114,8 @@ namespace iTMO.Help.View
                                                                                     user_data.Password, days.ToString());
                 if (response.isValid)
                 {
+                    RememberUserData(user_data);
+
                     var dataVR = SerializeContoller.ToJournalChangeLogView(response.Data);
 
                     if (dataVR.IsValid)
@@ -139,15 +129,26 @@ namespace iTMO.Help.View
             }
             else JournalMessage.Text = "Invalid Days Input";
 
-            JournalRing.IsActive = false;
+            RememberMeBox.IsChecked = JournalRing.IsActive = false;
+        }
+
+        private void RememberUserData(CheckResponse response)
+        {
+            if (response.IsRemember)
+            {
+                var usr = DatabaseController.Me.DUser;
+                usr.Login = response.Login;
+                usr.Password = response.Password;
+                DatabaseController.Me.DUser = usr;
+            }
         }
 
         private async Task<CheckResponse> CollectUserData()
         {
             CheckResponse response = new CheckResponse();
 
-            if ((string.IsNullOrEmpty(response.Login = DatabaseController.Me.DUser.Login)
-              || string.IsNullOrEmpty(response.Password = DatabaseController.Me.DUser.Password)))
+            if ((string.IsNullOrWhiteSpace(response.Login = DatabaseController.Me.DUser.Login)
+              || string.IsNullOrWhiteSpace(response.Password = DatabaseController.Me.DUser.Password)))
             {
                 if (response.Login != null)
                     Login.Text = response.Login;
@@ -157,11 +158,15 @@ namespace iTMO.Help.View
                 switch (await JournalFormDialog.ShowAsync())
                 {
                     case ContentDialogResult.Primary:
-                        if (string.IsNullOrEmpty(response.Login = Login.Text)
+                        if (string.IsNullOrWhiteSpace(response.Login = Login.Text)
                             || string.IsNullOrWhiteSpace(response.Password = Password.Password))
                             response.Message = "Fill Login And Password Correctly";
                         else
+                        {
+                            if ((bool)RememberMeBox.IsChecked)
+                                response.IsRemember = true;
                             response.IsValid = true;
+                        }
                         break;
                     default:
                         break;
@@ -193,15 +198,6 @@ namespace iTMO.Help.View
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ProccessJournalVR();
-        }
-
-        private void JournalFormDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-        }
-
-        private void JournalFormDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-
         }
 
         private void SearchAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

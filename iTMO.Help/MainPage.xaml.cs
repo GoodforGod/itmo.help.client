@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI;
+﻿using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using iTMO.Help.View;
 using iTMO.Help.Model;
 using iTMO.Help.Controller;
 
@@ -27,11 +15,12 @@ namespace iTMO.Help
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private User User = null;
+
         public MainPage()
         {
             SetApplicationTopColorSchema();
             this.InitializeComponent();
-            CreateInitialeUser();
         }
 
         private void SetApplicationTopColorSchema()
@@ -58,12 +47,6 @@ namespace iTMO.Help
             tb.InactiveForegroundColor      = blue;
         }
 
-        private void CreateInitialeUser()
-        {
-            if (DatabaseController.Me.DUser == null)
-                DatabaseController.Me.DUser = new User { Id = 1 };
-        }
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             MenuListOpts.ItemsSource = MenuOptions;
@@ -78,8 +61,85 @@ namespace iTMO.Help
         {
             var list = sender as ListView;
             var item = list.SelectedItem as MenuItem;
-
             FrameContent.Navigate(item.Page);
+        }
+
+        private void IsNotified_Click(object sender, RoutedEventArgs e)
+        {
+            User.isNotified = (bool)IsNotified.IsChecked;
+            DatabaseController.Me.DUser = User;
+        }
+
+        private void AutoTerm_Click(object sender, RoutedEventArgs e)
+        {
+            User.isAutoTermSelect = (bool)AutoTerm.IsChecked;
+            DatabaseController.Me.DUser = User;
+        }
+
+        private void AutoGroup_Click(object sender, RoutedEventArgs e)
+        {
+            User.isAutoGroupSelect = (bool)AutoGroup.IsChecked;
+            DatabaseController.Me.DUser = User;
+        }
+
+        private void AutoLogin_Click(object sender, RoutedEventArgs e)
+        {
+            User.isAutoLogin = (bool)AutoLogin.IsChecked;
+            DatabaseController.Me.DUser = User;
+        }
+
+        private void Password_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (IsInputValid(Group.Text))
+            {
+                User.Password = Password.Password;
+                DatabaseController.Me.DUser = User;
+            }
+        }
+
+        private void Login_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IsInputValid(Group.Text))
+            {
+                User.Login = Login.Text;
+                DatabaseController.Me.DUser = User;
+            }
+        }
+
+        private void Group_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IsInputValid(Group.Text))
+            {
+                User.Group = Group.Text;
+                DatabaseController.Me.DUser = User;
+            }
+        }
+
+        private bool IsInputValid(string text)
+        {
+            return !(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text));
+        }
+
+        private void SettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (SettingsView.IsPaneOpen = !SettingsView.IsPaneOpen && (User = DatabaseController.Me.DUser) != null)
+            {
+                IsNotified.IsChecked    = User.isNotified;
+                AutoGroup.IsChecked     = User.isAutoGroupSelect;
+                AutoLogin.IsChecked     = User.isAutoLogin;
+                AutoTerm.IsChecked      = User.isAutoTermSelect;
+                if (IsInputValid(User.Password))
+                    Password.Password   = User.Password;
+                if (IsInputValid(User.Login))
+                    Login.Text          = User.Login;
+                if (IsInputValid(User.Group))
+                    Group.Text          = User.Group;
+            }
+        }
+
+        private void SettingsView_PaneClosed(SplitView sender, object args)
+        {
+            DatabaseController.Me.DUser = User;
         }
     }
 }

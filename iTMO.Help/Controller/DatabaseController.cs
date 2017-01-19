@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace iTMO.Help.Controller
@@ -30,9 +28,16 @@ namespace iTMO.Help.Controller
                     return _Me;
             } }
 
-        private DatabaseController() { DataBaseConnection.CreateTable<User>(); }
+        private DatabaseController()
+        {
+            DataBaseConnection.CreateTable<User>();
+            DataBaseConnection.CreateTable<JournalCustom>();
 
-        // Store Part
+            if (DUser == null)
+                DataBaseConnection.InsertOrReplace(new User { Id = 1 });
+        }
+
+        // Cache/Store Part
         private volatile User _DUser;
         public           User  DUser
         {
@@ -40,17 +45,18 @@ namespace iTMO.Help.Controller
                 if (_DUser != null)
                     return _DUser;
 
-                return _DUser = (from p in DataBaseConnection.Table<User>()
-                                where p.Id == TargetId
+                return _DUser = DataBaseConnection.Table<User>().FirstOrDefault();
+                    /*(from p in DataBaseConnection.Table<User>()
+                                where p.Id == UserTargetId
                                 select p).FirstOrDefault();
+                                */
             }
             set {
-                if (DUser == null)
-                    DataBaseConnection.InsertOrReplace(_DUser = value);
-                else
-                    DataBaseConnection.Update(_DUser = value);
+                DataBaseConnection.Update(_DUser = value);
             } }
 
+        public          List<JournalCustom>     DJournalCustom    { get { return _DJournalCustom; }    set { _DJournalCustom = value; } }
+        private volatile List<JournalCustom> _DJournalCustom = new List<JournalCustom>();
         public          List<ExamVR>            DExams            { get { return _DExams;     }        set { _DExams = value;         } }
         public volatile List<ExamVR>           _DExams; 
         public          List<ScheduleVR>        DSchedule         { get { return _DSchedule;  }        set { _DSchedule = value;      } }
@@ -65,6 +71,20 @@ namespace iTMO.Help.Controller
         // DB part
         private static string       PathToBase = Path.Combine(ApplicationData.Current.LocalFolder.Path, "iTMO.db.sqlite");
         private SQLiteConnection    DataBaseConnection { get { return new SQLiteConnection(new SQLitePlatformWinRT(), PathToBase); } }
-        private const int           TargetId = 1;
+        private const int           UserTargetId = 1;
+
+        public List<JournalCustom> GetCustomJournals()
+        {
+            if (DJournalCustom != null && DJournalCustom.Count != 0)
+                return DJournalCustom;
+            try                             { return DJournalCustom = DataBaseConnection.Table<JournalCustom>().ToList(); }
+            catch(ArgumentNullException ex) { return new List<JournalCustom>(); }
+        }
+        
+        public void SaveCustomJournal(JournalCustom newJournal)
+        {
+            _DJournalCustom.Add(newJournal);
+            DataBaseConnection.InsertOrReplace(newJournal);
+        }
     }
 }

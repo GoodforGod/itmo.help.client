@@ -10,7 +10,8 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Themes/StyleResources.xaml"/>
+                <ResourceDictionary Source="/Themes/StyleComplexResources.xaml"/>
+                <ResourceDictionary Source="/Themes/StyleBasicResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="TextBlock"       BasedOn="{StaticResource RegularTextBlock}"/>
             <Style TargetType="Pivot"           BasedOn="{StaticResource PivotCustom}"/>
@@ -18,7 +19,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Background="#1E51A4">
+    <Grid Background="{StaticResource DeepBlue}">
         <Pivot>
             <PivotItem Header="All" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
                 <Grid>

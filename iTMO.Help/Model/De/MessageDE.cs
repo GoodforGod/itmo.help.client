@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace iTMO.Help.Model
+﻿namespace iTMO.Help.Model
 {
     class MessageDe
     {
