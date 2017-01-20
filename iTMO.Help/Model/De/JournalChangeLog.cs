@@ -10,8 +10,8 @@
 
     public class JournalChangeLog
     {
-        public string subject { get; set; } = "";
-        public Var    var       { get; set; }
+        public string subject   { get; set; } = "";
+        public Var    var       { get; set; } = new Var();
         public string value     { get; set; } = "";
         public string date      { get; set; } = "";
         public string sign      { get; set; } = "";

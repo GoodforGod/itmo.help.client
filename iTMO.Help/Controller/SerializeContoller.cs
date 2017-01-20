@@ -10,7 +10,7 @@ namespace iTMO.Help.Controller
     {
         public TValue   Data    { get; set; }
         public bool     IsValid { get; set; } = false;
-        public string   Message { get; set; }
+        public string   Message { get; set; } = "";
     }
 
     class SerializeContoller
@@ -91,16 +91,34 @@ namespace iTMO.Help.Controller
 
         public static SerializeData<Journal> ToJournalView(string data)
         {
-            SerializeData<Journal> serializedData = new SerializeData<Journal>();
+            SerializeData<Journal> serializedData = new SerializeData<Journal>() { IsValid = true };
 
             try
             {
-                if((serializedData.Data = JsonConvert.DeserializeObject<Journal>(data)) == null 
+                if ((serializedData.Data = JsonConvert.DeserializeObject<Journal>(data)) == null
                     || serializedData.Data.years == null
                     || serializedData.Data.years.Count == 0)
-                serializedData.IsValid = true;
+                {
+                    serializedData.Message = "Empty";
+                    serializedData.IsValid = false;
+                }
+                else
+                {
+                    // Четные и нечетные семестры
+                    foreach(Year year in serializedData.Data.years)
+                    {
+                        foreach(Subject subject in year.subjects)
+                        {
+                            if (subject.marks == null || subject.marks.Count == 0)
+                                subject.marks = new List<Mark>() { new Mark() };
+                            if (subject.points == null || subject.points.Count == 0)
+                                subject.points = new List<Points>() { new Points() };
+                        }
+                    }
+                }
             }
-            catch (JsonSerializationException ex) { serializedData.Message = ex.Message; }
+            catch (JsonSerializationException ex)   { serializedData.Message = ex.Message; }
+            catch (Exception ex)                    { serializedData.Message = "Unexpected Server Response"; }
             return serializedData;
         }
 

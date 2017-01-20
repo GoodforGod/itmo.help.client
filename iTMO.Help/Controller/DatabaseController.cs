@@ -56,6 +56,12 @@ namespace iTMO.Help.Controller
                 DataBaseConnection.Update(_DUser = value);
             } }
 
+        public int              TermLastSelectedIndex           { get { return _TermLastSelectedIndex; } set { _TermLastSelectedIndex = value; } }
+        private volatile int   _TermLastSelectedIndex = -1;
+
+        public int              GroupLastSelectedIndex          { get { return _GroupLastSelectedIndex; } set { _GroupLastSelectedIndex = value; } }
+        private volatile int   _GroupLastSelectedIndex = -1;
+
         public           List<JournalCustom>    DJournalCustom    { get { return _DJournalCustom; } set { _DJournalCustom = value; } }
         private volatile List<JournalCustom>  _DJournalCustom = null;
 

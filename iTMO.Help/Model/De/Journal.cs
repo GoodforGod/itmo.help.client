@@ -31,7 +31,7 @@ namespace iTMO.Help.Model
     {
         public string           group     { get; set; } = "";
         public string           studyyear { get; set; } = "";
-        public List<Subject>    subjects  { get; set; }
+        public List<Subject>    subjects  { get; set; } 
     }
 
     public class Journal 

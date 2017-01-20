@@ -31,28 +31,33 @@ namespace iTMO.Help.View
                 DatabaseController.Me.DJournal = DJournal;
             if(DJournalChangeLog != null)
                 DatabaseController.Me.DJournalChangeLog = DJournalChangeLog;
+            DatabaseController.Me.GroupLastSelectedIndex = GroupsBox.SelectedIndex;
+            DatabaseController.Me.TermLastSelectedIndex = TermBox.SelectedIndex;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             try
             {
-                if ((DJournal = DatabaseController.Me.DJournal) != null)
-                {
-                    if (DJournal.years != null)
-                        GroupsBox.ItemsSource = DJournal.years;
+                GroupsBox.ItemsSource = DJournal.years;
 
-                    var selected = GroupsBox.SelectedIndex - 1;
-                    if (selected < 0)
-                        selected = 0;
-                    JournalList.ItemsSource = new ObservableCollection<Subject>(DJournal.years[selected].subjects);
-                }
+                var selectedGroup = DatabaseController.Me.GroupLastSelectedIndex;
+                if (selectedGroup == -1)
+                    selectedGroup = GroupsBox.Items.Count - 1;
+                GroupsBox.SelectedIndex = selectedGroup;
+
+                var selectedTerm = DatabaseController.Me.TermLastSelectedIndex;
+                if (selectedTerm == -1)
+                    selectedTerm = 0;
+                TermBox.SelectedIndex = selectedTerm;
+
+                if ((DJournal = DatabaseController.Me.DJournal) != null && IsJournalValid())
+                    JournalFillStrategy();
+
                 if ((DJournalChangeLog = DatabaseController.Me.DJournalChangeLog) != null)
-                {
                     JournalLogList.ItemsSource = DJournalChangeLog;
-                }
             }
-            catch(Exception ex) { }
+            catch (Exception ex) { }
         }
 
         private async void ProccessJournalVR()
@@ -83,12 +88,8 @@ namespace iTMO.Help.View
                 {
                     DJournal = dataVR.Data;
                     GroupsBox.ItemsSource = DJournal.years;
-
-                    var selectedGrp = GroupsBox.SelectedIndex - 1;
-                    if (selectedGrp < 0)
-                        selectedGrp = 0;
-
-                    JournalList.ItemsSource = new ObservableCollection<Subject>(dataVR.Data.years[selectedGrp].subjects);
+                    GroupsBox.SelectedIndex = GroupsBox.Items.Count - 1;
+                    //JournalList.ItemsSource = new ObservableCollection<Subject>(dataVR.Data.years[selectedGrp].subjects);
                 }
                 else JournalMessage.Text = dataVR.Message;
             }
@@ -187,10 +188,8 @@ namespace iTMO.Help.View
         {
             try
             {
-                if (DJournal != null && DJournal.years != null && DJournal.years.Count != 0)
-                {
-
-                }
+                if (IsJournalValid())
+                    JournalFillStrategy();
             }
             catch(Exception ex) { }
         }
@@ -199,30 +198,49 @@ namespace iTMO.Help.View
         {
             try
             {
-                if (DJournal != null
-                    && DJournal.years != null
-                    && DJournal.years.Count != 0
-                    && DJournal.years.Count >= GroupsBox.SelectedIndex)
-                    JournalList.ItemsSource = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex - 1].subjects);
+                if (IsJournalValid() && DJournal.years.Count >= GroupsBox.SelectedIndex)
+                    JournalFillStrategy();
             }
             catch(Exception ex) { }
         }
 
+        private bool IsJournalValid()
+        {
+            return DJournal != null
+                    && DJournal.years != null
+                    && DJournal.years.Count != 0;
+        }
+
+        private void JournalFillStrategy()
+        {
+            switch(TermBox.SelectedIndex)
+            {
+                case 1: JournalList.ItemsSource 
+                        = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex]
+                            .subjects.GetRange(0, DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2 - 1));
+                    break;
+                case 2: JournalList.ItemsSource 
+                        = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex]
+                            .subjects.GetRange(DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2, 
+                                DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2));
+                    break;
+                case 0:
+                default: JournalList.ItemsSource 
+                        = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex].subjects);
+                    break;
+                  
+            }
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                ProccessJournalVR();
-            }
+            try { ProccessJournalVR(); }
             catch(Exception ex) { }
         }
 
         private void SearchAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            try
-            {
-                ProccesJournalChangeLogVR();
-            }
+            try { ProccesJournalChangeLogVR(); }
             catch(Exception ex) { }
         }
     }
