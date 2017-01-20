@@ -53,7 +53,7 @@ namespace iTMO.Help.View
 
             if (response.isValid)
             {
-                var dataVR = SerializeContoller.ToExamViewReady(response.Data);
+                var dataVR = SerializeContoller.ToExamView(response.Data);
 
                 if (dataVR.IsValid)
                 {

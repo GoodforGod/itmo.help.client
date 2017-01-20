@@ -77,8 +77,8 @@ namespace iTMO.Help.Controller
         public          MessageDe              DMessageDe        { get { return _DMessageDe; } set { _DMessageDe = value;     } }
         public volatile MessageDe             _DMessageDe = null;
 
-        public          List<JournalChangeLog>  DJournalChangeLog { get { return _DJournalChangeLog; } set { _DJournalChangeLog = value; } }
-        public volatile List<JournalChangeLog> _DJournalChangeLog = null;
+        public ObservableCollection<JournalChangeLog>  DJournalChangeLog { get { return _DJournalChangeLog; } set { _DJournalChangeLog = value; } }
+        public volatile ObservableCollection<JournalChangeLog> _DJournalChangeLog = null;
 
         // DB part
         private static string       PathToBase = Path.Combine(ApplicationData.Current.LocalFolder.Path, "iTMO.db.sqlite");

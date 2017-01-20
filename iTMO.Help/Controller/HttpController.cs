@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net;
+using System.Collections.Generic;
 
 namespace iTMO.Help.Controller
 {
@@ -35,6 +36,7 @@ namespace iTMO.Help.Controller
         private static HttpClient httpClient = new HttpClient();
 
         private static bool isAuthiticated = false;
+        private static List<string> SessionCookie = null;
 
         private static HttpRequestMessage BuildRequest(RequestTypes type, params string[] opts)
         {
@@ -76,8 +78,21 @@ namespace iTMO.Help.Controller
             request.Headers.Add("User-Agent", "Mozilla/5.0");
             request.Headers.Add("Connection", "keep-alive");
 
+            switch(type)
+            {
+                case RequestTypes.Journal:
+                case RequestTypes.JournalChangeLog:
+                case RequestTypes.MessagesFromDe:
+                   if (isAuthiticated && SessionCookie != null)
+                       request.Headers.Add("Cookie", SessionCookie[1]);
+                    break;
+                default: break;
+            }
+
             return request;
         }
+
+        // SAVE COOKIE FOR SESSION
 
         private static async Task<DataResponse<HttpStatusCode>> AuthOnDe(params string[] opts)
         {
@@ -88,8 +103,12 @@ namespace iTMO.Help.Controller
                 try
                 {
                     var response = await httpClient.SendAsync(BuildRequest(RequestTypes.AuthDe, opts));
-                    authResult.Data = response.StatusCode;
-                    isAuthiticated = true;
+                    if ((authResult.Data = response.StatusCode) == HttpStatusCode.OK)
+                    {
+                        isAuthiticated = true;
+                        SessionCookie = new List<string>(response.Headers.GetValues("Set-Cookie"));
+                    }
+                    else isAuthiticated = false;
                 }
                 catch (HttpRequestException ex) { authResult.Data = HttpStatusCode.RequestTimeout; }
                 catch (Exception ex)            { authResult.Data = HttpStatusCode.ExpectationFailed; }
@@ -115,13 +134,13 @@ namespace iTMO.Help.Controller
             {
                 switch (response.StatusCode)
                 {
-                    case HttpStatusCode.OK: isValid = true; break;
+                    case HttpStatusCode.OK:             isValid = true; break;
                     case HttpStatusCode.NotFound:       result = "Resource not found, ops... [ 404 ]"; break;
                     case HttpStatusCode.NotAcceptable:  result = "Think that schedule is unavaliable for now... Or check the group may be?"; break;
                     case HttpStatusCode.BadRequest:     result = "Server got some unexpected error...  [ ITMO : Students] | [ 0 : 1 ]"; break;
                     case HttpStatusCode.Forbidden:      result = "Think that we are outdated... Contact Developers or check ITMO site"; break;
-                    case HttpStatusCode.NoContent:      result = "Invalid Login/Password"; break;
-                    default:                            result = "Somethink extraodinary happened... Contact developer"; break;
+                    case HttpStatusCode.NoContent:      result = "Invalid Login/Password";      isAuthiticated = false;     break;
+                    default:                            result = "Somethink extraodinary happened... Contact developer";    break;
                 }
             }
             return new DataResponse<string>(result, isValid);
@@ -129,8 +148,6 @@ namespace iTMO.Help.Controller
 
         public static async Task<DataResponse<string>> RetrieveData(RequestTypes type, params string[] opts)
         {
-            DataResponse<string> result = null;
-
             switch (type)
             {
                 case RequestTypes.Journal:
@@ -139,23 +156,18 @@ namespace iTMO.Help.Controller
                     if (!isAuthiticated)
                     {
                         var authResult = await AuthOnDe(opts);
-                        switch (authResult.Data)
+
+                        if (authResult.Data != HttpStatusCode.OK)
                         {
-                            case HttpStatusCode.OK: break;
-                            case HttpStatusCode.ExpectationFailed:
-                            default:
-                                return result = new DataResponse<string>(authResult.Data.ToString(), false);
+                            isAuthiticated = false;
+                            return new DataResponse<string>(authResult.Data.ToString(), false);
                         }
                     }
-                    result = await ProccessRequest(type, opts);
-                    break;
+                    return await ProccessRequest(type, opts);
 
                 default:
-                    result = await ProccessRequest(type, opts);
-                    break;
+                    return await ProccessRequest(type, opts);
             }
-
-            return result;
         }
     }
 }

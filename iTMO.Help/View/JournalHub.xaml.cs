@@ -18,7 +18,7 @@ namespace iTMO.Help.View
     public sealed partial class JournalHub : Page
     {
         private Journal DJournal = null;
-        private List<JournalChangeLog> DJournalChangeLog = null;
+        private ObservableCollection<JournalChangeLog> DJournalChangeLog = new ObservableCollection<JournalChangeLog>();
 
         public JournalHub()
         {
@@ -63,7 +63,6 @@ namespace iTMO.Help.View
         private async void ProccessJournalVR()
         {
             JournalMessage.Text = "";
-            JournalList.Items.Clear();
 
             var user_data = await CollectUserData();
 
@@ -101,7 +100,7 @@ namespace iTMO.Help.View
         private async void ProccesJournalChangeLogVR()
         {
             JournalMessage.Text = "";
-            JournalLogList.Items.Clear();
+            DJournalChangeLog.Clear();
 
             var user_data = await CollectUserData();
 
@@ -127,7 +126,7 @@ namespace iTMO.Help.View
                     var dataVR = SerializeContoller.ToJournalChangeLogView(response.Data);
 
                     if (dataVR.IsValid)
-                        JournalLogList.ItemsSource = new ObservableCollection<Model.JournalChangeLog>(DJournalChangeLog = dataVR.Data);
+                        JournalLogList.ItemsSource = DJournalChangeLog = new ObservableCollection<JournalChangeLog>(dataVR.Data);
                     else
                         JournalMessage.Text = dataVR.Message;
                 }
@@ -222,9 +221,8 @@ namespace iTMO.Help.View
                 case 2: JournalList.ItemsSource 
                         = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex]
                             .subjects.GetRange(DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2, 
-                                DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2));
+                                DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2 - 1));
                     break;
-                case 0:
                 default: JournalList.ItemsSource 
                         = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex].subjects);
                     break;

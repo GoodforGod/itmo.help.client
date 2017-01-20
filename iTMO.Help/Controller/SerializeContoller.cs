@@ -15,7 +15,7 @@ namespace iTMO.Help.Controller
 
     class SerializeContoller
     {
-        public static SerializeData<List<ExamVR>> ToExamViewReady(string data)
+        public static SerializeData<List<ExamVR>> ToExamView(string data)
         {
             SerializeData<List<ExamVR>> serializedData = new SerializeData<List<ExamVR>>();
             ScheduleExam exams      = null;
@@ -67,7 +67,7 @@ namespace iTMO.Help.Controller
             return serializedData;
         }
 
-        public static SerializeData<List<ScheduleVR>> ToScheduleViewReady(string data)
+        public static SerializeData<List<ScheduleVR>> ToScheduleView(string data)
         {
             SerializeData<List<ScheduleVR>> serializedData = new SerializeData<List<ScheduleVR>>();
             Schedule            schedule        = null;
@@ -104,16 +104,30 @@ namespace iTMO.Help.Controller
                 }
                 else
                 {
-                    // Четные и нечетные семестры
                     foreach(Year year in serializedData.Data.years)
                     {
-                        foreach(Subject subject in year.subjects)
+                        var evenSem = new List<Subject>();
+                        var oddSem = new List<Subject>();
+
+                        foreach (Subject subject in year.subjects)
                         {
                             if (subject.marks == null || subject.marks.Count == 0)
                                 subject.marks = new List<Mark>() { new Mark() };
                             if (subject.points == null || subject.points.Count == 0)
                                 subject.points = new List<Points>() { new Points() };
+
+                            // Sort by even & odd semesters, cause API doesnt garantie even the order of the subjects...
+                            var semCheck = 0;
+                            int.TryParse(subject.semester, out semCheck);
+
+                            if(semCheck % 2 == 0)
+                                evenSem.Add(subject);
+                            else
+                                oddSem.Add(subject);
                         }
+                        year.subjects.Clear();
+                        year.subjects.AddRange(oddSem);
+                        year.subjects.AddRange(evenSem);
                     }
                 }
             }
