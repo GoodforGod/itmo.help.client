@@ -92,8 +92,6 @@ namespace iTMO.Help.Controller
             return request;
         }
 
-        // SAVE COOKIE FOR SESSION
-
         private static async Task<DataResponse<HttpStatusCode>> AuthOnDe(params string[] opts)
         {
             DataResponse<HttpStatusCode> authResult = new DataResponse<HttpStatusCode>(HttpStatusCode.Unauthorized, false);

@@ -33,16 +33,20 @@ namespace iTMO.Help
             Color white     = Colors.White;
             Color grey      = Color.FromArgb(0xff, 0xd6, 0xd6, 0xd6);
 
+            tb.ForegroundColor              = blue;
             tb.BackgroundColor              = white;
             tb.ButtonBackgroundColor        = white;
             tb.ButtonForegroundColor        = red;
+
             tb.ButtonHoverBackgroundColor   = grey;
             tb.ButtonHoverForegroundColor   = blue;
-            tb.ForegroundColor              = blue;
 
             tb.ButtonPressedBackgroundColor = lightBlue;
             tb.ButtonHoverBackgroundColor   = whiteBlue;
+
             tb.ButtonInactiveForegroundColor = red;
+            tb.ButtonInactiveBackgroundColor = grey;
+
             tb.InactiveBackgroundColor      = grey;
             tb.InactiveForegroundColor      = blue;
         }

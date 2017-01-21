@@ -24,39 +24,39 @@
             <PivotItem Header="DE" HorizontalAlignment="Center">
                 <Grid>
                     <StackPanel>
-                        <AutoSuggestBox Name="SearchAutoSuggestBox" 
+                        <AutoSuggestBox Name="DeSearch" 
                                 PlaceholderText="Days"
                                 Width="200"
                                 QueryIcon="Find"
                                 Margin="5" 
                                 Style="{StaticResource ExamSearch}"
-                                QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted">
-                        </AutoSuggestBox>
+                                QuerySubmitted="DeSearch_QuerySubmitted"/>
                         <TextBlock Text="Messages From DE"/>
                     </StackPanel>
-                    <ProgressRing x:Name="DeRing"
-                                  IsActive="True"
-                                  Margin="0,-50,0,0"
-                                  Width="50"
-                                  Height="50"
-                                  VerticalAlignment="Center"
-                                  Foreground="White"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="ISU" HorizontalAlignment="Center">
                 <Grid>
                     <StackPanel>
-                        <TextBlock Text="Messages from ISU"/>
+                        <AutoSuggestBox Name="IsuSearch" 
+                                PlaceholderText="Days"
+                                Width="200"
+                                QueryIcon="Find"
+                                Margin="5" 
+                                Style="{StaticResource ExamSearch}"
+                                QuerySubmitted="IsuSearch_QuerySubmitted"/>
                     </StackPanel>
-                    <ProgressRing x:Name="IsuRing"
-                                  IsActive="True"
+                </Grid>
+            </PivotItem>
+        </Pivot>
+
+        <ProgressRing x:Name="ProcessRing"
+                                  IsActive="False"
                                   Margin="0,-50,0,0"
                                   Width="50"
                                   Height="50"
                                   VerticalAlignment="Center"
                                   Foreground="White"/>
-                </Grid>
-            </PivotItem>
-        </Pivot>
+
     </Grid>
 </Page>

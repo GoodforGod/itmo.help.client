@@ -21,9 +21,8 @@
     </Page.Resources>
 
     <Grid Background="{StaticResource DeepBlue}">
-        <RelativePanel>
-            <RelativePanel x:Name="Topper" 
-                           RelativePanel.AlignHorizontalCenterWithPanel="True">
+        <StackPanel HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBox x:Name="NameBox" 
                          Padding="5"
                          PlaceholderText="Name"
@@ -50,15 +49,13 @@
                         Padding="5"
                         Click="Submit_Click"
                         Margin="5"/>
-            </RelativePanel>
+            </StackPanel>
             
             <ListView x:Name="JournalCustomList"
                               Margin="5"
                               ScrollViewer.IsVerticalRailEnabled="True" 
                               ScrollViewer.VerticalScrollMode="Auto" 
-                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                              RelativePanel.AlignHorizontalCenterWithPanel="True"
-                              RelativePanel.Below="Topper">
+                              ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -68,26 +65,6 @@
                     <DataTemplate x:DataType="data:JournalCustom">
                         <UserControl>
                             <RelativePanel MaxWidth="900" Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup>
-                                        <VisualState x:Name="Narrow">
-                                            <VisualState.StateTriggers>
-                                                <AdaptiveTrigger MinWindowWidth="0"/>
-                                            </VisualState.StateTriggers>
-                                            <VisualState.Setters>
-                                                <Setter Target="TTeacher.(RelativePanel.Below)" Value="TSubject"/>
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                        <VisualState>
-                                            <VisualState.StateTriggers>
-                                                <AdaptiveTrigger MinWindowWidth="700"/>
-                                            </VisualState.StateTriggers>
-                                            <VisualState.Setters>
-                                                <Setter Target="TTeacher.(RelativePanel.RightOf)" Value="TSubject"/>
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
                                 <TextBlock x:Name="Name" 
                                                    Style="{StaticResource ListTextBlock}" 
                                                    Text="{x:Bind Name}" 
@@ -99,6 +76,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </RelativePanel>
+        </StackPanel>
     </Grid>
 </Page>

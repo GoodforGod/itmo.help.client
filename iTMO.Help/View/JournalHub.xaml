@@ -26,13 +26,12 @@
     <Grid Background="{StaticResource DeepBlue}">
         <Pivot HorizontalAlignment="Center" HorizontalContentAlignment="Center">
             <PivotItem Header="Journal" HorizontalAlignment="Center">
-                <RelativePanel x:Name="MainJournalPanel" Margin="5" Width="auto">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="5">
                     <StackPanel x:Name="Toppers" 
-                                Orientation="Horizontal"
-                                RelativePanel.AlignHorizontalCenterWithPanel="True">
+                                Orientation="Horizontal">
                         <ComboBox x:Name="GroupsBox"
                                   Margin="5"
-                                  MinWidth="150" 
+                                  MinWidth="120" 
                                   MaxWidth="320"
                                   HorizontalAlignment="Center"
                                   SelectionChanged="GroupsBox_SelectionChanged" Style="{StaticResource ComboBoxCustom}">
@@ -47,7 +46,7 @@
                         
                         <ComboBox x:Name="TermBox" 
                                   Margin="5"
-                                  MinWidth="150" 
+                                  MinWidth="120" 
                                   MaxWidth="320" 
                                   HorizontalAlignment="Center"
                                   SelectedIndex="0"
@@ -67,7 +66,8 @@
                                 Click="Button_Click"
                                 Width="auto"
                                 Height="auto"
-                                RelativePanel.AlignHorizontalCenterWithPanel="True">
+                                Style="{StaticResource BarButton}"
+                                Background="White">
                             <TextBlock Text="Refresh" Width="auto"/>
                         </Button>
                     </StackPanel>
@@ -76,9 +76,7 @@
                               Margin="5"
                               ScrollViewer.IsVerticalRailEnabled="True" 
                               ScrollViewer.VerticalScrollMode="Auto" 
-                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                              RelativePanel.AlignHorizontalCenterWithPanel="True"
-                              RelativePanel.Below="Toppers">
+                              ScrollViewer.VerticalScrollBarVisibility="Auto">
                               <!--MaxWidth ="{Binding ActualWidth, ElementName=MainJournalPanel }"-->
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -88,9 +86,10 @@
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:Subject">
                                 <UserControl>
-                                    <RelativePanel MaxWidth="900" Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
+                                    <RelativePanel Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup>
+                                                <!--
                                                 <VisualState x:Name="Narrow">
                                                     <VisualState.StateTriggers>
                                                         <AdaptiveTrigger MinWindowWidth="0"/>
@@ -107,6 +106,7 @@
                                                         <Setter Target="TTeacher.(RelativePanel.RightOf)" Value="TSubject"/>
                                                     </VisualState.Setters>
                                                 </VisualState>
+                                                -->
                                             </VisualStateGroup>
                                         </VisualStateManager.VisualStateGroups>
                                         <TextBlock x:Name="Subject" 
@@ -143,13 +143,15 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </RelativePanel>
+                </StackPanel>
             </PivotItem>
             
             <!-- Second Pivot -->
             
             <PivotItem Header="Changes" HorizontalAlignment="Center">
-                <RelativePanel x:Name="MainJournalLogPanel" Width="auto" MinWidth="400">
+                <StackPanel Orientation="Vertical" 
+                            HorizontalAlignment="Center"
+                            MinWidth="360">
 
                     <AutoSuggestBox x:Name="SearchAutoSuggestBox" 
                                     PlaceholderText="Group"
@@ -157,7 +159,6 @@
                                     Text="14"
                                     QueryIcon="Find"
                                     Margin="5" 
-                                    RelativePanel.AlignHorizontalCenterWithPanel="True"
                                     QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted">
                     </AutoSuggestBox>
 
@@ -166,8 +167,6 @@
                               ScrollViewer.IsVerticalRailEnabled="True" 
                               ScrollViewer.VerticalScrollMode="Auto" 
                               ScrollViewer.VerticalScrollBarVisibility="Auto"
-                              RelativePanel.AlignHorizontalCenterWithPanel="True"
-                              RelativePanel.Below="SearchAutoSuggestBox"
                               MaxWidth ="{Binding ActualWidth, ElementName=MainJournalLogPanel }">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -180,6 +179,7 @@
                                     <RelativePanel MaxWidth="900" Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup>
+                                                <!--
                                                 <VisualState x:Name="Narrow">
                                                     <VisualState.StateTriggers>
                                                         <AdaptiveTrigger MinWindowWidth="0"/>
@@ -196,6 +196,7 @@
                                                         <Setter Target="TTeacher.(RelativePanel.RightOf)" Value="TSubject"/>
                                                     </VisualState.Setters>
                                                 </VisualState>
+                                                -->
                                             </VisualStateGroup>
                                         </VisualStateManager.VisualStateGroups>
                                         <TextBlock x:Name="variable" 
@@ -233,7 +234,7 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </RelativePanel>
+                </StackPanel>
             </PivotItem>
         </Pivot>
         

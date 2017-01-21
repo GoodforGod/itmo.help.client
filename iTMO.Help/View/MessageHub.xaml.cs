@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTMO.Help.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,12 +23,19 @@ namespace iTMO.Help.View
     /// </summary>
     public sealed partial class MessageHub : Page
     {
+        private MessageDe MessageDE = null;
+
         public MessageHub()
         {
             this.InitializeComponent();
         }
 
-        private void SearchAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private void IsuSearch_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+
+        }
+
+        private void DeSearch_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
 
         }

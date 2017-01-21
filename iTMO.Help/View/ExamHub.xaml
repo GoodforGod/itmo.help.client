@@ -19,7 +19,7 @@
     </Page.Resources>
 
     <Grid Background="{StaticResource DeepBlue}">
-        <RelativePanel x:Name="MainPanel" Margin="5">
+        <StackPanel Orientation="Vertical" Margin="5">
             <AutoSuggestBox Name="SearchAutoSuggestBox" 
                             PlaceholderText="Group"
                             Width="200"
@@ -29,18 +29,12 @@
                             Style="{StaticResource ExamSearch}"
                             QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted">
             </AutoSuggestBox>
-            
-            <TextBlock x:Name="Message" 
-                       VerticalAlignment="Center" 
-                       RelativePanel.AlignHorizontalCenterWithPanel="True"
-                       RelativePanel.AlignVerticalCenterWithPanel="True"/>
 
             <ListView Name="ExamList" 
+                      Margin="5"
                       ScrollViewer.IsVerticalRailEnabled="True" 
                       ScrollViewer.VerticalScrollMode="Auto" 
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      RelativePanel.AlignHorizontalCenterWithPanel="True"
-                      RelativePanel.Below="SearchAutoSuggestBox"
                       MaxWidth="{Binding ActualWidth, ElementName = MainPanel}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -53,6 +47,7 @@
                             <RelativePanel Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup>
+                                        <!--
                                         <VisualState x:Name="Narrow">
                                             <VisualState.StateTriggers>
                                                 <AdaptiveTrigger MinWindowWidth="0"/>
@@ -69,6 +64,7 @@
                                                 <Setter Target="TTeacher.(RelativePanel.RightOf)" Value="TSubject"/>
                                             </VisualState.Setters>
                                         </VisualState>
+                                        -->
                                     </VisualStateGroup>
                                 </VisualStateManager.VisualStateGroups>
                                 <TextBlock x:Name="Subject" 
@@ -123,9 +119,15 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </RelativePanel>
+        </StackPanel>
+
+        <TextBlock x:Name="Message"
+                       Margin="5"
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center"/>
+
         <ProgressRing x:Name="ExamRing"
-                  IsActive="True"
+                  IsActive="False"
                   Margin="0,-50,0,0"
                   Width="50"
                   Height="50"
