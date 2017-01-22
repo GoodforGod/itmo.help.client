@@ -24,10 +24,10 @@
         <StackPanel HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBox x:Name="NameBox" 
-                         Padding="5"
                          PlaceholderText="Name"
                          Height="30"
                          Background="White"
+                         Padding="14,5,0,0"
                          MinWidth="110"
                          RelativePanel.AlignLeftWithPanel="True"
                          Margin="5"/>
@@ -52,26 +52,36 @@
             </StackPanel>
             
             <ListView x:Name="JournalCustomList"
-                              Margin="5"
-                              ScrollViewer.IsVerticalRailEnabled="True" 
-                              ScrollViewer.VerticalScrollMode="Auto" 
-                              ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
+                      Margin="5"
+                      ItemContainerStyle="{StaticResource BarListView}"
+                      ScrollViewer.IsVerticalRailEnabled="True" 
+                      ScrollViewer.VerticalScrollMode="Auto" 
+                      SelectionChanged="JournalCustomList_SelectionChanged"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="data:JournalCustom">
                         <UserControl>
-                            <RelativePanel MaxWidth="900" Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
+                            <StackPanel MaxWidth="900" 
+                                        Margin="5" 
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        BorderBrush="#BCD6FF" 
+                                        HorizontalAlignment="Center"
+                                        Background="White">
                                 <TextBlock x:Name="Name" 
-                                                   Style="{StaticResource ListTextBlock}" 
-                                                   Text="{x:Bind Name}" 
-                                                   Margin="5"
-                                                   RelativePanel.AlignLeftWithPanel="True"
-                                                   RelativePanel.AlignTopWithPanel="True"/>
-                            </RelativePanel>
+                                           HorizontalAlignment="Left"
+                                           Style="{StaticResource ListTextBlock}" 
+                                           Text="{x:Bind Name}" 
+                                           Margin="5"/>
+                                <Button x:Name="Delete" 
+                                        Width="auto"
+                                        Height="auto"
+                                        Tag="{x:Bind Id}" 
+                                        HorizontalAlignment="Right"
+                                        Click="Delete_Click">
+                                    <SymbolIcon Symbol="Delete"/>
+                                </Button>
+                            </StackPanel>
                         </UserControl>
                     </DataTemplate>
                 </ListView.ItemTemplate>

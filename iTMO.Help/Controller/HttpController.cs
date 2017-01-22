@@ -59,14 +59,14 @@ namespace iTMO.Help.Controller
             // DE
             string journal          = "/eregister";
             string journalChangeLog = "/eregisterlog?days={0}";
-            string messageDe        = "/mail?days={0}&unreadOnly={0}";
+            string messageDe        = "/mail?days={0}";// &unreadOnly={0}";
 
             switch (type)
             {
                 case RequestTypes.AuthDe:           resultUri.AppendFormat(deAuthLink, opts[0], opts[1]);                           break;
                 case RequestTypes.Journal:          resultUri.Append(deBaseLink + journal);                                         break;
                 case RequestTypes.JournalChangeLog: resultUri.AppendFormat(deBaseLink + journalChangeLog, opts[2]);                 break;
-                case RequestTypes.MessagesFromDe:   resultUri.AppendFormat(deBaseLink + messageDe, opts[2], opts[3]);               break;
+                case RequestTypes.MessagesFromDe:   resultUri.AppendFormat(deBaseLink + messageDe, opts[2]);               break;
                 case RequestTypes.Schedule:         resultUri.Append(isuBaseLink + schedule + common + group + ApiKey + opts[0]);   break;
                 case RequestTypes.ScheduleExam:     resultUri.Append(isuBaseLink + exams + common + group + ApiKey + opts[0]);      break;
                 case RequestTypes.ScheduleTeacher:  resultUri.Append(isuBaseLink + schedule + common + teacher + ApiKey + opts[0]); break;
@@ -156,10 +156,7 @@ namespace iTMO.Help.Controller
                         var authResult = await AuthOnDe(opts);
 
                         if (authResult.Data != HttpStatusCode.OK)
-                        {
-                            isAuthiticated = false;
-                            return new DataResponse<string>(authResult.Data.ToString(), false);
-                        }
+                            return new DataResponse<string>(authResult.Data.ToString(), isAuthiticated = false);
                     }
                     return await ProccessRequest(type, opts);
 

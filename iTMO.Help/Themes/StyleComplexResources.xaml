@@ -208,6 +208,8 @@
     <!-- Bar ListView -->
     
     <Style TargetType="ListViewItem" x:Key="BarListView">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">

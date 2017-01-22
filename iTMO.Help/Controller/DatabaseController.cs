@@ -74,8 +74,8 @@ namespace iTMO.Help.Controller
         public          Journal                DJournal          { get { return _DJournal;   } set { _DJournal = value;       } }
         public volatile Journal               _DJournal = null;
 
-        public          MessageDe              DMessageDe        { get { return _DMessageDe; } set { _DMessageDe = value;     } }
-        public volatile MessageDe             _DMessageDe = null;
+        public          List<MessageDe>        DMessageDe        { get { return _DMessageDe; } set { _DMessageDe = value;     } }
+        public volatile List<MessageDe>       _DMessageDe = null;
 
         public List<JournalChangeLog>  DJournalChangeLog { get { return _DJournalChangeLog; } set { _DJournalChangeLog = value; } }
         public volatile List<JournalChangeLog> _DJournalChangeLog = null;
@@ -97,6 +97,13 @@ namespace iTMO.Help.Controller
         {
             _DJournalCustom.Add(newJournal);
             DataBaseConnection.InsertOrReplace(newJournal);
+        }
+
+        public void DeleteCustomJournal(int id)
+        {
+            var item = DJournalCustom.Find(temp => temp.Id == id);
+            _DJournalCustom.Remove(item);
+            DataBaseConnection.Delete(item);
         }
     }
 }

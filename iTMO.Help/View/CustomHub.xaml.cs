@@ -47,5 +47,15 @@ namespace iTMO.Help.View
                 DatabaseController.Me.SaveCustomJournal(temp);
             }
         }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            var temp = (sender as Button).Tag.ToString();
+        }
+
+        private void JournalCustomList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

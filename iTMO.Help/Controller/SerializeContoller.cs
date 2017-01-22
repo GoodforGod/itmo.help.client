@@ -149,16 +149,20 @@ namespace iTMO.Help.Controller
             return serializedData;
         }
 
-        public static SerializeData<MessageDe> ToMessageDeView(string data)
+        public static SerializeData<List<MessageDe>> ToMessageDeView(string data)
         {
-            SerializeData<MessageDe> serializedData = new SerializeData<MessageDe>();
+            SerializeData<List<MessageDe>> serializedData = new SerializeData<List<MessageDe>>();
 
             try
             {
-                if((serializedData.Data = JsonConvert.DeserializeObject<MessageDe>(data)) == null)
-                serializedData.IsValid = true;
+                if ((serializedData.Data = JsonConvert.DeserializeObject<List<MessageDe>>(data)) != null
+                    && serializedData.Data.Count != 0)
+                        serializedData.IsValid = true;
+                else
+                    serializedData.Message = "Empty";
             }
             catch (JsonSerializationException ex) { serializedData.Message = ex.Message; }
+            catch (Exception ex)                  { serializedData.Message = ex.Message; }    
             return serializedData;
         }
     }

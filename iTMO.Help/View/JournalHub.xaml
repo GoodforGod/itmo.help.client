@@ -28,6 +28,7 @@
             <PivotItem Header="Journal" HorizontalAlignment="Center">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="5">
                     <StackPanel x:Name="Toppers" 
+                                HorizontalAlignment="Center"
                                 Orientation="Horizontal">
                         <ComboBox x:Name="GroupsBox"
                                   Margin="5"
@@ -64,54 +65,22 @@
 
                         <Button x:Name="RefreshBtn" 
                                 Click="Button_Click"
-                                Width="auto"
                                 Height="auto"
+                                Width="auto"
+                                Content="Refresh"
+                                Background="White"
+                                Foreground="{StaticResource DeepBlue}"
                                 Style="{StaticResource BarButton}"
-                                Background="White">
-                            <TextBlock Text="Refresh" Width="auto"/>
-                        </Button>
+                                />
                     </StackPanel>
 
                     <ListView x:Name="JournalList"
                               Margin="5"
+                              ItemContainerStyle="{StaticResource BarListView}"
                               ScrollViewer.IsVerticalRailEnabled="True" 
                               ScrollViewer.VerticalScrollMode="Auto" 
                               ScrollViewer.VerticalScrollBarVisibility="Auto">
                               <!--MaxWidth ="{Binding ActualWidth, ElementName=MainJournalPanel }"-->
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListViewItem">
-                                            <ListViewItemPresenter ContentTransitions="{TemplateBinding ContentTransitions}"
-                                              SelectionCheckMarkVisualEnabled="True"
-                                              CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
-                                              CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
-                                              DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
-                                              DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
-                                              FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
-                                              FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                              PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
-                                              PointerOverBackground="{StaticResource LightBlue}"
-                                              PointerOverForeground="{StaticResource LightWhite}"
-                                              SelectedBackground="{StaticResource LightPink}"
-                                              SelectedForeground="{StaticResource LightWhite}"
-                                              SelectedPointerOverBackground="{StaticResource SlightlyPink}"
-                                              PressedBackground="{StaticResource SlightlyBlue}"
-                                              SelectedPressedBackground="{StaticResource SlightlyPink}"
-                                              DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
-                                              DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
-                                              ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              ContentMargin="{TemplateBinding Padding}"
-                                              CheckMode="Inline"/>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:Subject">
                                 <UserControl>
@@ -188,8 +157,7 @@
                                     Text="14"
                                     QueryIcon="Find"
                                     Margin="5" 
-                                    QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted">
-                    </AutoSuggestBox>
+                                    QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted"/>
 
                     <ListView x:Name="JournalLogList"
                               Margin="5"

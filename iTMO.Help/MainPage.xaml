@@ -66,43 +66,11 @@
                     </StackPanel>
 
                     <ListView x:Name="MenuListOpts" 
+                              ItemContainerStyle="{StaticResource BarListView}"
                               RelativePanel.Below="Topper"
                               RelativePanel.AlignLeftWithPanel="True"
                               IsItemClickEnabled="True"
                               SelectionChanged="MenuListOpts_SelectionChanged">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListViewItem">
-                                            <ListViewItemPresenter ContentTransitions="{TemplateBinding ContentTransitions}"
-                                                                  SelectionCheckMarkVisualEnabled="True"
-                                                                  CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
-                                                                  CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
-                                                                  DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
-                                                                  DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
-                                                                  FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
-                                                                  FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                                                  PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
-                                                                  PointerOverBackground="{StaticResource LightBlue}"
-                                                                  PointerOverForeground="{StaticResource LightWhite}"
-                                                                  SelectedBackground="{StaticResource LightPink}"
-                                                                  SelectedForeground="{StaticResource LightWhite}"
-                                                                  SelectedPointerOverBackground="{StaticResource SlightlyPink}"
-                                                                  PressedBackground="{StaticResource SlightlyBlue}"
-                                                                  SelectedPressedBackground="{StaticResource SlightlyPink}"
-                                                                  DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
-                                                                  DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
-                                                                  ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
-                                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                                  ContentMargin="{TemplateBinding Padding}"
-                                                                  CheckMode="Inline"/>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:MenuItem">
                                 <StackPanel Orientation="Horizontal">

@@ -44,8 +44,7 @@ namespace iTMO.Help.View
 
         private async void ProccessExamVR()
         {
-            if (string.IsNullOrEmpty(SearchAutoSuggestBox.Text) 
-                || string.IsNullOrWhiteSpace(SearchAutoSuggestBox.Text))
+            if (string.IsNullOrWhiteSpace(SearchAutoSuggestBox.Text))
                 return;
 
             Message.Text = "";
