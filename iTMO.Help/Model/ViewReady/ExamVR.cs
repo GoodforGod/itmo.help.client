@@ -4,11 +4,9 @@ namespace iTMO.Help.Model.ViewReady
 {
     public class ExamVR
     {
-        public string DateExamStr   { get; set; } = "";
-        public string DateAdviceStr { get; set; } = "";
+        public string DateExam      { get; set; } = "";
+        public string DateAdvice    { get; set; } = "";
 
-        public DateTime DateExam    { get; set; }
-        public DateTime DateAdvice  { get; set; }
         public string WeekdayExam   { get; set; } = "";
         public string WeekdayAdvice { get; set; } = "";
         public string TimeExam      { get; set; } = "";
@@ -17,5 +15,17 @@ namespace iTMO.Help.Model.ViewReady
         public string RoomAdvice    { get; set; } = "";
         public string Subject       { get; set; } = "";
         public string Teacher       { get; set; } = "";
+
+        public override string ToString()
+        {
+            return "Subject : " + Subject 
+                + ", Teacher : " + Teacher 
+                + "\n[ Exam on : " + DateExam 
+                + ", in " + TimeExam 
+                + ", Room : " + RoomExam + " ] "
+                + "\n[ Advice on" + DateAdvice
+                + ", in " + TimeAdvice
+                + ", Room : " + RoomAdvice + " ]";
+        }
     }
 }

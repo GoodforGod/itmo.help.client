@@ -1,4 +1,5 @@
-﻿using iTMO.Help.Model;
+﻿using iTMO.Help.Controller;
+using iTMO.Help.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +29,25 @@ namespace iTMO.Help.View
         public MessageHub()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            DatabaseController.Me.DMessageDe = MessageDE;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if ((MessageDE = DatabaseController.Me.DMessageDe) != null)
+            {
+
+                //ExamList.ItemsSource = MessageDE = DatabaseController.Me.DExams;
+            }
+        }
+
+        private async void ProcessMessageDE()
+        {
+
         }
 
         private void IsuSearch_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

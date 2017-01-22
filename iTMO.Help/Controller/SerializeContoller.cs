@@ -40,8 +40,8 @@ namespace iTMO.Help.Controller
                         {
                             dataList.Add(new ExamVR
                             {
-                                DateAdviceStr   = exam.advice_date,
-                                DateExamStr     = exam.exam_date,
+                                DateAdvice      = exam.advice_date,
+                                DateExam        = exam.exam_date,
                                 TimeAdvice      = exam.advice_time,
                                 TimeExam        = exam.exam_time,
                                 Subject         = exam.subject,

@@ -19,7 +19,6 @@ namespace iTMO.Help.View
         public ExamHub()
         {
             this.InitializeComponent();
-            RestorePage();
         }
 
         protected override void OnNavigatingFrom( NavigatingCancelEventArgs e)
@@ -29,13 +28,16 @@ namespace iTMO.Help.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            RestorePage();
+            if ((exams = DatabaseController.Me.DExams) != null && exams.Count != 0)
+                ExamList.ItemsSource = exams;
+            if (DatabaseController.Me.DUser != null && DatabaseController.Me.DUser.GroupLastUsed != null)
+                SearchAutoSuggestBox.Text = DatabaseController.Me.DUser.GroupLastUsed;
         }
 
         private void RestorePage()
         {
-            if (DatabaseController.Me.DExams != null && DatabaseController.Me.DExams.Count != 0)
-                ExamList.ItemsSource = exams = DatabaseController.Me.DExams;
+            if ((exams = DatabaseController.Me.DExams) != null && exams.Count != 0)
+                ExamList.ItemsSource = exams;
             if (DatabaseController.Me.DUser != null && DatabaseController.Me.DUser.GroupLastUsed != null)
                 SearchAutoSuggestBox.Text = DatabaseController.Me.DUser.GroupLastUsed;
         }
