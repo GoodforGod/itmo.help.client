@@ -23,7 +23,8 @@
     <Grid Background="{StaticResource DeepBlue}">
         <Pivot>
             <PivotItem Header="DE" HorizontalAlignment="Center">
-                <Grid>
+                <StackPanel Orientation="Vertical" 
+                            HorizontalAlignment="Center">
                     <AutoSuggestBox Name="DeSearch" 
                                     PlaceholderText="Days"
                                     Width="200"
@@ -79,7 +80,7 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </Grid>
+                </StackPanel>
             </PivotItem>
             <PivotItem Header="ISU" HorizontalAlignment="Center">
                 <Grid>

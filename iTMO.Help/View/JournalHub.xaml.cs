@@ -109,7 +109,6 @@ namespace iTMO.Help.View
         private async void ProccesJournalChangeLogVR()
         {
             JournalMessage.Text = "";
-            DJournalChangeLog.Clear();
 
             var user_data = await CollectUserData();
 
@@ -127,7 +126,8 @@ namespace iTMO.Help.View
 
                 DataResponse<string> response = await HttpController.RetrieveData(RequestTypes.JournalChangeLog, 
                                                                                     user_data.Login, 
-                                                                                    user_data.Password, days.ToString());
+                                                                                    user_data.Password, 
+                                                                                    days.ToString());
                 if (response.isValid)
                 {
                     RememberUserData(user_data);

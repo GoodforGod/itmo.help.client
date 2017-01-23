@@ -23,29 +23,27 @@
     <Grid Background="{StaticResource DeepBlue}">
         <StackPanel HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" Margin="5">
-                <TextBox x:Name="NameBox" 
-                         PlaceholderText="Name"
-                         Height="30"
-                         Background="White"
-                         Padding="14,5,0,0"
-                         MinWidth="110"
-                         RelativePanel.AlignLeftWithPanel="True"
-                         Margin="5"/>
-                <TextBox x:Name="LinkBox" 
+                <Grid Background="{StaticResource LightWhite}"
+                      Margin="5">
+                    <TextBox x:Name="NameBox" 
+                             PlaceholderText="Name"
+                             Height="30"
+                             Padding="14,5,0,0"
+                             MinWidth="110"/>
+                </Grid>
+                <Grid Background="{StaticResource LightWhite}"
+                      Margin="5">
+                    <TextBox x:Name="LinkBox" 
                          PlaceholderText="Link"
                          Height="30"
-                         Background="White"
                          MinWidth="140"
-                         Padding="16,5,0,0"
-                         RelativePanel.RightOf="NameBox"
-                         Margin="5"/>
+                         Padding="16,5,0,0"/>
+                </Grid>
                 <Button x:Name="Submit"
                         Width="auto"
                         Background="{StaticResource LightWhite}"
-                        Height="30"
-                        RelativePanel.AlignVerticalCenterWithPanel="True"
-                        RelativePanel.RightOf="LinkBox"
-                        Content="Add"
+                        Height="32"
+                        Content="ADD"
                         Padding="5"
                         Click="Submit_Click"
                         Margin="5"/>
