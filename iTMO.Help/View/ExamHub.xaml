@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Background="{StaticResource DeepBlue}">
+    <Grid x:Name="MainGrid" Background="{StaticResource DeepBlue}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
@@ -40,7 +40,7 @@
                   ScrollViewer.IsVerticalRailEnabled="True" 
                   ScrollViewer.VerticalScrollMode="Auto" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  MaxWidth="{Binding ActualWidth, ElementName = MainPanel}">
+                  MaxWidth="{Binding ActualWidth, ElementName = MainGrid}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:ExamVR">
                     <UserControl>

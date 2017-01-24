@@ -42,10 +42,7 @@ namespace iTMO.Help.View
             ProcessLastSelectedTerm();
 
             if (IsJournalValid())
-            {
                 ProcessLastSelectedGroup();
-                JournalFillStrategy();
-            }
 
             if ((DJournalChangeLog = DatabaseController.Me.DJournalChangeLog) != null)
                 JournalLogList.ItemsSource = DJournalChangeLog;
@@ -54,22 +51,18 @@ namespace iTMO.Help.View
         private void ProcessLastSelectedGroup()
         {
             GroupsBox.ItemsSource = DJournal.years;
-
-            var selectedGroup = DatabaseController.Me.GroupLastSelectedIndex;
-            if (selectedGroup == -1)
-                selectedGroup = GroupsBox.Items.Count - 1;
-            GroupsBox.SelectedIndex = selectedGroup;
+            GroupsBox.SelectedIndex = GroupsBox.Items.Count - 1;
         }
 
         private void ProcessLastSelectedTerm()
         {
-            var selectedTerm = DatabaseController.Me.TermLastSelectedIndex;
-            if (selectedTerm == -1)
-                selectedTerm = 0;
-            TermBox.ItemsSource = new List<TermItem>() { new TermItem() { Term = "All" },
-                                                         new TermItem() { Term = "First Part" },
-                                                         new TermItem() { Term = "Last Part"  } };
-            TermBox.SelectedIndex = selectedTerm;
+            TermBox.ItemsSource = new List<TermItem>()
+            {
+                new TermItem() { Term = "All" },
+                new TermItem() { Term = "First Part" },
+                new TermItem() { Term = "Last Part"  }
+            };
+            TermBox.SelectedIndex = DatabaseController.Me.TermLastSelectedIndex; ;
         }
 
         private async void ProccessJournalVR()
@@ -238,7 +231,7 @@ namespace iTMO.Help.View
 
         private void TermBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (IsJournalValid())
+            if (IsJournalValid() && GroupsBox.SelectedIndex != -1)
                 JournalFillStrategy();
         }
 
