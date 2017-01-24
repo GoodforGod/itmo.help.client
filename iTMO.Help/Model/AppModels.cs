@@ -29,10 +29,11 @@ namespace iTMO.Help
     public class CheckResponse
     {
         public bool     IsRemember { get; set; } = false;
-        public bool     IsValid   { get; set; } = false;
-        public string   Login     { get; set; }
-        public string   Password  { get; set; }
-        public string   Message   { get; set; } = "";
+        public bool     IsValid    { get; set; } = false;
+        public string   Login      { get; set; }
+        public string   Password   { get; set; }
+        public string   Message    { get; set; } = "";
     }
+
 
 }

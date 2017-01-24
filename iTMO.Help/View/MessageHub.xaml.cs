@@ -57,6 +57,7 @@ namespace iTMO.Help.View
                 return;
             }
 
+            DEList.ItemsSource = null;
             Message.Text = "";
             ProcessRing.IsActive = true;
 

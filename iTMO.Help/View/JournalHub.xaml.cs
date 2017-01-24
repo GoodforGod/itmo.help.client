@@ -66,12 +66,18 @@ namespace iTMO.Help.View
             var selectedTerm = DatabaseController.Me.TermLastSelectedIndex;
             if (selectedTerm == -1)
                 selectedTerm = 0;
+            TermBox.ItemsSource = new List<TermItem>() { new TermItem() { Term = "All" },
+                                                         new TermItem() { Term = "First Part" },
+                                                         new TermItem() { Term = "Last Part"  } };
             TermBox.SelectedIndex = selectedTerm;
         }
 
         private async void ProccessJournalVR()
         {
             JournalMessage.Text = "";
+
+            if (JournalList.ItemsSource != null)
+                JournalList.ItemsSource = DJournal = null;
 
             var user_data = await CollectUserData();
 
@@ -110,6 +116,9 @@ namespace iTMO.Help.View
         {
             JournalMessage.Text = "";
 
+            if (JournalLogList.Items != null)
+                JournalLogList.ItemsSource = DJournalChangeLog = null;
+
             var user_data = await CollectUserData();
 
             if(!user_data.IsValid)
@@ -139,7 +148,12 @@ namespace iTMO.Help.View
                     else
                         JournalMessage.Text = dataVR.Message;
                 }
-                else JournalMessage.Text = response.Data;
+                else
+                { 
+                    if (response.Code != System.Net.HttpStatusCode.NoContent)
+                        JournalList.ItemsSource = null;
+                    JournalMessage.Text = response.Data;
+                }
             }
             else JournalMessage.Text = "Invalid Days Input";
 
@@ -161,17 +175,17 @@ namespace iTMO.Help.View
                     JournalList.ItemsSource
                     = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex]
                         .subjects.GetRange(0, DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2 - 1));
-                    break;
+                    return; 
                 case 2:
                     JournalList.ItemsSource
                     = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex]
                         .subjects.GetRange(DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2,
                             DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2 - 1));
-                    break;
+                   return;
                 default:
                     JournalList.ItemsSource
                    = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex].subjects);
-                    break;
+                    return;
 
             }
         }

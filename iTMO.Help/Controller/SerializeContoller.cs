@@ -15,11 +15,15 @@ namespace iTMO.Help.Controller
 
     class SerializeContoller
     {
+        public static SerializeData<TValue> ToViewReady<TValue>(string data)
+        {
+
+            return new SerializeData<TValue>();
+        }
         public static SerializeData<List<ExamVR>> ToExamView(string data)
         {
-            SerializeData<List<ExamVR>> serializedData = new SerializeData<List<ExamVR>>();
+            SerializeData<List<ExamVR>> serializedData = new SerializeData<List<ExamVR>>() { Data = new List<ExamVR>() };
             ScheduleExam exams      = null;
-            List<ExamVR> dataList = new List<ExamVR>();
 
             try
             {
@@ -33,21 +37,29 @@ namespace iTMO.Help.Controller
                     && exams.faculties[0].departments[0].groups.Capacity != 0
                     && exams.faculties[0].departments[0].groups[0].exams_schedule != null)
                 {
-                    var examScheduleList = exams.faculties[0].departments[0].groups[0].exams_schedule;
-                    foreach (ExamsSchedule exam in examScheduleList)
+                    foreach (ExamsSchedule exam in exams.faculties[0].departments[0].groups[0].exams_schedule)
                     {
                         try
                         {
-                            dataList.Add(new ExamVR
+                            var realDayExam = exam.exam_day_text;
+                            if (realDayExam.Length > 7)
+                                realDayExam = realDayExam.Substring(0, 7);
+                            var realDayAdvice = exam.advice_day_text;
+                            if (realDayAdvice.Length > 7)
+                                realDayAdvice = realDayAdvice.Substring(0, 7);
+
+                            serializedData.Data.Add(new ExamVR
                             {
-                                DateAdvice      = exam.advice_date,
-                                DateExam        = exam.exam_date,
+                                DateAdvice      = exam.advice_date.Substring(0, exam.advice_date.LastIndexOf('.')),
+                                DateExam        = exam.exam_date.Substring(0, exam.exam_date.LastIndexOf('.')),
+                                DayExam         = realDayExam,
+                                DayAdvice       = exam.advice_day_text,
                                 TimeAdvice      = exam.advice_time,
                                 TimeExam        = exam.exam_time,
+
                                 Subject         = exam.subject,
-                                WeekdayAdvice   = exam.advice_day_text,
-                                WeekdayExam     = exam.exam_day_text,
                                 Teacher         = exam.teachers[0].teacher_name,
+                                TeacherId       = exam.teachers[0].teacher_id,
                                 RoomAdvice      = exam.auditories[1].auditory_name,
                                 RoomExam        = exam.auditories[0].auditory_name,
                             });
@@ -55,7 +67,6 @@ namespace iTMO.Help.Controller
                         catch (ArgumentNullException ex) { }
                         catch (FormatException ex)       { }
                     }
-                    serializedData.Data = dataList;
                     serializedData.IsValid = true;
                 }
                 else throw new ArgumentNullException("Group number is probably Invalid!");

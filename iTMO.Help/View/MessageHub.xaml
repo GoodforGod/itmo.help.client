@@ -23,11 +23,16 @@
     <Grid Background="{StaticResource DeepBlue}">
         <Pivot>
             <PivotItem Header="DE" HorizontalAlignment="Center">
-                <StackPanel Orientation="Vertical" 
-                            HorizontalAlignment="Center">
+                <Grid HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
                     <AutoSuggestBox Name="DeSearch" 
                                     PlaceholderText="Days"
-                                    Width="200"
+                                    Width="220"
+                                    Grid.Row="0"
                                     QueryIcon="Find"
                                     HorizontalAlignment="Center"
                                     Margin="5"
@@ -37,6 +42,7 @@
 
                     <ListView x:Name="DEList"
                               Margin="5"
+                              Grid.Row="1"
                               HorizontalAlignment="Center"
                               ItemContainerStyle="{StaticResource BarListView}"
                               ScrollViewer.IsVerticalRailEnabled="True" 
@@ -46,7 +52,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:MessageDe">
                                 <UserControl>
-                                    <RelativePanel MaxWidth="900" 
+                                    <RelativePanel Width="auto" 
                                                    Margin="5" 
                                                    VerticalAlignment="Center"
                                                    BorderBrush="#BCD6FF" 
@@ -80,20 +86,26 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </StackPanel>
+                </Grid>
             </PivotItem>
             <PivotItem Header="ISU" HorizontalAlignment="Center">
                 <Grid>
-                    <StackPanel>
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        
                         <AutoSuggestBox Name="IsuSearch" 
                                         PlaceholderText="Days"
                                         Width="200"
+                                        Grid.Row="0"
                                         QueryIcon="Find"
                                         Text="14"
                                         Margin="5" 
                                         Style="{StaticResource ExamSearch}"
                                         QuerySubmitted="IsuSearch_QuerySubmitted"/>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </PivotItem>
         </Pivot>

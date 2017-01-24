@@ -21,14 +21,9 @@ namespace iTMO.Help.Controller
 
     class DataResponse<TValue>
     {
-        public TValue   Data    { get; set; }
-        public bool     isValid { get; set; }
-
-        public DataResponse(TValue data, bool isValid)
-        {
-            this.Data = data;
-            this.isValid = isValid;
-        }
+        public TValue           Data    { get; set; }
+        public HttpStatusCode   Code    { get; set; }
+        public bool             isValid { get; set; }
     }
 
     class HttpController
@@ -83,8 +78,7 @@ namespace iTMO.Help.Controller
                 case RequestTypes.Journal:
                 case RequestTypes.JournalChangeLog:
                 case RequestTypes.MessagesFromDe:
-                   if (isAuthiticated && SessionCookie != null)
-                       request.Headers.Add("Cookie", SessionCookie[1]);
+                  
                     break;
                 default: break;
             }
@@ -92,62 +86,69 @@ namespace iTMO.Help.Controller
             return request;
         }
 
-        private static async Task<DataResponse<HttpStatusCode>> AuthOnDe(params string[] opts)
+        private static async Task<DataResponse<string>> AuthOnDe(params string[] opts)
         {
-            DataResponse<HttpStatusCode> authResult = new DataResponse<HttpStatusCode>(HttpStatusCode.Unauthorized, false);
+            var authResult = new DataResponse<string>() { Code = HttpStatusCode.Unauthorized, isValid = false };
 
             if (opts.Length > 1)
             {
                 try
                 {
                     var response = await httpClient.SendAsync(BuildRequest(RequestTypes.AuthDe, opts));
-                    if ((authResult.Data = response.StatusCode) == HttpStatusCode.OK)
-                    {
-                        isAuthiticated = true;
-                        SessionCookie = new List<string>(response.Headers.GetValues("Set-Cookie"));
-                    }
-                    else isAuthiticated = false;
+                    if ((authResult.Code = response.StatusCode) == HttpStatusCode.OK)
+                        authResult.isValid = true;
+                    else
+                        isAuthiticated = false;
                 }
-                catch (HttpRequestException ex) { authResult.Data = HttpStatusCode.RequestTimeout; }
-                catch (Exception ex)            { authResult.Data = HttpStatusCode.ExpectationFailed; }
+                catch (HttpRequestException ex) { authResult.Code = HttpStatusCode.RequestTimeout; }
+                catch (Exception ex)            { authResult.Code = HttpStatusCode.ExpectationFailed;}
             }
             return authResult;
         }
 
         public static async Task<DataResponse<string>> ProccessRequest(RequestTypes type, params string[] opts)
         {
-            HttpResponseMessage response = null;
-            string              result  = null;
-            bool                isValid = false;
+            DataResponse<string> dataResponse = new DataResponse<string>() { Data = "", isValid = false };
 
             try
             {
-                response    = await httpClient.SendAsync(BuildRequest(type, opts));
-                result      = await response.Content.ReadAsStringAsync();
-            }
-            catch(HttpRequestException ex)  { result = "Some Network Connectivity Error.. Check your Network"; }
-            catch(Exception ex)             { result = "Some unexpected error.."; }
+                var response = await httpClient.SendAsync(BuildRequest(type, opts));
 
-            if (response != null)
-            {
-                switch (response.StatusCode)
+                if (response != null)
                 {
-                    case HttpStatusCode.OK:             isValid = true; break;
-                    case HttpStatusCode.NotFound:       result = "Resource not found, ops... [ 404 ]"; break;
-                    case HttpStatusCode.NotAcceptable:  result = "Think that schedule is unavaliable for now... Or check the group may be?"; break;
-                    case HttpStatusCode.BadRequest:     result = "Server got some unexpected error...  [ ITMO : Students] | [ 0 : 1 ]"; break;
-                    case HttpStatusCode.Forbidden:      result = "Think that we are outdated... Contact Developers or check ITMO site"; break;
-                    case HttpStatusCode.NoContent:      result = "Invalid Login/Password";      isAuthiticated = false;     break;
-                    default:                            result = "Somethink extraodinary happened... Contact developer";    break;
+                    switch (dataResponse.Code = response.StatusCode)
+                    {
+                        case HttpStatusCode.OK:
+                            dataResponse.Data = await response.Content.ReadAsStringAsync();
+                            switch (type)
+                            {
+                                case RequestTypes.MessagesFromDe:
+                                case RequestTypes.Journal:
+                                case RequestTypes.JournalChangeLog: isAuthiticated = true; break;
+                                default: break;
+                            }
+                            dataResponse.isValid = true;
+                            break;
+                        case HttpStatusCode.NotFound:       dataResponse.Data = "Resource not found, ops... [ 404 ]"; break;
+                        case HttpStatusCode.NotAcceptable:  dataResponse.Data = "Think that schedule is unavaliable for now... Or check the group may be?"; break;
+                        case HttpStatusCode.BadRequest:     dataResponse.Data = "Server got some unexpected error...  [ ITMO : Students] | [ 0 : 1 ]"; break;
+                        case HttpStatusCode.Forbidden:      dataResponse.Data = "Think that we are outdated... Contact Developers or check ITMO site"; break;
+                        case HttpStatusCode.NoContent:      dataResponse.Data = "Invalid Login/Password"; isAuthiticated = false; break;
+                        default:                            dataResponse.Data = "Somethink extraodinary happened... Contact developer"; break;
+                    }
                 }
             }
-            return new DataResponse<string>(result, isValid);
+            catch(HttpRequestException ex)  { dataResponse.Data = "Some Network Connectivity Error.. Check your Network"; }
+            catch(Exception ex)             { dataResponse.Data = "Some unexpected error.."; }
+
+            return dataResponse;
         }
 
         public static async Task<DataResponse<string>> RetrieveData(RequestTypes type, params string[] opts)
         {
             switch (type)
             {
+                // DE
                 case RequestTypes.Journal:
                 case RequestTypes.JournalChangeLog:
                 case RequestTypes.MessagesFromDe:
@@ -155,11 +156,11 @@ namespace iTMO.Help.Controller
                     {
                         var authResult = await AuthOnDe(opts);
 
-                        if (authResult.Data != HttpStatusCode.OK)
-                            return new DataResponse<string>(authResult.Data.ToString(), isAuthiticated = false);
+                        if (authResult.Code != HttpStatusCode.OK)
+                            return new DataResponse<string>() { Data = authResult.Data.ToString(), isValid = isAuthiticated = false };
                     }
                     return await ProccessRequest(type, opts);
-
+                // ISU
                 default:
                     return await ProccessRequest(type, opts);
             }

@@ -19,30 +19,35 @@
     </Page.Resources>
 
     <Grid Background="{StaticResource DeepBlue}">
-        <StackPanel Orientation="Vertical" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
             <AutoSuggestBox Name="SearchAutoSuggestBox" 
+                            Grid.Row="0"
                             PlaceholderText="Group"
-                            Width="200"
+                            Width="220"
                             QueryIcon="Find"
                             Margin="5" 
                             RelativePanel.AlignHorizontalCenterWithPanel="True"
                             Style="{StaticResource ExamSearch}"
                             QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted"/>
 
-            <ListView Name="ExamList" 
-                      Margin="5"
-                      ItemContainerStyle="{StaticResource BarListView}"
-                      ScrollViewer.IsVerticalRailEnabled="True" 
-                      ScrollViewer.VerticalScrollMode="Auto" 
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      MaxWidth="{Binding ActualWidth, ElementName = MainPanel}">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="data:ExamVR">
-                        <UserControl>
-                            <RelativePanel Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup>
-                                        <!--
+        <ListView Name="ExamList" 
+                  Margin="5"
+                  Grid.Row="1"
+                  ItemContainerStyle="{StaticResource BarListView}"
+                  ScrollViewer.IsVerticalRailEnabled="True" 
+                  ScrollViewer.VerticalScrollMode="Auto" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  MaxWidth="{Binding ActualWidth, ElementName = MainPanel}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="data:ExamVR">
+                    <UserControl>
+                        <RelativePanel Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup>
+                                    <!--
                                         <VisualState x:Name="Narrow">
                                             <VisualState.StateTriggers>
                                                 <AdaptiveTrigger MinWindowWidth="0"/>
@@ -60,73 +65,113 @@
                                             </VisualState.Setters>
                                         </VisualState>
                                         -->
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
-                                <TextBlock x:Name="Subject" 
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            
+                            <TextBlock x:Name="Subject" 
+                                       Style="{StaticResource ListTextBlock}" 
+                                       Text="{x:Bind Subject}" 
+                                       FontWeight="Bold"
+                                       RelativePanel.RightOf="AppSeparator"
+                                       RelativePanel.AlignTopWithPanel="True"
+                                       Margin="5" />
+                            <TextBlock x:Name="Teacher" 
+                                       Style="{StaticResource ListTextBlock}" 
+                                       Text="{x:Bind Teacher}" 
+                                       FontStyle="Italic"
+                                       RelativePanel.Below="Subject"
+                                       RelativePanel.RightOf="AppSeparator"
+                                       Margin="5" />
+                            
+                            <StackPanel x:Name="DateTime" 
+                                        Orientation="Vertical" 
+                                        HorizontalAlignment="Center"
+                                        RelativePanel.AlignLeftWithPanel="True"
+                                        RelativePanel.AlignVerticalCenterWithPanel="True">
+                                <TextBlock x:Name="DateExam"  
                                            Style="{StaticResource ListTextBlock}" 
-                                           Text="{x:Bind Subject}" 
-                                           Margin="5"
-                                           RelativePanel.AlignHorizontalCenterWithPanel="True"/>
-                                <TextBlock x:Name="Teacher" 
+                                           Text="{x:Bind DateExam}" 
+                                           Foreground="{StaticResource DeepPink}"
+                                           FontWeight="Bold"
+                                           Margin="5" />
+
+                                <TextBlock x:Name="DayExam"  
                                            Style="{StaticResource ListTextBlock}" 
-                                           Text="{x:Bind Teacher}" 
-                                           Margin="5"
-                                           RelativePanel.LeftOf="Room"
-                                           RelativePanel.AlignVerticalCenterWith="Room" />
-                                <TextBlock x:Name="Room" 
+                                           Text="{x:Bind DayExam}" 
+                                           Width="100"
+                                           Margin="5" />
+                            </StackPanel>
+
+                            <AppBarSeparator x:Name="AppSeparator" 
+                                             RelativePanel.RightOf="DateTime" 
+                                             Background="{StaticResource DeepPink}"
+                                             Margin="5" />
+
+                            <StackPanel x:Name="ExamInfo" 
+                                        Orientation="Horizontal" 
+                                        RelativePanel.AlignRightWithPanel="True"
+                                        RelativePanel.AlignTopWithPanel="True"
+                                        HorizontalAlignment="Center">
+
+                                <TextBlock x:Name="TimeExam"  
+                                           Style="{StaticResource ListTextBlock}" 
+                                           Text="{x:Bind TimeExam}" 
+                                           Margin="5" />
+
+                                <TextBlock x:Name="DateExamExtra"
+                                           Style="{StaticResource ListTextBlock}"
+                                           Foreground="{StaticResource DeepPink}"
+                                           Text="{x:Bind DateExam}" 
+                                           Margin="5" />
+
+                                <TextBlock x:Name="RoomExam" 
                                            Style="{StaticResource ListTextBlock}" 
                                            Text="{x:Bind RoomExam}" 
-                                           Margin="5"
-                                           RelativePanel.AlignRightWithPanel="True"
-                                           RelativePanel.AlignVerticalCenterWithPanel="True" />
+                                           Margin="5" />
+                            </StackPanel>
 
-                                <StackPanel RelativePanel.AlignVerticalCenterWithPanel="True">
-                                    <TextBlock x:Name="Time"  
-                                               Style="{StaticResource ListTextBlock}" 
-                                               Text="{x:Bind TimeExam}" 
-                                               Margin="5"
-                                               RelativePanel.Below="Date"/>
-                                    <TextBlock x:Name="Date"  
-                                               Style="{StaticResource ListTextBlock}" 
-                                               Text="{x:Bind DateExam}" 
-                                               Margin="5" />
-                                </StackPanel>
-                                <TextBlock x:Name="RoomAdvice" 
-                                           Style="{StaticResource ListTextBlock}" 
-                                           Text="{x:Bind RoomAdvice}" 
-                                           Margin="5"
-                                           RelativePanel.AlignRightWithPanel="True"
-                                           RelativePanel.Below="Room"/>
+                            <StackPanel x:Name="AdviceInfo" 
+                                        Orientation="Horizontal" 
+                                        RelativePanel.AlignRightWithPanel="True"
+                                        RelativePanel.AlignBottomWithPanel="True"
+                                        HorizontalAlignment="Center">
                                 <TextBlock x:Name="TimeAdvice"  
                                            Style="{StaticResource ListTextBlock}" 
-                                           Text="{x:Bind TimeAdvice}" 
-                                           Margin="5"
-                                           RelativePanel.LeftOf="RoomAdvice"
-                                           RelativePanel.AlignVerticalCenterWith="RoomAdvice"/>
+                                           Text="{x:Bind TimeAdvice}"
+                                           Foreground="{StaticResource MediumBlue}"
+                                           Margin="5" />
+                                
                                 <TextBlock x:Name="DateAdvice" 
                                            Style="{StaticResource ListTextBlock}" 
                                            Text="{x:Bind DateAdvice}" 
-                                           Margin="5"
-                                           RelativePanel.LeftOf="TimeAdvice"
-                                           RelativePanel.AlignVerticalCenterWith="RoomAdvice"/>
-                            </RelativePanel>
-                        </UserControl>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackPanel>
+                                           Foreground="{StaticResource MediumBlue}"
+                                           Margin="5" />
+                                
+                                <TextBlock x:Name="RoomAdvice" 
+                                           Style="{StaticResource ListTextBlock}" 
+                                           Text="{x:Bind RoomAdvice}" 
+                                           Foreground="{StaticResource MediumBlue}"
+                                           Margin="5" />
+                            </StackPanel>
+                        </RelativePanel>
+                    </UserControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
         <TextBlock x:Name="Message"
-                       Margin="5"
-                       VerticalAlignment="Center" 
-                       HorizontalAlignment="Center"/>
+                   Margin="5"
+                   Grid.Row="1"
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Center"/>
 
         <ProgressRing x:Name="ExamRing"
-                  IsActive="False"
-                  Margin="0,-50,0,0"
-                  Width="50"
-                  Height="50"
-                  VerticalAlignment="Center"
-                  Foreground="White"/>
+                      IsActive="False"
+                      Margin="0,-50,0,0"
+                      Width="50"
+                      Grid.Row="1"
+                      Height="50"
+                      VerticalAlignment="Center"
+                      Foreground="White"/>
     </Grid>
 </Page>

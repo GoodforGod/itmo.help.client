@@ -27,4 +27,9 @@ namespace iTMO.Help.Model
         public string Name { get; set; } = "";
         public string Link { get; set; } = "";
     }
+
+    class TermItem
+    {
+        public string Term { get; set; } = "";
+    }
 }

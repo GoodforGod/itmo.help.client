@@ -47,6 +47,7 @@ namespace iTMO.Help.View
             if (string.IsNullOrWhiteSpace(SearchAutoSuggestBox.Text))
                 return;
 
+            ExamList.ItemsSource = null;
             Message.Text = "";
             ExamRing.IsActive = true;
 

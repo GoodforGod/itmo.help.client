@@ -26,10 +26,16 @@
     <Grid Background="{StaticResource DeepBlue}">
         <Pivot HorizontalAlignment="Center" HorizontalContentAlignment="Center">
             <PivotItem Header="Journal" HorizontalAlignment="Center">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="5">
+                <Grid HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <StackPanel x:Name="Toppers" 
+                                Grid.Row="0"
                                 HorizontalAlignment="Center"
                                 Orientation="Horizontal">
+                        
                         <ComboBox x:Name="GroupsBox"
                                   Margin="5"
                                   MinWidth="120" 
@@ -50,17 +56,14 @@
                                   MinWidth="120" 
                                   MaxWidth="320" 
                                   HorizontalAlignment="Center"
-                                  SelectedIndex="0"
                                   SelectionChanged="TermBox_SelectionChanged" >
-                            <ComboBoxItem>
-                                <TextBlock Text="All" Width="auto" Style="{StaticResource BarTextBlock}"/>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock Text="Find Part" Width="auto" Style="{StaticResource BarTextBlock}"/>
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                <TextBlock Text="Last Part" Width="auto" Style="{StaticResource BarTextBlock}"/>
-                            </ComboBoxItem>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="data:TermItem">
+                                    <StackPanel Orientation="Horizontal" Width="Auto" Height="Auto">
+                                        <TextBlock Text="{x:Bind Term}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
                         </ComboBox>
 
                         <Button x:Name="RefreshBtn" 
@@ -70,12 +73,12 @@
                                 Content="Refresh"
                                 Background="White"
                                 Foreground="{StaticResource DeepBlue}"
-                                Style="{StaticResource BarButton}"
-                                />
+                                Style="{StaticResource BarButton}"/>
                     </StackPanel>
 
                     <ListView x:Name="JournalList"
                               Margin="5"
+                              Grid.Row="1"
                               ItemContainerStyle="{StaticResource BarListView}"
                               ScrollViewer.IsVerticalRailEnabled="True" 
                               ScrollViewer.VerticalScrollMode="Auto" 
@@ -141,19 +144,22 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </StackPanel>
+                </Grid>
             </PivotItem>
             
             <!-- Second Pivot -->
             
             <PivotItem Header="Changes" HorizontalAlignment="Center">
-                <StackPanel Orientation="Vertical" 
-                            HorizontalAlignment="Center"
-                            MinWidth="360">
-
+                <Grid HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
                     <AutoSuggestBox x:Name="SearchAutoSuggestBox" 
                                     PlaceholderText="Group"
-                                    Width="200"
+                                    Grid.Row="0"
+                                    Width="220"
                                     Text="14"
                                     QueryIcon="Find"
                                     Margin="5" 
@@ -161,6 +167,7 @@
 
                     <ListView x:Name="JournalLogList"
                               Margin="5"
+                              Grid.Row="1"
                               ScrollViewer.IsVerticalRailEnabled="True" 
                               ScrollViewer.VerticalScrollMode="Auto" 
                               ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -173,7 +180,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:JournalChangeLog">
                                 <UserControl>
-                                    <RelativePanel MaxWidth="900" Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
+                                    <RelativePanel Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup>
                                                 <!--
@@ -231,7 +238,7 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </StackPanel>
+                </Grid>
             </PivotItem>
         </Pivot>
         
@@ -279,11 +286,13 @@
         </ContentDialog>
 
         <TextBlock x:Name="JournalMessage" 
-                   RelativePanel.AlignHorizontalCenterWithPanel="True"
-                   RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                   Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
 
         <ProgressRing x:Name="JournalRing"
                       IsActive="False"
+                      Grid.Row="1"
                       Margin="0,-50,0,0"
                       Width="50"
                       Height="50"

@@ -21,8 +21,15 @@
     </Page.Resources>
 
     <Grid Background="{StaticResource DeepBlue}">
-        <StackPanel HorizontalAlignment="Center">
-            <StackPanel Orientation="Horizontal" Margin="5">
+        <Grid HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Orientation="Horizontal" 
+                        Grid.Row="0"
+                        Margin="5">
                 <Grid Background="{StaticResource LightWhite}"
                       Margin="5">
                     <TextBox x:Name="NameBox" 
@@ -51,6 +58,7 @@
             
             <ListView x:Name="JournalCustomList"
                       Margin="5"
+                      Grid.Row="1"
                       ItemContainerStyle="{StaticResource BarListView}"
                       ScrollViewer.IsVerticalRailEnabled="True" 
                       ScrollViewer.VerticalScrollMode="Auto" 
@@ -59,19 +67,19 @@
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="data:JournalCustom">
                         <UserControl>
-                            <StackPanel MaxWidth="900" 
-                                        Margin="5" 
-                                        VerticalAlignment="Center"
-                                        Orientation="Horizontal"
-                                        BorderBrush="#BCD6FF" 
-                                        HorizontalAlignment="Center"
-                                        Background="White">
+                            <RelativePanel Width="auto"
+                                           Margin="5" 
+                                           BorderBrush="#BCD6FF" 
+                                           HorizontalAlignment="Center"
+                                           Background="White">
                                 <TextBlock x:Name="Name" 
+                                           RelativePanel.AlignLeftWithPanel="True"
                                            HorizontalAlignment="Left"
                                            Style="{StaticResource ListTextBlock}" 
                                            Text="{x:Bind Name}" 
                                            Margin="5"/>
                                 <Button x:Name="Delete" 
+                                        RelativePanel.AlignRightWithPanel="True"
                                         Width="auto"
                                         Height="auto"
                                         Tag="{x:Bind Id}" 
@@ -79,11 +87,11 @@
                                         Click="Delete_Click">
                                     <SymbolIcon Symbol="Delete"/>
                                 </Button>
-                            </StackPanel>
+                            </RelativePanel>
                         </UserControl>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </StackPanel>
+        </Grid>
     </Grid>
 </Page>

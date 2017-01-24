@@ -21,11 +21,19 @@
 
     <Grid Background="{StaticResource DeepBlue}">
         <Pivot>
-            <PivotItem Header="All" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
-                <Grid>
+            <PivotItem Header="All" 
+                       HorizontalContentAlignment="Center" 
+                       HorizontalAlignment="Center">
+                <Grid HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
                     <AutoSuggestBox Name="AllSearchBox" 
                                     PlaceholderText="Group"
                                     Width="200"
+                                    Grid.Row="0"
                                     QueryIcon="Find"
                                     Margin="5" 
                                     Style="{StaticResource ExamSearch}"
@@ -35,10 +43,16 @@
             <PivotItem Header="Even" 
                        HorizontalContentAlignment="Center" 
                        HorizontalAlignment="Center">
-                <Grid>
+                <Grid HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
                     <AutoSuggestBox Name="EvenSearchBox" 
                                     PlaceholderText="Group"
-                                    Width="200"
+                                    MinWidth="200"
+                                    Grid.Row="0"
                                     QueryIcon="Find"
                                     Margin="5" 
                                     Style="{StaticResource ExamSearch}"
@@ -48,10 +62,16 @@
             <PivotItem Header="Odd" 
                        HorizontalContentAlignment="Center" 
                        HorizontalAlignment="Center">
-                <Grid>
+                <Grid HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
                     <AutoSuggestBox Name="OddSearchBox" 
                                     PlaceholderText="Group"
                                     Width="200"
+                                    Grid.Row="0"
                                     QueryIcon="Find"
                                     Margin="5" 
                                     Style="{StaticResource ExamSearch}"
