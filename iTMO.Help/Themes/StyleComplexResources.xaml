@@ -17,8 +17,8 @@
         <Setter Property="Padding"                  Value="6,8,4,8"/>
         <Setter Property="HorizontalAlignment"      Value="Left"/>
         <Setter Property="VerticalAlignment"        Value="Center"/>
-        <Setter Property="Width"                    Value="150"/>
-        <Setter Property="Height"                   Value="50"/>
+        <Setter Property="Width"                    Value="auto"/>
+        <Setter Property="Height"                   Value="auto"/>
         <Setter Property="Background"               Value="Transparent"/>
         <Setter Property="FontFamily"               Value="Century Gothic"/>
         <Setter Property="FontWeight"               Value="Normal"/>
@@ -116,8 +116,8 @@
         <Setter Property="Padding"                  Value="6,8,4,8"/>
         <Setter Property="HorizontalAlignment"      Value="Left"/>
         <Setter Property="VerticalAlignment"        Value="Center"/>
-        <Setter Property="Width"                    Value="150"/>
-        <Setter Property="Height"                   Value="50"/>
+        <Setter Property="Width"                    Value="auto"/>
+        <Setter Property="Height"                   Value="auto"/>
         <Setter Property="Background"               Value="Transparent"/>
         <Setter Property="FontFamily"               Value="Century Gothic"/>
         <Setter Property="FontWeight"               Value="Normal"/>
@@ -209,7 +209,6 @@
     
     <Style TargetType="ListViewItem" x:Key="BarListView">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">

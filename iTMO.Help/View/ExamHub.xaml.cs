@@ -31,7 +31,11 @@ namespace iTMO.Help.View
             if ((exams = DatabaseController.Me.DExams) != null && exams.Count != 0)
                 ExamList.ItemsSource = exams;
             if (DatabaseController.Me.DUser != null && DatabaseController.Me.DUser.GroupLastUsed != null)
+            {
                 SearchAutoSuggestBox.Text = DatabaseController.Me.DUser.GroupLastUsed;
+                if (ExamList.ItemsSource == null)
+                    ProccessExamVR();
+            }
         }
 
         private void RestorePage()
@@ -75,6 +79,11 @@ namespace iTMO.Help.View
         private void SearchAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             ProccessExamVR();
+        }
+
+        private void ShareBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
         }
     }
 }

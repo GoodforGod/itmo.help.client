@@ -20,7 +20,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Background="{StaticResource DeepBlue}">
+    <Grid x:Name="MainGrid" Background="{StaticResource DeepBlue}">
         <Grid HorizontalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -63,31 +63,34 @@
                       ScrollViewer.IsVerticalRailEnabled="True" 
                       ScrollViewer.VerticalScrollMode="Auto" 
                       SelectionChanged="JournalCustomList_SelectionChanged"
+                      MaxWidth="{Binding ActualWidth, ElementName = MainGrid}"
                       ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="data:JournalCustom">
                         <UserControl>
-                            <RelativePanel Width="auto"
-                                           Margin="5" 
-                                           BorderBrush="#BCD6FF" 
-                                           HorizontalAlignment="Center"
-                                           Background="White">
+                            <Grid Margin="5" 
+                                  BorderBrush="#BCD6FF"
+                                  Background="{StaticResource LightWhite}"
+                                  HorizontalAlignment="Stretch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
                                 <TextBlock x:Name="Name" 
-                                           RelativePanel.AlignLeftWithPanel="True"
+                                           Grid.Row="0"
                                            HorizontalAlignment="Left"
                                            Style="{StaticResource ListTextBlock}" 
                                            Text="{x:Bind Name}" 
                                            Margin="5"/>
                                 <Button x:Name="Delete" 
-                                        RelativePanel.AlignRightWithPanel="True"
                                         Width="auto"
+                                        Grid.Row="0"
                                         Height="auto"
                                         Tag="{x:Bind Id}" 
                                         HorizontalAlignment="Right"
                                         Click="Delete_Click">
                                     <SymbolIcon Symbol="Delete"/>
                                 </Button>
-                            </RelativePanel>
+                            </Grid>
                         </UserControl>
                     </DataTemplate>
                 </ListView.ItemTemplate>

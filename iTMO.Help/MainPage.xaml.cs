@@ -80,18 +80,6 @@ namespace iTMO.Help
             DatabaseController.Me.DUser = User;
         }
 
-        private void AutoGroup_Click(object sender, RoutedEventArgs e)
-        {
-            User.isAutoGroupSelect = (bool)AutoGroup.IsChecked;
-            DatabaseController.Me.DUser = User;
-        }
-
-        private void AutoLogin_Click(object sender, RoutedEventArgs e)
-        {
-            User.isAutoLogin = (bool)AutoLogin.IsChecked;
-            DatabaseController.Me.DUser = User;
-        }
-
         private void Password_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (IsInputValid(Group.Text))
@@ -129,8 +117,6 @@ namespace iTMO.Help
             if (SettingsView.IsPaneOpen = !SettingsView.IsPaneOpen && (User = DatabaseController.Me.DUser) != null)
             {
                 IsNotified.IsChecked    = User.isNotified;
-                AutoGroup.IsChecked     = User.isAutoGroupSelect;
-                AutoLogin.IsChecked     = User.isAutoLogin;
                 AutoTerm.IsChecked      = User.isAutoTermSelect;
                 if (IsInputValid(User.Password))
                     Password.Password   = User.Password;

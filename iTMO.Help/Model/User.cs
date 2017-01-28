@@ -11,10 +11,9 @@ namespace iTMO.Help.Model
         public string Group             { get; set; }
         public string GroupLastUsed     { get; set; }
         public int    JournalTerm       { get; set; }
+        public int    MenuLastSelected  { get; set; } = 0;
 
-        public bool isAutoLogin         { get; set; }
         public bool isAutoTermSelect    { get; set; }
-        public bool isAutoGroupSelect   { get; set; }
         public bool isNotified          { get; set; }
         public bool isMsgDeUnreadOnly   { get; set; }
     }

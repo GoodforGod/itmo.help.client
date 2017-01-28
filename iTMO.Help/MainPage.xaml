@@ -22,7 +22,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Background="#1E51A4">
+    <Grid Background="{StaticResource DeepBlue}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -164,21 +164,11 @@
                                  Margin="5" 
                                  TextChanged="Group_TextChanged"/>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Width="auto">
-                            <CheckBox Name="AutoLogin" Click="AutoLogin_Click">
-                                <TextBlock Text="Auto Login" 
-                                           Style="{StaticResource ListTextBlock}" />
-                            </CheckBox>
-                            <CheckBox Name="AutoGroup" Click="AutoGroup_Click">
-                                <TextBlock Text="Current Group" 
-                                           Style="{StaticResource ListTextBlock}" />
-                            </CheckBox>
                             <CheckBox Name="AutoTerm"  Click="AutoTerm_Click">
-                                <TextBlock Text="Current Semester" 
-                                           Style="{StaticResource ListTextBlock}" />
+                                <TextBlock Text="Current Semester" Style="{StaticResource ListTextBlock}" />
                             </CheckBox>
                             <CheckBox Name="IsNotified" Click="IsNotified_Click">
-                                <TextBlock Text="Notification" 
-                                           Style="{StaticResource ListTextBlock}" />
+                                <TextBlock Text="Notification" Style="{StaticResource ListTextBlock}" />
                             </CheckBox>
                         </StackPanel>
                         <Button HorizontalAlignment="Center" 

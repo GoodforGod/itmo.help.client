@@ -23,8 +23,8 @@
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
             <AutoSuggestBox Name="SearchAutoSuggestBox" 
-                            Grid.Row="0"
                             PlaceholderText="Group"
                             Width="220"
                             QueryIcon="Find"
@@ -32,7 +32,15 @@
                             RelativePanel.AlignHorizontalCenterWithPanel="True"
                             Style="{StaticResource ExamSearch}"
                             QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted"/>
-
+            <Button x:Name="ShareBtn" 
+                    Content="&#xE72D;"
+                    Click="ShareBtn_Click"
+                    FontSize="18"
+                    Width="{Binding ActualHeight, ElementName=ShareBtn}"
+                    Background="{StaticResource LightWhite}"
+                    Style="{StaticResource ButtonCustom}"
+                    FontFamily="Segoe MDL2 Assets" />
+        </StackPanel>
         <ListView Name="ExamList" 
                   Margin="5"
                   Grid.Row="1"
@@ -68,21 +76,6 @@
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
                             
-                            <TextBlock x:Name="Subject" 
-                                       Style="{StaticResource ListTextBlock}" 
-                                       Text="{x:Bind Subject}" 
-                                       FontWeight="Bold"
-                                       RelativePanel.RightOf="AppSeparator"
-                                       RelativePanel.AlignTopWithPanel="True"
-                                       Margin="5" />
-                            <TextBlock x:Name="Teacher" 
-                                       Style="{StaticResource ListTextBlock}" 
-                                       Text="{x:Bind Teacher}" 
-                                       FontStyle="Italic"
-                                       RelativePanel.Below="Subject"
-                                       RelativePanel.RightOf="AppSeparator"
-                                       Margin="5" />
-                            
                             <StackPanel x:Name="DateTime" 
                                         Orientation="Vertical" 
                                         HorizontalAlignment="Center"
@@ -106,6 +99,24 @@
                                              RelativePanel.RightOf="DateTime" 
                                              Background="{StaticResource DeepPink}"
                                              Margin="5" />
+
+                            <TextBlock x:Name="Subject" 
+                                       Style="{StaticResource ListTextBlock}" 
+                                       Text="{x:Bind Subject}" 
+                                       FontWeight="Bold"
+                                       TextWrapping="Wrap"
+                                       RelativePanel.RightOf="AppSeparator"
+                                       RelativePanel.AlignTopWithPanel="True"
+                                       Margin="5" />
+                            
+                            <TextBlock x:Name="Teacher" 
+                                       Style="{StaticResource ListTextBlock}" 
+                                       Text="{x:Bind Teacher}" 
+                                       FontStyle="Italic"
+                                       TextWrapping="Wrap"
+                                       RelativePanel.Below="Subject"
+                                       RelativePanel.RightOf="AppSeparator"
+                                       Margin="5" />
 
                             <StackPanel x:Name="ExamInfo" 
                                         Orientation="Horizontal" 

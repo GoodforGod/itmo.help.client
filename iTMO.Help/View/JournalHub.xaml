@@ -67,8 +67,9 @@
                         </ComboBox>
 
                         <Button x:Name="RefreshBtn" 
+                                Margin="5"
                                 Click="Button_Click"
-                                Height="auto"
+                                Height="{Binding ActualHeight, ElementName=TermBox }"
                                 Width="auto"
                                 Content="Refresh"
                                 Background="White"
@@ -113,32 +114,33 @@
                                         <TextBlock x:Name="Subject" 
                                                    Style="{StaticResource ListTextBlock}" 
                                                    Text="{x:Bind name}" 
+                                                   TextWrapping="WrapWholeWords"
                                                    Margin="5"
-                                                   RelativePanel.AlignLeftWithPanel="True"
                                                    RelativePanel.AlignTopWithPanel="True"/>
                                         <TextBlock x:Name="TermText" 
                                                    Text="Term "
                                                    Style="{StaticResource ListTextBlock}" 
                                                    Margin="5"
-                                                   RelativePanel.AlignLeftWithPanel="True"
                                                    RelativePanel.Below="Subject" />
                                         <TextBlock x:Name="Term" 
                                                    Style="{StaticResource ListTextBlock}" 
-                                                   Text="{x:Bind semester}" 
                                                    Margin="5"
                                                    RelativePanel.AlignVerticalCenterWith="TermText"
-                                                   RelativePanel.RightOf="TermText"/>
+                                                   RelativePanel.RightOf="TermText">
+                                            <Run>Term </Run>
+                                            <Run Text="{x:Bind semester}"/>
+                                        </TextBlock>
+                                        <TextBlock x:Name="Type" 
+                                                   Style="{StaticResource ListTextBlock}" 
+                                                   Text="{x:Bind marks[0].worktype}" 
+                                                   Margin="5"
+                                                   RelativePanel.AlignRightWithPanel="True"/>
                                         <TextBlock x:Name="Total" 
                                                    Style="{StaticResource ListTextBlock}" 
                                                    Text="{x:Bind points[0].value}" 
                                                    Margin="5"
                                                    RelativePanel.AlignRightWithPanel="True"
                                                    RelativePanel.Below="Type"/>
-                                        <TextBlock x:Name="Type" 
-                                                   Style="{StaticResource ListTextBlock}" 
-                                                   Text="{x:Bind marks[0].worktype}" 
-                                                   Margin="5"
-                                                   RelativePanel.AlignRightWithPanel="True"/>
                                     </RelativePanel>
                                 </UserControl>
                             </DataTemplate>

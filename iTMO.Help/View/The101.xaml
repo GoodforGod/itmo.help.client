@@ -19,7 +19,9 @@
     <Grid Background="{StaticResource DeepBlue}">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="The 101 Chair" Margin="5"/>
-            
+            <Grid HorizontalAlignment="Stretch">
+                
+            </Grid>
             <ProgressRing x:Name="ProgressRing"
                           IsActive="True"
                           Width="50"

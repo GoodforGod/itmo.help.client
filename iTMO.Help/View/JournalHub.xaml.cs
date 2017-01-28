@@ -43,9 +43,13 @@ namespace iTMO.Help.View
 
             if (IsJournalValid())
                 ProcessLastSelectedGroup();
+            else
+                ProccessJournalVR();
 
             if ((DJournalChangeLog = DatabaseController.Me.DJournalChangeLog) != null)
                 JournalLogList.ItemsSource = DJournalChangeLog;
+            else
+                ProccesJournalChangeLogVR();
         }
 
         private void ProcessLastSelectedGroup()
