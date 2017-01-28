@@ -142,5 +142,10 @@ namespace iTMO.Help.View
         {
 
         }
+
+        private void Text_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

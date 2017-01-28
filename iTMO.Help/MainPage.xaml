@@ -59,7 +59,7 @@
                                 HorizontalAlignment="Left"
                                 Foreground="#EC1946" 
                                 Content="&#xE71D;"
-                                FontSize="22"
+                                FontSize="24"
                                 FontFamily="Segoe MDL2 Assets" 
                                 Click="btnBar_Click"/>
                         <Image HorizontalAlignment="Left" Source="/Resources/media/logo_small.png" Width="100"/>
@@ -77,7 +77,7 @@
                                     <TextBlock Style="{StaticResource BarTextBlock}" 
                                                Text="{x:Bind Icon}" 
                                                TextAlignment="Justify"
-                                               FontSize="22"
+                                               FontSize="24"
                                                FontFamily="Segoe MDL2 Assets"/> 
                                     <TextBlock Style="{StaticResource BarTextBlock}" 
                                                Text="{x:Bind Title}"
@@ -87,6 +87,7 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
+                    
                     <Button x:Name="SettingsBtn" 
                             Height="50" 
                             Width="150"

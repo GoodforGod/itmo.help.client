@@ -79,8 +79,7 @@
                                            Grid.Row="0"
                                            HorizontalAlignment="Left"
                                            Style="{StaticResource ListTextBlock}" 
-                                           Text="{x:Bind Name}" 
-                                           Margin="5"/>
+                                           Text="{x:Bind Name}"/>
                                 <Button x:Name="Delete" 
                                         Width="auto"
                                         Grid.Row="0"

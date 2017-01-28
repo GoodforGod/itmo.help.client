@@ -54,6 +54,7 @@ namespace iTMO.Help
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             MenuListOpts.ItemsSource = MenuOptions;
+            MenuListOpts.SelectedIndex = DatabaseController.Me.DUser.MenuLastSelected;
         }
 
         private void btnBar_Click(object sender, RoutedEventArgs e)
@@ -65,6 +66,9 @@ namespace iTMO.Help
         {
             var list = sender as ListView;
             var item = list.SelectedItem as MenuItem;
+            var usr = DatabaseController.Me.DUser;
+            usr.MenuLastSelected = list.SelectedIndex;
+            DatabaseController.Me.DUser = usr;
             FrameContent.Navigate(item.Page);
         }
 

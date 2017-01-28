@@ -52,55 +52,52 @@
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:MessageDe">
                                 <UserControl>
-                                    <RelativePanel Width="auto" 
-                                                   Margin="5" 
-                                                   VerticalAlignment="Center"
-                                                   BorderBrush="#BCD6FF" 
-                                                   HorizontalAlignment="Center"
-                                                   Background="White">
-                                        
-                                        <TextBlock x:Name="Sender" 
-                                                   RelativePanel.AlignLeftWithPanel="True"
-                                                   Style="{StaticResource ListTextBlock}" 
-                                                   Text="{x:Bind sender}" 
-                                                   Margin="5"/>
-                                        <AppBarSeparator x:Name="Separator2"
-                                                         Background="{StaticResource DeepPink}"
-                                                         RelativePanel.RightOf="Sender"
-                                                         RelativePanel.AlignVerticalCenterWith="Sender"
-                                                         Margin="2"/>
-                                        <TextBlock x:Name="Date" 
-                                                   RelativePanel.RightOf="Separator2"
-                                                   RelativePanel.AlignVerticalCenterWith="Sender"
-                                                   Style="{StaticResource ListTextBlock}" 
-                                                   Text="{x:Bind date}" 
-                                                   Margin="5"/>
-                                        <AppBarSeparator x:Name="Separator" 
-                                                         RelativePanel.RightOf="Date"
-                                                         Background="{StaticResource DeepPink}"
-                                                         RelativePanel.AlignTopWithPanel="True"
-                                                         Margin="2"/>
-                                        <TextBlock x:Name="Topic" 
-                                                   RelativePanel.RightOf="Separator"
-                                                   RelativePanel.AlignVerticalCenterWith="Sender"
-                                                   Style="{StaticResource ListTextBlock}" 
-                                                   Text="{x:Bind topic}" 
-                                                   Margin="5"/>
+                                    <StackPanel Width="auto" 
+                                                Margin="5" 
+                                                HorizontalAlignment="Center"
+                                                Background="White">
+                                        <StackPanel x:Name="Header" 
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Orientation="Horizontal">
+                                            <TextBlock x:Name="Sender" 
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind sender}"/>
+
+                                            <AppBarSeparator x:Name="Separator2"
+                                                             Foreground="{StaticResource MediumPink}"
+                                                             Margin="2"
+                                                             Width="auto"/>
+
+                                            <TextBlock x:Name="Date" 
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind date}"/>
+
+                                            <AppBarSeparator x:Name="Separator" 
+                                                             Foreground="{StaticResource MediumPink}"
+                                                             Margin="2"
+                                                             Width="auto"/>
+
+                                            <TextBlock x:Name="Topic" 
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind topic}"/>
+                                        </StackPanel>
+
                                         <Border x:Name="TextBorder" 
-                                                BorderBrush="{StaticResource DeepPink}" 
+                                                BorderBrush="{StaticResource LightBlue}" 
                                                 HorizontalAlignment="Stretch"
-                                                RelativePanel.Below="Sender"
-                                                RelativePanel.AlignHorizontalCenterWithPanel="True"
-                                                Margin="2" 
+                                                Margin="10,0,10,0"
                                                 BorderThickness="1"/>
+                                        
                                         <TextBlock x:Name="Text" 
                                                    Style="{StaticResource ListTextBlock}" 
                                                    Text="{x:Bind text}"
-                                                   RelativePanel.Below="TextBorder"
-                                                   TextWrapping="Wrap"
-                                                   RelativePanel.AlignHorizontalCenterWithPanel="True"
-                                                   Margin="5"/>
-                                    </RelativePanel>
+                                                   IsTextSelectionEnabled="True"
+                                                   SelectionChanged="Text_SelectionChanged"/>
+                                    </StackPanel>
                                 </UserControl>
                             </DataTemplate>
                         </ListView.ItemTemplate>
