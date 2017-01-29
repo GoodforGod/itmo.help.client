@@ -7,7 +7,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -49,10 +48,8 @@
                    BorderBrush="#003791"
                    FontFamily="Segoe MDL2 Assets">
             <SplitView.Pane>
-                <RelativePanel Background="White">
+                <StackPanel Orientation="Vertical" Background="White">
                     <StackPanel x:Name="Topper"
-                                RelativePanel.AlignLeftWithPanel="True"
-                                RelativePanel.AlignTopWithPanel="True"
                                 Orientation="Horizontal">
                         <Button x:Name="BtnBar"
                                 Width="50"
@@ -67,8 +64,6 @@
 
                     <ListView x:Name="MenuListOpts" 
                               ItemContainerStyle="{StaticResource BarListView}"
-                              RelativePanel.Below="Topper"
-                              RelativePanel.AlignLeftWithPanel="True"
                               IsItemClickEnabled="True"
                               SelectionChanged="MenuListOpts_SelectionChanged">
                         <ListView.ItemTemplate>
@@ -78,7 +73,7 @@
                                                Text="{x:Bind Icon}" 
                                                TextAlignment="Justify"
                                                FontSize="24"
-                                               FontFamily="Segoe MDL2 Assets"/> 
+                                               FontFamily="Segoe MDL2 Assets"/>
                                     <TextBlock Style="{StaticResource BarTextBlock}" 
                                                Text="{x:Bind Title}"
                                                Margin="-10,0,0,0"
@@ -92,7 +87,7 @@
                             Height="50" 
                             Width="150"
                             Margin="0,10,0,10"
-                            RelativePanel.AlignBottomWithPanel="True"
+                            VerticalAlignment="Bottom"
                             Background="Transparent" 
                             Click="SettingsBtn_Click">
                         <Button.Content>
@@ -110,7 +105,7 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                </RelativePanel>
+                </StackPanel>
             </SplitView.Pane>
             
             <SplitView.Content>
@@ -142,28 +137,35 @@
                    FontFamily="Segoe MDL2 Assets">
             <SplitView.Pane>
                 <RelativePanel x:Name="SettingsRelativePanel" Background="White">
+                    <TextBlock Text="iTMO.Help" 
+                               RelativePanel.AlignHorizontalCenterWithPanel="True"
+                               RelativePanel.AlignTopWithPanel="True"
+                               Width="auto"/>
+
                     <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True"
                                 RelativePanel.AlignVerticalCenterWithPanel="True">
-                        <TextBlock Text="iTMO.Help" 
-                                   Width="auto"/>
+                       
                         <TextBox x:Name="Login" 
                                  TextAlignment="Center" 
                                  FontFamily="Century Gothic" 
                                  PlaceholderText="Login"
                                  Margin="5" 
                                  TextChanged="Login_TextChanged"/>
+                        
                         <PasswordBox x:Name="Password" 
                                      Margin="5"
                                      PlaceholderText="Password"
                                      PasswordRevealMode="Visible"
                                      IsPasswordRevealButtonEnabled="True"
                                      PasswordChanged="Password_PasswordChanged"/>
+                        
                         <TextBox x:Name="Group" 
                                  TextAlignment="Center" 
                                  FontFamily="Century Gothic" 
                                  PlaceholderText="Group"
                                  Margin="5" 
                                  TextChanged="Group_TextChanged"/>
+                        
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Width="auto">
                             <CheckBox Name="AutoTerm"  Click="AutoTerm_Click">
                                 <TextBlock Text="Current Semester" Style="{StaticResource ListTextBlock}" />
@@ -172,11 +174,13 @@
                                 <TextBlock Text="Notification" Style="{StaticResource ListTextBlock}" />
                             </CheckBox>
                         </StackPanel>
+                        
                         <Button HorizontalAlignment="Center" 
                                 Margin="5" 
                                 Content="Contact Developer" 
                                 Width="auto"/>
                     </StackPanel>
+                    
                     <TextBlock Text="2017" 
                                RelativePanel.AlignBottomWithPanel="True"
                                RelativePanel.AlignHorizontalCenterWithPanel="True"

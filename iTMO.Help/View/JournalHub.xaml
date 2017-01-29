@@ -24,13 +24,21 @@
     </Page.Resources>
     
     <Grid Background="{StaticResource DeepBlue}">
-        <Pivot HorizontalAlignment="Center" HorizontalContentAlignment="Center">
+        <Pivot HorizontalAlignment="Center" 
+               HorizontalContentAlignment="Center" 
+               SelectionChanged="Pivot_SelectionChanged">
             <PivotItem Header="Journal" HorizontalAlignment="Center">
                 <Grid HorizontalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
+
+                    <TextBlock x:Name="JournalMessage" 
+                               Grid.Row="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+
                     <StackPanel x:Name="Toppers" 
                                 Grid.Row="0"
                                 HorizontalAlignment="Center"
@@ -45,7 +53,8 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate x:DataType="data:Year">
                                     <StackPanel Orientation="Horizontal" Width="Auto" Height="Auto">
-                                        <TextBlock Text="{x:Bind group}"/>
+                                        <TextBlock Foreground="{StaticResource MediumBlue}" 
+                                                   Text="{x:Bind group}"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -60,13 +69,15 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate x:DataType="data:TermItem">
                                     <StackPanel Orientation="Horizontal" Width="Auto" Height="Auto">
-                                        <TextBlock Text="{x:Bind Term}"/>
+                                        <TextBlock Foreground="{StaticResource MediumBlue}" 
+                                                   Text="{x:Bind Term}"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
                         <Button x:Name="RefreshBtn" 
+                                IsEnabled="False"
                                 Margin="5"
                                 Click="Button_Click"
                                 Height="{Binding ActualHeight, ElementName=TermBox }"
@@ -89,53 +100,29 @@
                             <DataTemplate x:DataType="data:Subject">
                                 <UserControl>
                                     <RelativePanel Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup>
-                                                <!--
-                                                <VisualState x:Name="Narrow">
-                                                    <VisualState.StateTriggers>
-                                                        <AdaptiveTrigger MinWindowWidth="0"/>
-                                                    </VisualState.StateTriggers>
-                                                    <VisualState.Setters>
-                                                        <Setter Target="TTeacher.(RelativePanel.Below)" Value="TSubject"/>
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                                <VisualState>
-                                                    <VisualState.StateTriggers>
-                                                        <AdaptiveTrigger MinWindowWidth="700"/>
-                                                    </VisualState.StateTriggers>
-                                                    <VisualState.Setters>
-                                                        <Setter Target="TTeacher.(RelativePanel.RightOf)" Value="TSubject"/>
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                                -->
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
                                         <TextBlock x:Name="Subject" 
                                                    Style="{StaticResource ListTextBlock}" 
                                                    Text="{x:Bind name}" 
                                                    TextWrapping="WrapWholeWords"
                                                    RelativePanel.AlignTopWithPanel="True"/>
-                                        <TextBlock x:Name="TermText" 
-                                                   Text="Term "
-                                                   Style="{StaticResource ListTextBlock}" 
-                                                   RelativePanel.Below="Subject" />
                                         <TextBlock x:Name="Term" 
-                                                   Style="{StaticResource ListTextBlock}" 
-                                                   RelativePanel.AlignVerticalCenterWith="TermText"
-                                                   RelativePanel.RightOf="TermText">
+                                                   Style="{StaticResource ListTextBlock}"
+                                                   RelativePanel.Below="Subject">
                                             <Run>Term </Run>
                                             <Run Text="{x:Bind semester}"/>
                                         </TextBlock>
+                                        
                                         <TextBlock x:Name="Type" 
                                                    Style="{StaticResource ListTextBlock}" 
                                                    Text="{x:Bind marks[0].worktype}" 
                                                    RelativePanel.AlignRightWithPanel="True"/>
                                         <TextBlock x:Name="Total" 
                                                    Style="{StaticResource ListTextBlock}" 
-                                                   Text="{x:Bind points[0].value}" 
                                                    RelativePanel.AlignRightWithPanel="True"
-                                                   RelativePanel.Below="Type"/>
+                                                   RelativePanel.Below="Type">
+                                            <Run>Total : </Run>
+                                            <Run Text="{x:Bind points[0].value}"/>
+                                        </TextBlock>
                                     </RelativePanel>
                                 </UserControl>
                             </DataTemplate>
@@ -153,6 +140,11 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
+                    <TextBlock x:Name="JournalChangeMessage" 
+                               Grid.Row="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+
                     <AutoSuggestBox x:Name="SearchAutoSuggestBox" 
                                     PlaceholderText="Group"
                                     Grid.Row="0"
@@ -162,7 +154,7 @@
                                     Margin="5" 
                                     QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted"/>
 
-                    <ListView x:Name="JournalLogList"
+                    <ListView x:Name="JournalChangeList"
                               Margin="5"
                               Grid.Row="1"
                               ItemContainerStyle="{StaticResource BarListView}"
@@ -173,28 +165,31 @@
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:JournalChangeLog">
                                 <UserControl>
-                                    <Grid>
-                                        <StackPanel Width="auto" Margin="5" BorderBrush="#BCD6FF" Background="White">
+                                    <StackPanel Orientation="Horizontal" 
+                                                Width="auto" 
+                                                Margin="5" 
+                                                BorderBrush="#BCD6FF"
+                                                Background="White">
+                                        <StackPanel Orientation="Vertical">
                                             <TextBlock x:Name="Variable" 
-                                                   Style="{StaticResource ListTextBlock}" 
-                                                   Text="{x:Bind var.name}">
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind var.name}">
                                             </TextBlock>
                                             <TextBlock x:Name="Max" 
-                                                   Text="{x:Bind var.max}"
-                                                   Style="{StaticResource ListTextBlock}" >
-                                                
+                                                       Text="{x:Bind var.max}"
+                                                       Style="{StaticResource ListTextBlock}">
                                             </TextBlock>
                                         </StackPanel>
-                                        
-                                        <StackPanel>
+
+                                        <StackPanel Orientation="Vertical">
                                             <TextBlock x:Name="Limit" 
-                                                   Style="{StaticResource ListTextBlock}" 
-                                                   Text="{x:Bind var.min}"/>
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind var.min}"/>
                                             <TextBlock x:Name="Value" 
-                                                   Style="{StaticResource ListTextBlock}" 
-                                                   Text="{x:Bind var.threshold}"/>
+                                                       Style="{StaticResource ListTextBlock}" 
+                                                       Text="{x:Bind var.threshold}"/>
                                         </StackPanel>
-                                    </Grid>
+                                    </StackPanel>
                                 </UserControl>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -245,11 +240,6 @@
                 -->
             </StackPanel>
         </ContentDialog>
-
-        <TextBlock x:Name="JournalMessage" 
-                   Grid.Row="1"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"/>
 
         <ProgressRing x:Name="JournalRing"
                       IsActive="False"

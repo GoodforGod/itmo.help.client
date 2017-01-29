@@ -33,11 +33,6 @@ namespace iTMO.Help.View
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        {
-            DatabaseController.Me.DMessageDe = MessageDE;
-        }
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if ((MessageDE = DatabaseController.Me.DMessageDe) != null)
@@ -72,7 +67,7 @@ namespace iTMO.Help.View
                 if (dataVR.IsValid)
                 {
                     RememberUserData(user_data);
-                    DEList.ItemsSource = new ObservableCollection<MessageDe>(MessageDE = dataVR.Data);
+                    DEList.ItemsSource = new ObservableCollection<MessageDe>(DatabaseController.Me.DMessageDe = MessageDE = dataVR.Data);
                 }
                 else
                     Message.Text = dataVR.Message;

@@ -23,7 +23,7 @@ namespace iTMO.Help.Controller
         public static SerializeData<List<ExamVR>> ToExamView(string data)
         {
             SerializeData<List<ExamVR>> serializedData = new SerializeData<List<ExamVR>>() { Data = new List<ExamVR>() };
-            ScheduleExam exams      = null;
+            ScheduleExam exams = null;
 
             try
             {
@@ -125,7 +125,7 @@ namespace iTMO.Help.Controller
                             if (subject.marks == null || subject.marks.Count == 0)
                                 subject.marks = new List<Mark>() { new Mark() };
                             if (subject.points == null || subject.points.Count == 0)
-                                subject.points = new List<Points>() { new Points() };
+                                subject.points = new List<Points>() { new Points() { value = "0" } };
 
                             // Sort by even & odd semesters, cause API doesnt garantie even the order of the subjects...
                             var semCheck = 0;

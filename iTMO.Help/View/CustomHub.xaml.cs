@@ -46,6 +46,7 @@ namespace iTMO.Help.View
             if(!string.IsNullOrWhiteSpace(NameBox.Text) && !string.IsNullOrWhiteSpace(LinkBox.Text))
             {
                 DatabaseController.Me.SaveCustomJournal(new JournalCustom() { Name = NameBox.Text, Link = LinkBox.Text });
+                NameBox.Text = LinkBox.Text = "";
                 ProcessCustomJournal();
             }
         }
@@ -56,9 +57,11 @@ namespace iTMO.Help.View
             ProcessCustomJournal();
         }
 
-        private void JournalCustomList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void JournalCustomList_ItemClick(object sender, ItemClickEventArgs e)
         {
-
+            var list = sender as ListView;
+            var itemo = e.ClickedItem as JournalCustom;
+            var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(itemo.Link));
         }
     }
 }

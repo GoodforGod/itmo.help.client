@@ -18,21 +18,11 @@ namespace iTMO.Help.View
     public sealed partial class JournalHub : Page
     {
         private Journal DJournal = null;
-        private List<JournalChangeLog> DJournalChangeLog = null;
+        private List<JournalChangeLog> DJournalChange = null;
 
         public JournalHub()
         {
             this.InitializeComponent();
-        }
-
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        {
-            if(DJournal != null)
-                DatabaseController.Me.DJournal = DJournal;
-            if(DJournalChangeLog != null)
-                DatabaseController.Me.DJournalChangeLog = DJournalChangeLog;
-            DatabaseController.Me.GroupLastSelectedIndex = GroupsBox.SelectedIndex;
-            DatabaseController.Me.TermLastSelectedIndex = TermBox.SelectedIndex;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -45,11 +35,6 @@ namespace iTMO.Help.View
                 ProcessLastSelectedGroup();
             else
                 ProccessJournalVR();
-
-            if ((DJournalChangeLog = DatabaseController.Me.DJournalChangeLog) != null)
-                JournalLogList.ItemsSource = DJournalChangeLog;
-            else
-                ProccesJournalChangeLogVR();
         }
 
         private void ProcessLastSelectedGroup()
@@ -97,24 +82,31 @@ namespace iTMO.Help.View
 
                 if (dataVR.IsValid)
                 {
-                    DJournal = dataVR.Data;
+                    DatabaseController.Me.DJournal = DJournal = dataVR.Data;
                     GroupsBox.ItemsSource = DJournal.years;
                     GroupsBox.SelectedIndex = GroupsBox.Items.Count - 1;
-                    //JournalList.ItemsSource = new ObservableCollection<Subject>(dataVR.Data.years[selectedGrp].subjects);
                 }
-                else JournalMessage.Text = dataVR.Message;
+                else
+                {
+                    JournalMessage.Text = dataVR.Message;
+                    RefreshBtn.IsEnabled = true;
+                }
             }
-            else JournalMessage.Text = response.Data;
+            else
+            {
+                JournalMessage.Text = response.Data;
+                RefreshBtn.IsEnabled = true;
+            }
 
             RememberMeBox.IsChecked = JournalRing.IsActive = false;
         }
 
         private async void ProccesJournalChangeLogVR()
         {
-            JournalMessage.Text = "";
+            JournalChangeMessage.Text = "";
 
-            if (JournalLogList.Items != null)
-                JournalLogList.ItemsSource = DJournalChangeLog = null;
+            if (JournalChangeList.Items != null)
+                JournalChangeList.ItemsSource = DJournalChange = null;
 
             var user_data = await CollectUserData();
 
@@ -141,7 +133,7 @@ namespace iTMO.Help.View
                     var dataVR = SerializeContoller.ToJournalChangeLogView(response.Data);
 
                     if (dataVR.IsValid)
-                        JournalLogList.ItemsSource = new ObservableCollection<JournalChangeLog>(DJournalChangeLog = dataVR.Data);
+                        JournalChangeList.ItemsSource = new ObservableCollection<JournalChangeLog>(DatabaseController.Me.DJournalChangeLog = DJournalChange = dataVR.Data);
                     else
                         JournalMessage.Text = dataVR.Message;
                 }
@@ -149,10 +141,10 @@ namespace iTMO.Help.View
                 { 
                     if (response.Code != System.Net.HttpStatusCode.NoContent)
                         JournalList.ItemsSource = null;
-                    JournalMessage.Text = response.Data;
+                    JournalChangeMessage.Text = response.Data;
                 }
             }
-            else JournalMessage.Text = "Invalid Days Input";
+            else JournalChangeMessage.Text = "Invalid Days Input";
 
             RememberMeBox.IsChecked = JournalRing.IsActive = false;
         }
@@ -236,23 +228,42 @@ namespace iTMO.Help.View
         private void TermBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (IsJournalValid() && GroupsBox.SelectedIndex != -1)
+            {
+                DatabaseController.Me.TermLastSelectedIndex = TermBox.SelectedIndex;
                 JournalFillStrategy();
+            }
         }
 
         private void GroupsBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (IsJournalValid() && DJournal.years.Count >= GroupsBox.SelectedIndex)
+            {
+                DatabaseController.Me.GroupLastSelectedIndex = GroupsBox.SelectedIndex;
                 JournalFillStrategy();
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            RefreshBtn.IsEnabled = false;
             ProccessJournalVR();
         }
 
         private void SearchAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             ProccesJournalChangeLogVR(); 
+        }
+
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var pivot = (PivotItem)(sender as Pivot).SelectedItem;
+            if (pivot.Header.ToString() == "Changes")
+            {
+                if ((DJournalChange = DatabaseController.Me.DJournalChangeLog) != null)
+                    JournalChangeList.ItemsSource = DJournalChange;
+                else
+                    ProccesJournalChangeLogVR();
+            }
         }
     }
 }

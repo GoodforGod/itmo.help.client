@@ -21,11 +21,6 @@ namespace iTMO.Help.View
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatingFrom( NavigatingCancelEventArgs e)
-        {
-            DatabaseController.Me.DExams = exams;
-        }
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if ((exams = DatabaseController.Me.DExams) != null && exams.Count != 0)
@@ -67,7 +62,7 @@ namespace iTMO.Help.View
                     usr.GroupLastUsed = SearchAutoSuggestBox.Text;
                     DatabaseController.Me.DUser = usr;
 
-                    ExamList.ItemsSource = new ObservableCollection<ExamVR>(exams = dataVR.Data);
+                    ExamList.ItemsSource = new ObservableCollection<ExamVR>(DatabaseController.Me.DExams = exams = dataVR.Data);
                 }
                 else Message.Text = dataVR.Message;
             }

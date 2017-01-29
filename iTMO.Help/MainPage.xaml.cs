@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using iTMO.Help.Model;
 using iTMO.Help.Controller;
+using Windows.Foundation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -20,6 +21,7 @@ namespace iTMO.Help
         public MainPage()
         {
             SetApplicationTopColorSchema();
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size { Width = 365, Height = 380 });
             this.InitializeComponent();
         }
 

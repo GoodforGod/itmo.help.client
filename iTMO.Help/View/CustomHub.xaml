@@ -62,7 +62,8 @@
                       ItemContainerStyle="{StaticResource BarListView}"
                       ScrollViewer.IsVerticalRailEnabled="True" 
                       ScrollViewer.VerticalScrollMode="Auto" 
-                      SelectionChanged="JournalCustomList_SelectionChanged"
+                      ItemClick="JournalCustomList_ItemClick"
+                      IsItemClickEnabled="True"
                       MaxWidth="{Binding ActualWidth, ElementName = MainGrid}"
                       ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <ListView.ItemTemplate>
@@ -75,11 +76,13 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
+                                
                                 <TextBlock x:Name="Name" 
                                            Grid.Row="0"
                                            HorizontalAlignment="Left"
                                            Style="{StaticResource ListTextBlock}" 
                                            Text="{x:Bind Name}"/>
+                                
                                 <Button x:Name="Delete" 
                                         Width="auto"
                                         Grid.Row="0"
@@ -89,6 +92,7 @@
                                         Click="Delete_Click">
                                     <SymbolIcon Symbol="Delete"/>
                                 </Button>
+                                
                             </Grid>
                         </UserControl>
                     </DataTemplate>

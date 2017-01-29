@@ -105,18 +105,21 @@
 
                             <StackPanel x:Name="SubjectPanel" 
                                         Orientation="Vertical"
+                                        HorizontalAlignment="Left"
                                         RelativePanel.RightOf="Separator"
                                         RelativePanel.AlignTopWithPanel="True" >
                                 
                                 <TextBlock x:Name="Subject" 
                                            Style="{StaticResource ListTextBlock}" 
                                            Text="{x:Bind Subject}" 
+                                           HorizontalAlignment="Left"
                                            TextWrapping="WrapWholeWords"
                                            FontWeight="Bold"/>
 
                                 <TextBlock x:Name="Teacher" 
                                            Style="{StaticResource ListTextBlock}" 
                                            Text="{x:Bind Teacher}" 
+                                           HorizontalAlignment="Left"
                                            TextWrapping="WrapWholeWords"
                                            FontStyle="Italic"/>
                             </StackPanel>
