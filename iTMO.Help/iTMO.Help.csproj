@@ -95,8 +95,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controller\CommonUtils.cs" />
     <Compile Include="Controller\CommunicateController.cs" />
     <Compile Include="Controller\DatabaseController.cs" />
+    <Compile Include="Controller\ModelOperateUtils.cs" />
     <Compile Include="Controller\SerializeContoller.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

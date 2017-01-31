@@ -168,50 +168,33 @@
 
                             <StackPanel x:Name="ExamAdvicePanel" 
                                         Orientation="Vertical"
+                                        RelativePanel.AlignBottomWithPanel="True"
+                                        VerticalAlignment="Bottom"
+                                        HorizontalAlignment="Right"
                                         Width="auto">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <TextBlock x:Name="TimeExam"  
+                                               TextWrapping="Wrap"
                                                Style="{StaticResource ListTextBlock}">
                                         <Run>Exam in </Run>
                                         <Run Text="{x:Bind TimeExam}"/>
-                                    </TextBlock>
-
-                                    <TextBlock x:Name="DateExamExtra"
-                                               Style="{StaticResource ListTextBlock}"
-                                               Foreground="{StaticResource DeepPink}">
                                         <Run> on </Run>
-                                        <Run Text="{x:Bind DateExam}"/>
-                                    </TextBlock>
-
-                                    <TextBlock x:Name="RoomExam" 
-                                               Style="{StaticResource ListTextBlock}">
+                                        <Run Foreground="{StaticResource DeepPink}" Text="{x:Bind DateExam}"/>
                                         <Run> in </Run>
                                         <Run Text="{x:Bind RoomExam}"/>
                                     </TextBlock>
-                                </StackPanel>
                                 
-                                <StackPanel Orientation="Horizontal">
                                     <TextBlock x:Name="TimeAdvice"  
+                                               TextWrapping="Wrap"
                                                Style="{StaticResource ListTextBlock}" 
                                                Foreground="{StaticResource MediumBlue}">
                                         <Run>Advice in </Run>
                                         <Run Text="{x:Bind TimeAdvice}"/>
-                                    </TextBlock>
-
-                                    <TextBlock x:Name="DateAdvice" 
-                                               Style="{StaticResource ListTextBlock}" 
-                                               Foreground="{StaticResource MediumBlue}">
-                                        <Run> on </Run>
+                                          <Run> on </Run>
                                         <Run Text="{x:Bind DateAdvice}"/>
-                                    </TextBlock>
-
-                                    <TextBlock x:Name="RoomAdvice" 
-                                               Style="{StaticResource ListTextBlock}" 
-                                               Foreground="{StaticResource MediumBlue}">
                                         <Run> in </Run>
                                         <Run Text="{x:Bind RoomAdvice}"/>
                                     </TextBlock>
-                                </StackPanel>
+                                    
                             </StackPanel>
                         </RelativePanel>
                     </UserControl>

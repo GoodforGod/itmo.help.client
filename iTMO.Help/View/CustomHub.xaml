@@ -27,35 +27,34 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
-            <StackPanel Orientation="Horizontal" 
-                        Grid.Row="0"
-                        Margin="5">
-                <Grid Background="{StaticResource LightWhite}"
-                      Margin="5">
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="5">
+                <Grid Background="{StaticResource LightWhite}" Margin="5">
                     <TextBox x:Name="NameBox" 
                              PlaceholderText="Name"
                              Height="30"
-                             Padding="14,5,0,0"
+                             Padding="8,5,0,0"
                              Width="auto"
                              MaxWidth="110"/>
                 </Grid>
-                <Grid Background="{StaticResource LightWhite}"
-                      Margin="5">
+                <Grid Background="{StaticResource LightWhite}" Margin="5">
                     <TextBox x:Name="LinkBox" 
-                         PlaceholderText="Link"
-                         Height="30"
-                         Width="auto"
-                         MaxWidth="140"
-                         Padding="16,5,0,0"/>
+                             PlaceholderText="Link"
+                             Height="30"
+                             Width="auto"
+                             MaxWidth="140"
+                             Padding="16,5,0,0"/>
                 </Grid>
                 <Button x:Name="Submit"
                         Width="auto"
                         Background="{StaticResource LightWhite}"
                         Height="32"
-                        Content="ADD"
-                        Padding="5"
+                        Content="&#xE141;"
+                        Padding="4,6,6,6"
+                        FontSize="24"
+                        FontFamily="Segoe MDL2 Assets" 
                         Click="Submit_Click"
-                        Margin="5"/>
+                        Margin="4"/>
+
             </StackPanel>
 
             <ListView x:Name="JournalCustomList"
@@ -89,6 +88,7 @@
                                 <StackPanel Orientation="Horizontal" 
                                             HorizontalAlignment="Right"
                                             Grid.Column="1">
+                                    
                                     <Button x:Name="Share" 
                                             Width="auto"
                                             Height="auto"

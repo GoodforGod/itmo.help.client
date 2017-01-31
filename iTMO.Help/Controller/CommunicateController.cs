@@ -8,5 +8,14 @@ namespace iTMO.Help.Controller
 {
     class CommunicateController
     {
+        public static async void ReportStackTrace(string stackTrace, string error, string msg, params string[] opts)
+        {
+
+        }
+
+        public static async void ContactDeveloper(string login, string group, string lastSearchGroup)
+        {
+
+        }
     }
 }
