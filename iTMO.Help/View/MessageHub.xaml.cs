@@ -37,6 +37,8 @@ namespace iTMO.Help.View
         {
             if ((MessageDE = DatabaseController.Me.DMessageDe) != null)
                 DEList.ItemsSource = MessageDE;
+            else
+                ProcessMessageDE();
         }
 
         private async void ProcessMessageDE()

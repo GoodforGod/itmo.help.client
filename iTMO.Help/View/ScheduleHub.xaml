@@ -24,7 +24,7 @@
             <PivotItem Header="All" 
                        HorizontalContentAlignment="Center" 
                        HorizontalAlignment="Center">
-                <Grid HorizontalAlignment="Center">
+                <Grid HorizontalAlignment="Center" Margin="2,5,5,5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition/>
@@ -43,7 +43,7 @@
             <PivotItem Header="Even" 
                        HorizontalContentAlignment="Center" 
                        HorizontalAlignment="Center">
-                <Grid HorizontalAlignment="Center">
+                <Grid HorizontalAlignment="Center" Margin="2,5,5,5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition/>
@@ -62,7 +62,7 @@
             <PivotItem Header="Odd" 
                        HorizontalContentAlignment="Center" 
                        HorizontalAlignment="Center">
-                <Grid HorizontalAlignment="Center">
+                <Grid HorizontalAlignment="Center" Margin="2,5,5,5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition/>

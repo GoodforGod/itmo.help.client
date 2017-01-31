@@ -26,5 +26,15 @@ namespace iTMO.Help.Model
         {
             this.InitializeComponent();
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            NavigateWeb();
+        }
+
+        private async void NavigateWeb()
+        {
+            Web.Navigate(new Uri("http://de.ifmo.ru/index.php?node=22"));
+        }
     }
 }

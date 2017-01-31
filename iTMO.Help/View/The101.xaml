@@ -12,22 +12,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Themes/StyleBasicResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="TextBlock"   BasedOn="{StaticResource RegularTextBlock}"/>
         </ResourceDictionary>
     </Page.Resources>
 
     <Grid Background="{StaticResource DeepBlue}">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="The 101 Chair" Margin="5"/>
-            <Grid HorizontalAlignment="Stretch">
-                
-            </Grid>
-            <ProgressRing x:Name="ProgressRing"
-                          IsActive="True"
-                          Width="50"
-                          Margin="5"
-                          Height="50"
-                          Foreground="White"/>
-        </StackPanel>
+        <WebView x:Name="Web"/>
     </Grid>
 </Page>
