@@ -3,6 +3,7 @@ using iTMO.Help.Model.ViewReady;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace iTMO.Help.Controller
 {
@@ -29,8 +30,8 @@ namespace iTMO.Help.Controller
             {
                 exams = JsonConvert.DeserializeObject<ScheduleExam>(data);
 
-                if (exams.faculties != null 
-                    && exams.faculties.Capacity != 0 
+                if (exams.faculties != null
+                    && exams.faculties.Capacity != 0
                     && exams.faculties[0].departments != null
                     && exams.faculties[0].departments.Capacity != 0
                     && exams.faculties[0].departments[0].groups != null
@@ -50,30 +51,30 @@ namespace iTMO.Help.Controller
 
                             serializedData.Data.Add(new ExamVR
                             {
-                                DateAdvice      = exam.advice_date.Substring(0, exam.advice_date.LastIndexOf('.')),
-                                DateExam        = exam.exam_date.Substring(0, exam.exam_date.LastIndexOf('.')),
-                                DayExam         = realDayExam,
-                                DayAdvice       = exam.advice_day_text,
-                                TimeAdvice      = exam.advice_time,
-                                TimeExam        = exam.exam_time,
+                                DateAdvice = exam.advice_date.Substring(0, exam.advice_date.LastIndexOf('.')),
+                                DateExam = exam.exam_date.Substring(0, exam.exam_date.LastIndexOf('.')),
+                                DayExam = realDayExam,
+                                DayAdvice = exam.advice_day_text,
+                                TimeAdvice = exam.advice_time,
+                                TimeExam = exam.exam_time,
 
-                                Subject         = exam.subject,
-                                Teacher         = exam.teachers[0].teacher_name,
-                                TeacherId       = exam.teachers[0].teacher_id,
-                                RoomAdvice      = exam.auditories[1].auditory_name,
-                                RoomExam        = exam.auditories[0].auditory_name,
+                                Subject = exam.subject,
+                                Teacher = exam.teachers[0].teacher_name,
+                                TeacherId = exam.teachers[0].teacher_id,
+                                RoomAdvice = exam.auditories[1].auditory_name,
+                                RoomExam = exam.auditories[0].auditory_name,
                             });
                         }
                         catch (ArgumentNullException ex) { }
-                        catch (FormatException ex)       { }
+                        catch (FormatException ex) { }
                     }
                     serializedData.IsValid = true;
                 }
                 else throw new ArgumentNullException("Group number is probably Invalid!");
             }
-            catch (JsonSerializationException ex)   { serializedData.Message = "Json Parse Error"; }
-            catch (ArgumentNullException ex)        { serializedData.Message = ex.Message; }
-            catch (Exception ex)                    { serializedData.Message = "Unexpected Server Response"; }
+            catch (JsonSerializationException ex) { serializedData.Message = "Json Parse Error"; }
+            catch (ArgumentNullException ex) { serializedData.Message = ex.Message; }
+            catch (Exception ex) { serializedData.Message = "Unexpected Server Response"; }
 
             return serializedData;
         }
@@ -81,14 +82,14 @@ namespace iTMO.Help.Controller
         public static SerializeData<List<ScheduleVR>> ToScheduleView(string data)
         {
             SerializeData<List<ScheduleVR>> serializedData = new SerializeData<List<ScheduleVR>>();
-            Schedule            schedule        = null;
-            List<ScheduleVR>    listScheduleVR  = new List<ScheduleVR>();
+            Schedule schedule = null;
+            List<ScheduleVR> listScheduleVR = new List<ScheduleVR>();
 
             try
             {
                 schedule = JsonConvert.DeserializeObject<Schedule>(data);
 
-                if(schedule == null)
+                if (schedule == null)
                 {
 
                 }
@@ -115,7 +116,7 @@ namespace iTMO.Help.Controller
                 }
                 else
                 {
-                    foreach(Year year in serializedData.Data.years)
+                    foreach (Year year in serializedData.Data.years)
                     {
                         var evenSem = new List<Subject>();
                         var oddSem = new List<Subject>();
@@ -131,7 +132,7 @@ namespace iTMO.Help.Controller
                             var semCheck = 0;
                             int.TryParse(subject.semester, out semCheck);
 
-                            if(semCheck % 2 == 0)
+                            if (semCheck % 2 == 0)
                                 evenSem.Add(subject);
                             else
                                 oddSem.Add(subject);
@@ -142,8 +143,8 @@ namespace iTMO.Help.Controller
                     }
                 }
             }
-            catch (JsonSerializationException ex)   { serializedData.Message = ex.Message; }
-            catch (Exception ex)                    { serializedData.Message = "Unexpected Server Response"; }
+            catch (JsonSerializationException ex) { serializedData.Message = ex.Message; }
+            catch (Exception ex) { serializedData.Message = "Unexpected Server Response"; }
             return serializedData;
         }
 
@@ -168,13 +169,53 @@ namespace iTMO.Help.Controller
             {
                 if ((serializedData.Data = JsonConvert.DeserializeObject<List<MessageDe>>(data)) != null
                     && serializedData.Data.Count != 0)
-                        serializedData.IsValid = true;
+                {
+                    serializedData.IsValid = true;
+
+                    for (int i = 0; i < serializedData.Data.Count; i++)
+                    {
+                        var item = serializedData.Data[i];
+                        item.text = HtmlToPlainText(item.text);
+                        item.positionInList = i;
+                    }
+                }
                 else
                     serializedData.Message = "Empty";
             }
             catch (JsonSerializationException ex) { serializedData.Message = ex.Message; }
-            catch (Exception ex)                  { serializedData.Message = ex.Message; }    
+            catch (Exception ex) { serializedData.Message = ex.Message; }
             return serializedData;
+        }
+
+        private static string HtmlToPlainText(string html)
+        {
+            //matches one or more (white space or line breaks) between '>' and '<'
+            const string tagWhiteSpace      = @"(>|$)(\W|\n|\r)+<";
+
+            //match any character between '<' and '>', even when end tag is missing
+            const string stripFormatting    = @"<[^>]*(>|$)";
+
+            //matches: <br>,<br/>,<br />,<BR>,<BR/>,<BR />
+            const string lineBreak          = @"<(br|BR)\s{0,1}\/{0,1}>";
+
+            //matches: <br>,<br/>,<br />,<BR>,<BR/>,<BR />
+            const string linkBreak          = @"<(br|BR)\s{0,1}\/{0,1}>";
+
+            var lineBreakRegex          = new Regex(lineBreak,          RegexOptions.Multiline);
+            var stripFormattingRegex    = new Regex(stripFormatting,    RegexOptions.Multiline);
+            var tagWhiteSpaceRegex      = new Regex(tagWhiteSpace,      RegexOptions.Multiline);
+
+            var text = html;
+            //Decode html specific characters
+            text = System.Net.WebUtility.HtmlDecode(text);
+            //Remove tag whitespace/line breaks
+            text = tagWhiteSpaceRegex.Replace(text, "><");
+            //Replace <br /> with line breaks
+            text = lineBreakRegex.Replace(text, Environment.NewLine);
+            //Strip formatting
+            text = stripFormattingRegex.Replace(text, string.Empty);
+
+            return text;
         }
     }
 }

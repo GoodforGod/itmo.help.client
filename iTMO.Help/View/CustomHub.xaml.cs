@@ -63,5 +63,10 @@ namespace iTMO.Help.View
             var itemo = e.ClickedItem as JournalCustom;
             var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(itemo.Link));
         }
+
+        private void Share_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

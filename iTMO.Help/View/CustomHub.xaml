@@ -36,14 +36,16 @@
                              PlaceholderText="Name"
                              Height="30"
                              Padding="14,5,0,0"
-                             MinWidth="110"/>
+                             Width="auto"
+                             MaxWidth="110"/>
                 </Grid>
                 <Grid Background="{StaticResource LightWhite}"
                       Margin="5">
                     <TextBox x:Name="LinkBox" 
                          PlaceholderText="Link"
                          Height="30"
-                         MinWidth="140"
+                         Width="auto"
+                         MaxWidth="140"
                          Padding="16,5,0,0"/>
                 </Grid>
                 <Button x:Name="Submit"
@@ -73,26 +75,39 @@
                                   BorderBrush="#BCD6FF"
                                   Background="{StaticResource LightWhite}"
                                   HorizontalAlignment="Stretch">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
                                 
                                 <TextBlock x:Name="Name" 
-                                           Grid.Row="0"
+                                           Grid.Column="0"
                                            HorizontalAlignment="Left"
                                            Style="{StaticResource ListTextBlock}" 
                                            Text="{x:Bind Name}"/>
-                                
-                                <Button x:Name="Delete" 
-                                        Width="auto"
-                                        Grid.Row="0"
-                                        Height="auto"
-                                        Tag="{x:Bind Id}" 
-                                        HorizontalAlignment="Right"
-                                        Click="Delete_Click">
-                                    <SymbolIcon Symbol="Delete"/>
-                                </Button>
-                                
+
+                                <StackPanel Orientation="Horizontal" 
+                                            HorizontalAlignment="Right"
+                                            Grid.Column="1">
+                                    <Button x:Name="Share" 
+                                            Width="auto"
+                                            Height="auto"
+                                            Tag="{x:Bind Id}" 
+                                            Content="&#xE72D;"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            HorizontalAlignment="Right"
+                                            Click="Share_Click"/>
+
+                                    <Button x:Name="Delete" 
+                                            Width="auto"
+                                            Height="auto"
+                                            Tag="{x:Bind Id}" 
+                                            HorizontalAlignment="Right"
+                                            Click="Delete_Click">
+                                        <SymbolIcon Symbol="Delete"/>
+                                    </Button>
+                                </StackPanel>
+
                             </Grid>
                         </UserControl>
                     </DataTemplate>

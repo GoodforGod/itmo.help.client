@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:iTMO.Help.View"
     xmlns:data="using:iTMO.Help.Model"
+    xmlns:addon="using:iTMO.Help"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -45,9 +46,9 @@
                               Grid.Row="1"
                               HorizontalAlignment="Center"
                               ItemContainerStyle="{StaticResource BarListView}"
+                              SelectionChanged="DEList_SelectionChanged"
                               ScrollViewer.IsVerticalRailEnabled="True" 
                               ScrollViewer.VerticalScrollMode="Auto" 
-                              SelectionChanged="DEList_SelectionChanged"
                               ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:MessageDe">
@@ -56,35 +57,42 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         
                                         <StackPanel x:Name="Header" 
                                                     Grid.Row="0"
-                                                    HorizontalAlignment="Center"
+                                                    HorizontalAlignment="Left"
                                                     VerticalAlignment="Center"
                                                     Orientation="Horizontal">
                                             <TextBlock x:Name="Sender" 
                                                        VerticalAlignment="Center"
+                                                       TextWrapping="Wrap"
+                                                       FontWeight="Bold"
                                                        Style="{StaticResource ListTextBlock}" 
                                                        Text="{x:Bind sender}"/>
 
                                             <AppBarSeparator x:Name="Separator2"
+                                                             Margin="-10,2,-10,2"
                                                              Foreground="{StaticResource MediumPink}"
-                                                             Margin="2"
                                                              Width="auto"/>
 
                                             <TextBlock x:Name="Date" 
+                                                       FontStyle="Italic"
+                                                       Foreground="{StaticResource MediumBlue}"
                                                        VerticalAlignment="Center"
                                                        Style="{StaticResource ListTextBlock}" 
                                                        Text="{x:Bind date}"/>
 
                                             <AppBarSeparator x:Name="Separator" 
+                                                             Margin="-10,2,-10,2"
                                                              Foreground="{StaticResource MediumPink}"
-                                                             Margin="2"
                                                              Width="auto"/>
 
                                             <TextBlock x:Name="Topic" 
+                                                       FontWeight="Bold"
+                                                       TextWrapping="Wrap"
+                                                       HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"
                                                        Style="{StaticResource ListTextBlock}" 
                                                        Text="{x:Bind topic}"/>
@@ -94,15 +102,25 @@
                                                 Grid.Row="1"
                                                 BorderBrush="{StaticResource LightBlue}" 
                                                 HorizontalAlignment="Stretch"
-                                                Margin="10,0,10,0"
+                                                Margin="5,0,5,0"
                                                 BorderThickness="1"/>
                                         
                                         <TextBlock x:Name="Text" 
                                                    Grid.Row="2"
                                                    Style="{StaticResource ListTextBlock}" 
-                                                   Text="{x:Bind text}"
-                                                   IsTextSelectionEnabled="True"
-                                                   SelectionChanged="Text_SelectionChanged"/>
+                                                   Tag="{x:Bind positionInList}"
+                                                   IsTextSelectionEnabled="True"/>
+                                        <!--
+                                        <WebView x:Name="TextWeb"
+                                                 GotFocus="TextWeb_GotFocus"
+                                                 Tag="{x:Bind positionInList}"
+                                                 Grid.Row="2"
+                                                 Height="100"
+                                                 Width="100"
+                                                 Margin="10,0,10,0"
+                                                 />
+                                        -->
+
                                     </Grid>
                                 </UserControl>
                             </DataTemplate>

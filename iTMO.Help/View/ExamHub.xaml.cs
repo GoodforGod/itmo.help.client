@@ -4,6 +4,8 @@ using Windows.UI.Xaml.Navigation;
 using iTMO.Help.Controller;
 using iTMO.Help.Model.ViewReady;
 using System.Collections.ObjectModel;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Input;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -76,9 +78,18 @@ namespace iTMO.Help.View
             ProccessExamVR();
         }
 
-        private void ShareBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void ShareBtn_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void TeacherHyper_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var textblock = sender as HyperlinkButton;
+            if (textblock.Tag.ToString() == "")
+            {
+
+            }
         }
     }
 }

@@ -27,6 +27,7 @@ namespace iTMO.Help.View
     public sealed partial class MessageHub : Page
     {
         private List<MessageDe> MessageDE = null;
+        private TextBlock LastSelected = null;
 
         public MessageHub()
         {
@@ -135,14 +136,45 @@ namespace iTMO.Help.View
             ProcessMessageDE();
         }
 
-        private void DEList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Text_SelectionChanged(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void Text_SelectionChanged(object sender, RoutedEventArgs e)
+        private void DEList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var list = sender as ListView;
+            var listItem = list.SelectedItem as DependencyObject;
+            var container = ((ListViewItem)(DEList.ContainerFromItem(list.SelectedItem)));
 
+            var textBlock = (TextBlock)GetChildren(container).First(x => x.Name == "Text");
+            textBlock.Text = MessageDE[int.Parse(textBlock.Tag.ToString())].text;
+
+            if(LastSelected != null)
+                LastSelected.Text = "";
+            LastSelected = textBlock;
+            /*
+            // WEBView Stratagy
+            var webview = (WebView)GetChildren(container).First(x => x.Name == "TextWeb");
+            webview.NavigateToString(MessageDE[int.Parse(webview.Tag.ToString())].text);
+            */
+        }
+
+        private List<FrameworkElement> GetChildren(DependencyObject parent)
+        {
+            List<FrameworkElement> controls = new List<FrameworkElement>();
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); ++i)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is FrameworkElement)
+                {
+                    controls.Add(child as FrameworkElement);
+                }
+                controls.AddRange(GetChildren(child));
+            }
+
+            return controls;
         }
     }
 }

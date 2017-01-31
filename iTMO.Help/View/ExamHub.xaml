@@ -33,17 +33,19 @@
                             RelativePanel.AlignHorizontalCenterWithPanel="True"
                             Style="{StaticResource ExamSearch}"
                             QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted"/>
+            
             <Button x:Name="ShareBtn" 
                     Content="&#xE72D;"
+                    FontFamily="Segoe MDL2 Assets"
                     Click="ShareBtn_Click"
                     FontSize="18"
                     Padding="6"
                     Width="{Binding ActualHeight, ElementName=ShareBtn}"
                     Background="{StaticResource LightWhite}"
-                    Style="{StaticResource ButtonCustom}"
-                    FontFamily="Segoe MDL2 Assets" />
+                    Style="{StaticResource ButtonCustom}"/>
             
         </StackPanel>
+        
         <ListView Name="ExamList" 
                   Margin="2,5,5,5"
                   Grid.Row="1"
@@ -63,7 +65,7 @@
                                             <AdaptiveTrigger MinWindowWidth="0"/>
                                         </VisualState.StateTriggers>
                                         <VisualState.Setters>
-                                            <Setter Target="ExamAdvicePanel.(RelativePanel.Below)" Value="Teacher"/>
+                                            <Setter Target="ExamAdvicePanel.(RelativePanel.Below)" Value="TeacherHyper"/>
                                             <Setter Target="ExamAdvicePanel.(RelativePanel.RightOf)" Value="DateTimePanel"/>
                                         </VisualState.Setters>
                                     </VisualState>
@@ -73,7 +75,7 @@
                                         </VisualState.StateTriggers>
                                         <VisualState.Setters>
                                             <Setter Target="ExamAdvicePanel.(RelativePanel.AlignRightWithPanel)" Value="True"/>
-                                            <Setter Target="ExamAdvicePanel.(RelativePanel.AlignVerticalCenterWith)" Value="DateTimePanel"/>
+                                            <Setter Target="ExamAdvicePanel.(RelativePanel.AlignTopWithPanel)" Value="True"/>
                                         </VisualState.Setters>
                                     </VisualState>
                                 </VisualStateGroup>
@@ -103,11 +105,10 @@
 
                             <Border x:Name="Border"
                                     BorderThickness="1"
-                                    Height="auto"
                                     Margin="5"
                                     RelativePanel.RightOf="DateTimePanel"
                                     RelativePanel.AlignVerticalCenterWith="DateTimePanel"
-                                    BorderBrush="{StaticResource MediumPink}"/>
+                                    BorderBrush="{StaticResource LightBlue}"/>
 <!--
                             <AppBarSeparator x:Name="Separator" 
                                              Foreground="{StaticResource MediumPink}"
@@ -134,34 +135,56 @@
                                            TextWrapping="WrapWholeWords"
                                            FontWeight="Bold"/>
 
-                                <TextBlock x:Name="Teacher" 
-                                           RelativePanel.RightOf="Border"
-                                           RelativePanel.Below="Subject"
+                            <HyperlinkButton x:Name="TeacherHyper" 
+                                             HorizontalAlignment="Left"
+                                             RelativePanel.RightOf="Border"
+                                             RelativePanel.Below="Subject"
+                                             Tag="{x:Bind TeacherId}"
+                                             Tapped="TeacherHyper_Tapped">
+                                <TextBlock Foreground="{StaticResource MediumBlue}"
                                            Style="{StaticResource ListTextBlock}" 
-                                           Text="{x:Bind Teacher}" 
-                                           HorizontalAlignment="Left"
-                                           TextWrapping="WrapWholeWords"
-                                           FontStyle="Italic"/>
+                                           FontStyle="Italic">
+                                    <Run Text="{x:Bind Teacher}"/>
+                                    <Run FontFamily="Segoe MDL2 Assets"
+                                         FontStyle="Normal"
+                                         FontSize="12"
+                                         Foreground="{StaticResource DeepPink}"
+                                         Text="&#xE13D;"/>
+                                </TextBlock>
+                            </HyperlinkButton>
+                            <!--
+                            <TextBlock x:Name="Teacher" 
+                                       Text="{x:Bind Teacher}"
+                                       RelativePanel.RightOf="Border"
+                                       RelativePanel.Below="Subject"
+                                       Style="{StaticResource ListTextBlock}" 
+                                       HorizontalAlignment="Left"
+                                       TextWrapping="WrapWholeWords"
+                                       Tag="{x:Bind TeacherId}"
+                                       Tapped="Teacher_Tapped"
+                                       FontStyle="Italic">
+                            </TextBlock>
+                            -->
 
                             <StackPanel x:Name="ExamAdvicePanel" 
                                         Orientation="Vertical"
                                         Width="auto">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <TextBlock x:Name="TimeExam"  
-                                           Style="{StaticResource ListTextBlock}">
+                                               Style="{StaticResource ListTextBlock}">
                                         <Run>Exam in </Run>
                                         <Run Text="{x:Bind TimeExam}"/>
                                     </TextBlock>
 
                                     <TextBlock x:Name="DateExamExtra"
-                                           Style="{StaticResource ListTextBlock}"
-                                           Foreground="{StaticResource DeepPink}">
+                                               Style="{StaticResource ListTextBlock}"
+                                               Foreground="{StaticResource DeepPink}">
                                         <Run> on </Run>
                                         <Run Text="{x:Bind DateExam}"/>
                                     </TextBlock>
 
                                     <TextBlock x:Name="RoomExam" 
-                                           Style="{StaticResource ListTextBlock}">
+                                               Style="{StaticResource ListTextBlock}">
                                         <Run> in </Run>
                                         <Run Text="{x:Bind RoomExam}"/>
                                     </TextBlock>
@@ -169,22 +192,22 @@
                                 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock x:Name="TimeAdvice"  
-                                           Style="{StaticResource ListTextBlock}" 
-                                           Foreground="{StaticResource MediumBlue}">
+                                               Style="{StaticResource ListTextBlock}" 
+                                               Foreground="{StaticResource MediumBlue}">
                                         <Run>Advice in </Run>
                                         <Run Text="{x:Bind TimeAdvice}"/>
                                     </TextBlock>
 
                                     <TextBlock x:Name="DateAdvice" 
-                                           Style="{StaticResource ListTextBlock}" 
-                                           Foreground="{StaticResource MediumBlue}">
+                                               Style="{StaticResource ListTextBlock}" 
+                                               Foreground="{StaticResource MediumBlue}">
                                         <Run> on </Run>
                                         <Run Text="{x:Bind DateAdvice}"/>
                                     </TextBlock>
 
                                     <TextBlock x:Name="RoomAdvice" 
-                                           Style="{StaticResource ListTextBlock}" 
-                                           Foreground="{StaticResource MediumBlue}">
+                                               Style="{StaticResource ListTextBlock}" 
+                                               Foreground="{StaticResource MediumBlue}">
                                         <Run> in </Run>
                                         <Run Text="{x:Bind RoomAdvice}"/>
                                     </TextBlock>

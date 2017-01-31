@@ -10,5 +10,7 @@
         public bool     isRead          { get; set; } = false;
         public bool     isFileAttached  { get; set; } = false;
         public string   fileName        { get; set; } = "";
+
+        public int      positionInList  { get; set; } = 0;
     }
 }
