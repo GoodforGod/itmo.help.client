@@ -21,6 +21,11 @@ namespace iTMO.Help.Model
 
     public class Subject
     {
+        public string       variable { get; set; } = "";
+        public string       max      { get; set; } = "";
+        public string       limit    { get; set; } = "";
+        public string       value    { get; set; } = "";
+
         public string       name     { get; set; } = "";
         public string       semester { get; set; } = "";
         public List<Mark>   marks    { get; set; }

@@ -34,7 +34,7 @@ namespace iTMO.Help.Model
 
         private async void NavigateWeb()
         {
-            Web.Navigate(new Uri("http://de.ifmo.ru/index.php?node=22"));
+            //Web.Navigate(new Uri());
         }
     }
 }

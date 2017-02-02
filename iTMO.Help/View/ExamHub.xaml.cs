@@ -3,6 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using iTMO.Help.Controller;
 using iTMO.Help.Model.ViewReady;
+using iTMO.Help.Utils;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
@@ -56,7 +57,7 @@ namespace iTMO.Help.View
 
             if (response.isValid)
             {
-                var dataVR = SerializeContoller.ToExamView(response.Data);
+                var dataVR = SerializeUtils.ToExamView(response.Data);
 
                 if (dataVR.IsValid)
                 {

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
-namespace iTMO.Help.Controller
+namespace iTMO.Help.Utils
 {
     class CommonUtils
     {

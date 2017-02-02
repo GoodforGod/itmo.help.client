@@ -1,9 +1,13 @@
 ﻿using iTMO.Help.Controller;
 using iTMO.Help.Model;
+using iTMO.Help.Utils;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
+
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -19,6 +23,7 @@ namespace iTMO.Help.View
     {
         private Journal DJournal = null;
         private List<JournalChangeLog> DJournalChange = null;
+        private Grid LastSelected = null;
 
         public JournalHub()
         {
@@ -78,7 +83,7 @@ namespace iTMO.Help.View
             {
                 RememberUserData(user_data);
 
-                var dataVR = SerializeContoller.ToJournalView(response.Data);
+                var dataVR = SerializeUtils.ToJournalView(response.Data);
 
                 if (dataVR.IsValid)
                 {
@@ -130,7 +135,7 @@ namespace iTMO.Help.View
                 {
                     RememberUserData(user_data);
 
-                    var dataVR = SerializeContoller.ToJournalChangeLogView(response.Data);
+                    var dataVR = SerializeUtils.ToJournalChangeLogView(response.Data);
 
                     if (dataVR.IsValid)
                         JournalChangeList.ItemsSource = new ObservableCollection<JournalChangeLog>(DatabaseController.Me.DJournalChangeLog = DJournalChange = dataVR.Data);
@@ -162,18 +167,18 @@ namespace iTMO.Help.View
             {
                 case 1:
                     JournalList.ItemsSource
-                    = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex]
-                        .subjects.GetRange(0, DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2 - 1));
+                        = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex]
+                            .subjects.GetRange(0, DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2 - 1));
                     return; 
                 case 2:
                     JournalList.ItemsSource
-                    = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex]
-                        .subjects.GetRange(DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2,
-                            DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2 - 1));
+                        = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex]
+                            .subjects.GetRange(DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2,
+                                DJournal.years[GroupsBox.SelectedIndex].subjects.Count / 2 - 1));
                    return;
                 default:
                     JournalList.ItemsSource
-                   = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex].subjects);
+                       = new ObservableCollection<Subject>(DJournal.years[GroupsBox.SelectedIndex].subjects);
                     return;
 
             }
@@ -263,6 +268,35 @@ namespace iTMO.Help.View
                     JournalChangeList.ItemsSource = DJournalChange;
                 else
                     ProccesJournalChangeLogVR();
+            }
+        }
+
+        private void JournalList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var list = sender as ListView;
+            var listItem = list.SelectedItem as DependencyObject;
+            var container = ((ListViewItem)(JournalList.ContainerFromItem(list.SelectedItem)));
+
+            if (LastSelected != null)
+                LastSelected.Visibility = Visibility.Collapsed;
+
+            var stackpanel = LastSelected = (Grid)CommonUtils.GetChildren(container).First(x => x.Name == "Info");
+            stackpanel.Visibility = Visibility.Visible;
+        }
+
+        private void JournalList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            ListView list = sender as ListView;
+            ListViewItem listItem = list.ContainerFromItem(e.ClickedItem) as ListViewItem;
+
+            if (listItem.IsSelected)
+            {
+                listItem.IsSelected = false;
+                list.SelectionMode = ListViewSelectionMode.None;
+            }
+            else
+            {
+                listItem.IsSelected = true;
             }
         }
     }

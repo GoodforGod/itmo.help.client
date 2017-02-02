@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iTMO.Help.Controller
+namespace iTMO.Help.Utils
 {
-    class ModelOperateUtils
+    class ModelUtils
     {
         public static bool IsJournalValid(Journal data)
         {

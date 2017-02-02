@@ -1,5 +1,7 @@
 ﻿using iTMO.Help.Controller;
 using iTMO.Help.Model;
+using iTMO.Help.Utils;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -65,7 +67,7 @@ namespace iTMO.Help.View
                                                                                             DeSearch.Text);
             if (response.isValid)
             {
-                var dataVR = SerializeContoller.ToMessageDeView(response.Data);
+                var dataVR = SerializeUtils.ToMessageDeView(response.Data);
 
                 if (dataVR.IsValid)
                 {

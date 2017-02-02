@@ -1,11 +1,12 @@
-﻿using iTMO.Help.Model;
+﻿using iTMO.Help.Controller;
+using iTMO.Help.Model;
 using iTMO.Help.Model.ViewReady;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace iTMO.Help.Controller
+namespace iTMO.Help.Utils
 {
     class SerializeData<TValue>
     {
@@ -14,7 +15,7 @@ namespace iTMO.Help.Controller
         public string   Message { get; set; } = "";
     }
 
-    class SerializeContoller
+    class SerializeUtils
     {
         public static SerializeData<List<ExamVR>> ToExamView(string data)
         {
@@ -25,7 +26,7 @@ namespace iTMO.Help.Controller
             {
                 exams = JsonConvert.DeserializeObject<ScheduleExam>(data);
 
-                if (ModelOperateUtils.IsExamValid(exams))
+                if (ModelUtils.IsExamValid(exams))
                 {
                     foreach (ExamsSchedule exam in exams.faculties[0].departments[0].groups[0].exams_schedule)
                     {
@@ -94,7 +95,7 @@ namespace iTMO.Help.Controller
             try
             {
                 if ((serializedData.Data = JsonConvert.DeserializeObject<Journal>(data)) == null 
-                    || ModelOperateUtils.IsJournalValid(serializedData.Data))
+                    || !ModelUtils.IsJournalValid(serializedData.Data))
                 {
                     serializedData.Message = "Empty";
                     serializedData.IsValid = false;
@@ -110,8 +111,17 @@ namespace iTMO.Help.Controller
                         {
                             if (subject.marks == null || subject.marks.Count == 0)
                                 subject.marks = new List<Mark>() { new Mark() };
+
                             if (subject.points == null || subject.points.Count == 0)
                                 subject.points = new List<Points>() { new Points() { value = "0" } };
+                            else
+                            {
+                                subject.value    = subject.points[0].value;
+                                subject.max      = subject.points[0].max;
+                                subject.variable = subject.points[0].variable;
+                                subject.limit    = subject.points[0].limit;
+                                subject.points.RemoveAt(0);
+                            }
 
                             // Sort by even & odd semesters, cause API doesnt garantie even the order of the subjects...
                             var semCheck = 0;
@@ -128,8 +138,8 @@ namespace iTMO.Help.Controller
                     }
                 }
             }
-            catch (JsonSerializationException ex) { serializedData.Message = ex.Message; }
-            catch (Exception ex) { serializedData.Message = "Unexpected Server Response"; }
+            catch (JsonSerializationException ex)   { serializedData.Message = ex.Message; }
+            catch (Exception ex)                    { serializedData.Message = "Unexpected Server Response"; }
             return serializedData;
         }
 
@@ -153,7 +163,7 @@ namespace iTMO.Help.Controller
             try
             {
                 if ((serializedData.Data = JsonConvert.DeserializeObject<List<MessageDe>>(data)) != null
-                    && ModelOperateUtils.IsMessageDeValid(serializedData.Data))
+                    && ModelUtils.IsMessageDeValid(serializedData.Data))
                 {
                     serializedData.IsValid = true;
 

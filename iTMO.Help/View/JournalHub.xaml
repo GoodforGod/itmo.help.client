@@ -93,9 +93,9 @@
                               Grid.Row="1"
                               ItemContainerStyle="{StaticResource BarListView}"
                               ScrollViewer.IsVerticalRailEnabled="True" 
+                              SelectionChanged="JournalList_SelectionChanged"
                               ScrollViewer.VerticalScrollMode="Auto" 
                               ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <!--MaxWidth ="{Binding ActualWidth, ElementName=MainJournalPanel }"-->
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:Subject">
                                 <UserControl>
@@ -105,6 +105,7 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition Height="auto"/>
                                         </Grid.RowDefinitions>
@@ -123,12 +124,13 @@
                                                    HorizontalAlignment="Left"
                                                    Style="{StaticResource ListTextBlock}">
                                             <Run>Term </Run>
-                                            <Run Text="{x:Bind semester}"/>
+                                            <Run FontWeight="Bold" Text="{x:Bind semester}"/>
                                         </TextBlock>
                                         
                                         <TextBlock x:Name="Type" 
                                                    Grid.Column="1"
                                                    Grid.Row="0"
+                                                   FontStyle="Italic"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Right"
                                                    Style="{StaticResource ListTextBlock}" 
@@ -140,13 +142,98 @@
                                                    HorizontalAlignment="Right"
                                                    Style="{StaticResource ListTextBlock}">
                                             <Run>Total : </Run>
-                                            <Run Text="{x:Bind points[0].value}"/>
+                                            <Run FontWeight="Bold" Text="{x:Bind value}"/>
                                         </TextBlock>
+                                        
+                                        <Grid x:Name="Info" 
+                                              Tag="{x:Bind name}" 
+                                              Grid.Row="2"
+                                              Grid.ColumnSpan="2"
+                                              Visibility="Collapsed">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            
+                                            <ListView x:Name="InfoList"
+                                                      Margin="5"
+                                                      Grid.Row="1"
+                                                      IsItemClickEnabled="False"
+                                                      ItemsSource="{x:Bind points}"
+                                                      ItemContainerStyle="{StaticResource BarListView}">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate x:DataType="data:Points">
+                                                        <UserControl>
+                                                            <Grid Margin="5" 
+                                                                  BorderBrush="#BCD6FF" 
+                                                                  Background="White">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition />
+                                                                    <ColumnDefinition />
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="auto"/>
+                                                                    <RowDefinition Height="auto"/>
+                                                                    <RowDefinition Height="auto"/>
+                                                                </Grid.RowDefinitions>
+
+                                                                <Border Grid.Row="0"
+                                                                        Grid.ColumnSpan="2"
+                                                                        HorizontalAlignment="Stretch"
+                                                                        Margin="5,0,5,0"
+                                                                        BorderThickness="1"
+                                                                        BorderBrush="{StaticResource LightBlue}" />
+
+                                                                <TextBlock x:Name="InfoVariable" 
+                                                                           Grid.Column="0"
+                                                                           Grid.Row="1"
+                                                                           VerticalAlignment="Top"
+                                                                           HorizontalAlignment="Left"
+                                                                           Style="{StaticResource ListTextBlock}">
+                                                                    <Run>Variable : </Run>
+                                                                    <Run FontStyle="Italic" Text="{x:Bind variable}"/>
+                                                                </TextBlock>
+                                                                <TextBlock x:Name="InfoValue" 
+                                                                           Grid.Column="0"
+                                                                           Grid.Row="2"
+                                                                           VerticalAlignment="Bottom"
+                                                                           HorizontalAlignment="Left"
+                                                                           Style="{StaticResource ListTextBlock}">
+                                                                    <Run>Got : </Run>
+                                                                    <Run FontWeight="Bold" Text="{x:Bind value}"/>
+                                                                </TextBlock>
+
+                                                                <TextBlock x:Name="InfoMax" 
+                                                                           Grid.Column="1"
+                                                                           Grid.Row="1"
+                                                                           VerticalAlignment="Top"
+                                                                           HorizontalAlignment="Right"
+                                                                           Style="{StaticResource ListTextBlock}">
+                                                                    <Run>Max : </Run>
+                                                                    <Run FontWeight="Medium" Text="{x:Bind max}"/>
+                                                                </TextBlock>
+                                                                <TextBlock x:Name="InfoLimit" 
+                                                                           Grid.Column="1"
+                                                                           Grid.Row="2"
+                                                                           VerticalAlignment="Bottom"
+                                                                           HorizontalAlignment="Right"
+                                                                           Style="{StaticResource ListTextBlock}">
+                                                                    <Run>Min : </Run>
+                                                                    <Run FontWeight="Medium" Text="{x:Bind limit}"/>
+                                                                </TextBlock>
+                                                            </Grid>
+                                                        </UserControl>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                            
+                                        </Grid>
                                     </Grid>
                                 </UserControl>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
+                    
                 </Grid>
             </PivotItem>
 
@@ -204,6 +291,7 @@
                                         <TextBlock x:Name="Value" 
                                                    Grid.Column="0"
                                                    Grid.Row="1"
+                                                   FontWeight="Bold"
                                                    VerticalAlignment="Bottom"
                                                    HorizontalAlignment="Left"
                                                    Style="{StaticResource ListTextBlock}">
@@ -214,6 +302,7 @@
                                         <TextBlock x:Name="Max" 
                                                    Grid.Column="1"
                                                    Grid.Row="0"
+                                                   FontStyle="Italic"
                                                    VerticalAlignment="Bottom"
                                                    HorizontalAlignment="Right"
                                                    Style="{StaticResource ListTextBlock}">
@@ -223,6 +312,7 @@
                                         <TextBlock x:Name="Min" 
                                                    Grid.Column="1"
                                                    Grid.Row="1"
+                                                   FontStyle="Italic"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Right"
                                                    Style="{StaticResource ListTextBlock}">

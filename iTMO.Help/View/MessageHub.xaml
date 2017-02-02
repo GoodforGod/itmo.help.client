@@ -42,7 +42,7 @@
                                     QuerySubmitted="DeSearch_QuerySubmitted"/>
 
                     <ListView x:Name="DEList"
-                              Margin="2,5,5,5"
+                              Margin="2,5,2,5"
                               Grid.Row="1"
                               HorizontalAlignment="Center"
                               ItemContainerStyle="{StaticResource BarListView}"
@@ -53,7 +53,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:MessageDe">
                                 <UserControl>
-                                    <Grid Width="auto" Margin="1,3,3,3" BorderBrush="#BCD6FF" Background="White">
+                                    <Grid Width="auto" Margin="2,5,2,5" BorderBrush="#BCD6FF" Background="White">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition Height="auto"/>
@@ -110,17 +110,6 @@
                                                    Style="{StaticResource ListTextBlock}" 
                                                    Tag="{x:Bind positionInList}"
                                                    IsTextSelectionEnabled="True"/>
-                                        <!--
-                                        <WebView x:Name="TextWeb"
-                                                 GotFocus="TextWeb_GotFocus"
-                                                 Tag="{x:Bind positionInList}"
-                                                 Grid.Row="2"
-                                                 Height="100"
-                                                 Width="100"
-                                                 Margin="10,0,10,0"
-                                                 />
-                                        -->
-
                                     </Grid>
                                 </UserControl>
                             </DataTemplate>
