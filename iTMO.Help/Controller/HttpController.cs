@@ -247,30 +247,30 @@ namespace iTMO.Help.Controller
         /// <returns> <see cref="HttpData{TValue}"/> </returns>
         private static async Task<HttpData<string>> ProcessRequest(TRequest type, UserData user)
         {
-            HttpData<string> dataResponse = new HttpData<string>() { Code = HttpStatusCode.Unauthorized, Data = "", isValid = false };
+            HttpData<string> contentResponse = new HttpData<string>() { Code = HttpStatusCode.Unauthorized, Data = "", isValid = false };
 
             try
             {
-                var response = await httpClient.SendAsync(BuildHttpRequest(type, user));
+                var httpResponse = await httpClient.SendAsync(BuildHttpRequest(type, user));
 
-                switch (dataResponse.Code = response.StatusCode)
+                // Process response content, or indicate error
+                switch (contentResponse.Code = httpResponse.StatusCode)
                 {
                     case HttpStatusCode.OK:
-                        switch (type)
-                        {
-                            case TRequest.DeAuth:   break;
-                            default:                dataResponse.Data = await response.Content.ReadAsStringAsync(); break;
-                        }
-                        dataResponse.isValid = true;
+                        if(type != TRequest.DeAuth)
+                            contentResponse.Data = await httpResponse.Content.ReadAsStringAsync();
+                        contentResponse.isValid = true;
                         break;
-                    case HttpStatusCode.NotFound:       dataResponse.Data = "Resource Not Found [ 404 ]";                       break;
-                    case HttpStatusCode.NotAcceptable:  dataResponse.Data = "Schedule is Unavaliable / Invalid Group";          break;
-                    case HttpStatusCode.BadRequest:     dataResponse.Data = "Unexpected Server Error";                          break;
-                    case HttpStatusCode.Forbidden:      dataResponse.Data = "Outdated... Check ITMO site / [Contact Developer]"; break;
-                    case HttpStatusCode.NoContent:      dataResponse.Data = "Perhaps Invalid Login/Password";                   break;
-                    default:                            dataResponse.Data = "Unexpected HttpCodeResponse [Contact Developer]";  break;
+
+                    case HttpStatusCode.NotFound:       contentResponse.Data = "Resource Not Found [ 404 ]";                       break;
+                    case HttpStatusCode.NotAcceptable:  contentResponse.Data = "Schedule is Unavaliable / Invalid Group";          break;
+                    case HttpStatusCode.BadRequest:     contentResponse.Data = "Unexpected Server Error";                          break;
+                    case HttpStatusCode.Forbidden:      contentResponse.Data = "Outdated... Check ITMO site / [Contact Developer]"; break;
+                    case HttpStatusCode.NoContent:      contentResponse.Data = "Perhaps Invalid Login/Password";                   break;
+                    default:                            contentResponse.Data = "Unexpected HttpCodeResponse [Contact Developer]";  break;
                 }
 
+                // Used to validate DE auth flag
                 switch (type)
                 {
                     // For DE AUTH requests
@@ -278,7 +278,7 @@ namespace iTMO.Help.Controller
                     case TRequest.DeMessages:
                     case TRequest.DeJournal:
                     case TRequest.DeJournalChangeLog:
-                        if (dataResponse.Code == HttpStatusCode.OK)
+                        if (contentResponse.Code == HttpStatusCode.OK)
                             isAuthiticated = true;
                         else
                             isAuthiticated = false;
@@ -288,12 +288,12 @@ namespace iTMO.Help.Controller
                     default: break;
                 }
             }
-            catch(InvalidOperationException ex) { dataResponse.Data = ex.ToString(); }
-            catch(ArgumentNullException ex)     { dataResponse.Data = ex.ToString() + " : " + ex.Message; }
-            catch(HttpRequestException ex)      { dataResponse.Data = "Network Error.. Check Network Connection"; }
-            catch(Exception ex)                 { dataResponse.Data = "Unexpected Error.."; }
+            catch(InvalidOperationException ex) { contentResponse.Data = ex.ToString(); }
+            catch(ArgumentNullException ex)     { contentResponse.Data = ex.ToString() + " : " + ex.Message; }
+            catch(HttpRequestException ex)      { contentResponse.Data = "Network Error.. Check Network Connection"; }
+            catch(Exception ex)                 { contentResponse.Data = "Unexpected Error.."; }
 
-            return dataResponse;
+            return contentResponse;
         }
 
         /// <summary>

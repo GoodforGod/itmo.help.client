@@ -4,7 +4,7 @@ namespace iTMO.Help.Model
 {
     /// <summary>
     /// Attestation of the 101 Chair, site link "de.ifmo.ru"
-    /// Contains subjects <see cref="SubjectDe"/>
+    /// Contains subjects <see cref="AttesatationSubjectDe"/>
     /// And all avaliable dates/weeks for semesters <see cref="AttestationSemesters"/>
     /// 
     /// Lang option is used to localize application for used <see cref="LanguageOption"/>
@@ -23,29 +23,30 @@ namespace iTMO.Help.Model
                 default: break;
             }
 
+            this.Schedule = new AttestationSchedule(lang);
             this.Title = title;
         }
 
-        public string               Title               { get; set; } = "";
-        public List<SubjectDe>      Subjects            { get; set; }
-        public AttestationSemesters AttestationSemester { get; set; } = new AttestationSemesters();
+        public string                      Title    { get; set; }
+        public List<AttesatationSubjectDe> Subjects { get; set; } = new List<AttesatationSubjectDe>();
+        public AttestationSchedule         Schedule { get; set; } 
     }
 
     /// <summary>
     /// Subject which has attestations in the semester
-    /// Contains test that will be availiable during semester <see cref="TestDe"/>
+    /// Contains test that will be availiable during semester <see cref="AttestationTestDe"/>
     /// </summary>
-    class SubjectDe
+    class AttesatationSubjectDe
     {
-        public string        Name    { get; set; } = "";
-        public List<TestDe>  Tests   { get; set; }
+        public string                  Name  { get; set; } = "";
+        public List<AttestationTestDe> Tests { get; set; } = new List<AttestationTestDe>();
     }
 
     /// <summary>
     /// Subject's test in the semester
-    /// <see cref="SubjectDe"/>
+    /// <see cref="AttesatationSubjectDe"/>
     /// </summary>
-    class TestDe
+    class AttestationTestDe
     {
         public string Name          { get; set; } = "";
         public string DateAndWeek   { get; set; } = "";
@@ -80,8 +81,8 @@ namespace iTMO.Help.Model
             Last = new AttestationSemesters()  { Name = lastName  + term };
         }
 
-        public AttestationSemesters First { get; set; }
-        public AttestationSemesters Last  { get; set; }
+        public AttestationSemesters First { get; set; } = new AttestationSemesters();
+        public AttestationSemesters Last  { get; set; } = new AttestationSemesters();
     }
 
     /// <summary>
@@ -94,7 +95,7 @@ namespace iTMO.Help.Model
     class AttestationSemesters
     {
         public string                     Name      { get; set; } = "";
-        public List<AttestationTimeTable> TimeTable { get; set; }
+        public List<AttestationTimeTable> TimeTable { get; set; } = new List<AttestationTimeTable>();
     }
 
     /// <summary>

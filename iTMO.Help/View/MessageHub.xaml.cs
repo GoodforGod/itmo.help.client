@@ -65,7 +65,7 @@ namespace iTMO.Help.View
 
             user_data.Data.Opts.Add(DeMsgSearch.Text);
 
-            ProcessRing.IsActive = true;
+            ProgcessRing.IsActive = true;
             HttpData<string> response = await HttpController.RetrieveData(TRequest.DeMessages, user_data);
 
             if (response.isValid)
@@ -82,7 +82,7 @@ namespace iTMO.Help.View
             else
                 Message.Text = response.Data;
 
-            ProcessRing.IsActive = false;
+            ProgcessRing.IsActive = false;
         }
 
         private void RememberUserData(UserData response)

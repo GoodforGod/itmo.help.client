@@ -1,4 +1,6 @@
-﻿using AngleSharp.Parser.Html;
+﻿using AngleSharp.Dom;
+using AngleSharp.Dom.Html;
+using AngleSharp.Parser.Html;
 using iTMO.Help.Controller;
 using iTMO.Help.Model;
 using iTMO.Help.Model.ViewReady;
@@ -187,31 +189,128 @@ namespace iTMO.Help.Utils
             SerializeData<AttestationDe> serializedData 
                                     = new SerializeData<AttestationDe>()
                                         { Data = new AttestationDe(LanguageOption.EN) };
+            try
+            {
+                var dom = new HtmlParser().Parse(data);
 
-            //div with class "p-inner nobt" - table of subjects
-            string SubjectTableClassName = "p-inner nobt";
+                serializedData.Data.Subjects = ToAttestationSubjectList(dom);
 
-            // h4 - subject start and its title
-            string SubjectElementTagName = "h4";
+                serializedData.Data.Schedule = ToAttestationSchedule(dom);
 
-            // table with class "table-shedule-group" - subject test's
-            string TestTableClassName    = "table-shedule-group";
+                serializedData.isValid = true;
+            }
+            catch (Exception ex) { serializedData.Message = ex.ToString(); }
+
+            return serializedData;
+        }
+
+        private static Regex WhiteSpaces = new Regex(@"\s+");
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static AttestationSchedule                  ToAttestationSchedule(IHtmlDocument dom)
+        {
+            // div with class 
+            string scheduleDivClassName = "div.f-block";
+            // week name value
+            string weekDivClassName     = "div.pull-left";
+            // value period dates
+            string intervalDivClassName = "div.pull-right";
+            // semester href
+            string linkSemesterClassName = "active";
+            // week href
+            string linkWeekClassName    = "sub";
+
+            List<AttestationTimeTable> weeks = new List<AttestationTimeTable>();
 
             try
             {
-                var parser = new HtmlParser();
-                var dom = parser.Parse(data);
-                var subjectTable = dom.GetElementsByClassName(SubjectTableClassName);
-
-                // each TR is subject's unique test name and week
-
+                var divWithWeeks = dom.QuerySelectorAll(scheduleDivClassName)[1];
+                var weeksTimeTable = divWithWeeks.QuerySelectorAll("a");
+                foreach (IElement weekAndTime in weeksTimeTable) 
+                {
+                    if (weekAndTime.ClassName != null)
+                    {
+                        var className = Regex.Replace(weekAndTime.ClassName.ToString(), @"\s+", "");
+                        if (className.ToString().Equals(linkWeekClassName))
+                        {
+                            weeks.Add(new AttestationTimeTable()
+                            {
+                                Interval = weekAndTime.QuerySelector(intervalDivClassName).TextContent,
+                                Week = weekAndTime.QuerySelector(weekDivClassName).TextContent,
+                                Link = weekAndTime.GetAttribute("href")
+                            });
+                        }
+                    }
+                }
             }
-            catch (Exception ex)
+            catch(Exception ex) { var str = ex.ToString(); }
+
+            return AtteScheduleFillStrategy(weeks);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static AttestationSchedule                  AtteScheduleFillStrategy(List<AttestationTimeTable> timeTables)
+        {
+            string firstWeekName = "1";
+
+            var atteSchedule = new AttestationSchedule(LanguageOption.EN);
+
+            var firstSemWeekIndex = timeTables.FindLastIndex(week => week.Week.Split(' ')[1] == firstWeekName);
+
+            if (firstSemWeekIndex != -1)
             {
-
+                atteSchedule.First.TimeTable.AddRange(timeTables.GetRange(0, firstSemWeekIndex));
+                atteSchedule.Last.TimeTable.AddRange(timeTables.GetRange(firstSemWeekIndex, timeTables.Count - firstSemWeekIndex));
             }
+            return atteSchedule;
+        }
 
-            return null;
+        /// <summary>
+        /// 
+        /// </summary>
+        private static List<AttesatationSubjectDe>          ToAttestationSubjectList(IHtmlDocument dom)
+        {
+            var subjectList = new List<AttesatationSubjectDe>();
+
+            //div with class "p-inner nobt" - table of subjects
+            string SubjectDivClassName = "div.c-page";
+            // h4 - subject start and its title
+            string SubjectElementTagName = "h4";
+            // table with class "table-shedule-group" - subject test's
+            string TestTableClassName = "table.table-shedule-group";
+
+            try
+            {
+                var divSubjects = dom.QuerySelector(SubjectDivClassName);
+                var table = dom.QuerySelectorAll(TestTableClassName);
+
+                foreach (IElement subject in divSubjects.QuerySelectorAll(SubjectElementTagName))
+                    subjectList.Add(new AttesatationSubjectDe() { Name = subject.TextContent });
+
+                int i = 0;
+                foreach (IElement elem in table)
+                {
+                    foreach (IElement tr in elem.QuerySelectorAll("tr"))
+                    {
+                        var test = new AttestationTestDe();
+                        foreach (IElement td in tr.QuerySelectorAll("td"))
+                        {
+                            if (td.ChildElementCount > 0)
+                                test.Name = td.QuerySelector("li").TextContent;
+                            else
+                                test.DateAndWeek = td.TextContent;
+                        }
+                        subjectList[i].Tests.Add(test);
+                    }
+                    i++;
+                }
+            }
+            catch (Exception ex) { subjectList.Add(new AttesatationSubjectDe() { Name = "PARSE ERROR" }); }
+            return subjectList;
         }
     }
 }

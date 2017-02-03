@@ -11,6 +11,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Themes/StyleBasicResources.xaml"/>
+                <ResourceDictionary Source="/Themes/StyleComplexResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -18,11 +19,44 @@
     <Grid Background="{StaticResource DeepBlue}">
         <WebView x:Name="Web"/>
 
+        <ContentDialog x:Name="DeFormDialog"
+                       VerticalAlignment="Stretch"
+                       PrimaryButtonText="OK"
+                       Margin="5"
+                       IsPrimaryButtonEnabled="{Binding IsChecked, ElementName=checkBoxAgree, Mode=OneWay}"
+                       SecondaryButtonText="Cancel">
+            <StackPanel>
+                <TextBlock Text="Fill Info to Procced"
+                           Width="auto"
+                           Style="{StaticResource BarTextBlock}"/>
+                <TextBox x:Name="Login" 
+                         Style="{StaticResource TextBoxCustom}"
+                         Margin="5"
+                         PlaceholderText="Login"/>
+                <PasswordBox x:Name="Password" 
+                             Style="{StaticResource PasswordBoxCustom}"
+                             Margin="5"
+                             PasswordRevealMode="Visible"
+                             IsPasswordRevealButtonEnabled="True"
+                             PlaceholderText="Password"/>
+                <CheckBox x:Name="RememberMeBox"
+                          HorizontalAlignment="Center" 
+                          Style="{StaticResource ChechBoxCustom}"
+                          Content="Remember Me"/>
+            </StackPanel>
+        </ContentDialog>
+
+        <TextBlock x:Name="Message"
+                       Margin="5"
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center"/>
+
         <ProgressRing x:Name="ProgressRing"
                       IsActive="True"
                       Margin="0,-50,0,0"
                       Width="50"
                       Height="50"
                       Foreground="White"/>
+
     </Grid>
 </Page>
