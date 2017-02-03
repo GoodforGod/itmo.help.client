@@ -106,39 +106,60 @@ namespace iTMO.Help.Controller
             {
                 // DE
                 case TRequest.DeAttestationSchedule:
-                    resultUri.AppendFormat(deAttestationSchedule, user.Data.Opts[0], user.Data.Group);
+                    if (IsRequestParamsValid(type, user))
+                        resultUri.AppendFormat(deAttestationSchedule, user.Data.Opts[0], user.Data.Group);
                     break;
+
                 case TRequest.DeAuthAttestation:
-                    resultUri.AppendFormat(deAuthAttestation, user.Data.Opts[0], user.Data.Login, user.Data.Password);
-                    break;                                
+                    if (IsRequestParamsValid(type, user))
+                        resultUri.AppendFormat(deAuthAttestation, user.Data.Opts[0], user.Data.Login, user.Data.Password);
+                    break;
+
                 case TRequest.DeAuth:
-                    resultUri.AppendFormat(deAuthLink, user.Data.Login, user.Data.Password);
+                    if (IsRequestParamsValid(type, user))
+                        resultUri.AppendFormat(deAuthLink, user.Data.Login, user.Data.Password);
                     break;
+
                 case TRequest.DeJournal:
-                    resultUri.Append(deBaseLink + journal);
+                    if (IsRequestParamsValid(type, user))
+                        resultUri.Append(deBaseLink + journal);
                     break;
+
                 case TRequest.DeJournalChangeLog:
-                    resultUri.AppendFormat(deBaseLink + journalChangeLog, user.Data.Opts[0]);
+                    if (IsRequestParamsValid(type, user))
+                        resultUri.AppendFormat(deBaseLink + journalChangeLog, user.Data.Opts[0]);
                     break;
                 case TRequest.DeMessages:
-                    resultUri.AppendFormat(deBaseLink + messageDe, user.Data.Opts[0]);
+                    if (IsRequestParamsValid(type, user))
+                        resultUri.AppendFormat(deBaseLink + messageDe, user.Data.Opts[0]);
                     break;
 
                 // ISU
                 case TRequest.Schedule:
-                    resultUri.Append(isuBaseLink + schedule + common + group + isuApiKey + user.Data.Group);
+                    if (IsRequestParamsValid(type, user))
+                        resultUri.Append(isuBaseLink + schedule + common + group + isuApiKey + user.Data.Group);
                     break;
+
                 case TRequest.ScheduleExam:
-                    resultUri.Append(isuBaseLink + exams + common + group + isuApiKey + user.Data.Group);
+                    if (IsRequestParamsValid(type, user))
+                        resultUri.Append(isuBaseLink + exams + common + group + isuApiKey + user.Data.Group);
                     break;
+
                 case TRequest.ScheduleTeacher:
-                    resultUri.Append(isuBaseLink + schedule + common + teacher + isuApiKey + user.Data.Opts[0]);
+                    if (IsRequestParamsValid(type, user))
+                        resultUri.Append(isuBaseLink + schedule + common + teacher + isuApiKey + user.Data.Opts[0]);
                     break;
+
                 case TRequest.ScheduleExamTeacher:
-                    resultUri.Append(isuBaseLink + exams + common + teacher + isuApiKey + user.Data.Opts[0]);
+                    if (IsRequestParamsValid(type, user))
+                        resultUri.Append(isuBaseLink + exams + common + teacher + isuApiKey + user.Data.Opts[0]);
                     break;
-                default: return null;
+
+                default: throw new ArgumentNullException("[ UNKNOWN TRequest ]");
             }
+
+            if (string.IsNullOrWhiteSpace(request.ToString()))
+                throw new ArgumentNullException("[ Invalid Arguments ]", type.ToString());
 
             request = new HttpRequestMessage(HttpMethod.Get, resultUri.ToString());
             request.Headers.Add("User-Agent", "Mozilla/5.0");
@@ -148,9 +169,57 @@ namespace iTMO.Help.Controller
         }
 
         /// <summary>
+        /// Check are parameters for BuildUri valid <see cref="BuildHttpRequest(TRequest, UserData)"/>
+        /// </summary>
+        private static bool IsRequestParamsValid(TRequest type, UserData user)
+        {
+            bool isLoginValid           = !string.IsNullOrWhiteSpace(user.Data.Login);
+            bool isPasswordValid        = !string.IsNullOrWhiteSpace(user.Data.Password);
+            bool isGroupValid           = !string.IsNullOrWhiteSpace(user.Data.Group);
+            bool isFirstOptsParamValid  = user.Data.Opts != null
+                                            && user.Data.Opts.Count == 1
+                                                && !string.IsNullOrWhiteSpace(user.Data.Opts[0]);
+            switch (type)
+            {
+                // DE
+                case TRequest.DeAttestationSchedule:
+                    return isFirstOptsParamValid
+                        && isGroupValid;
+
+                case TRequest.DeAuthAttestation:
+                    return isFirstOptsParamValid
+                        && isLoginValid 
+                            && isPasswordValid;
+
+                case TRequest.DeAuth:
+                    return isLoginValid
+                        && isPasswordValid;
+
+                case TRequest.DeJournal:
+                    return true;
+
+                case TRequest.DeJournalChangeLog:
+                case TRequest.DeMessages:
+                
+                // ISU
+                case TRequest.ScheduleTeacher:
+                case TRequest.ScheduleExamTeacher:
+                    return isFirstOptsParamValid;
+
+                case TRequest.Schedule:
+                case TRequest.ScheduleExam:
+                    return isGroupValid;
+
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
         /// Authorize on DE account "de.ifmo.ru"
         /// </summary>
         /// <returns> <see cref="HttpData{TValue}"/> </returns>
+        /*
         private static async Task<HttpData<string>> AuthOnDe(UserData user)
         {
             var authResult = new HttpData<string>() { Code = HttpStatusCode.Unauthorized, isValid = false };
@@ -170,6 +239,7 @@ namespace iTMO.Help.Controller
             }
             return authResult;
         }
+        */
 
         /// <summary>
         /// Process httpRequest
@@ -177,38 +247,51 @@ namespace iTMO.Help.Controller
         /// <returns> <see cref="HttpData{TValue}"/> </returns>
         private static async Task<HttpData<string>> ProcessRequest(TRequest type, UserData user)
         {
-            HttpData<string> dataResponse = new HttpData<string>() { Data = "", isValid = false };
+            HttpData<string> dataResponse = new HttpData<string>() { Code = HttpStatusCode.Unauthorized, Data = "", isValid = false };
 
             try
             {
                 var response = await httpClient.SendAsync(BuildHttpRequest(type, user));
 
-                if (response != null)
+                switch (dataResponse.Code = response.StatusCode)
                 {
-                    switch (dataResponse.Code = response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            dataResponse.Data = await response.Content.ReadAsStringAsync();
-                            switch (type)
-                            {
-                                case TRequest.DeMessages:
-                                case TRequest.DeJournal:
-                                case TRequest.DeJournalChangeLog: isAuthiticated = true; break;
-                                default: break;
-                            }
-                            dataResponse.isValid = true;
-                            break;
-                        case HttpStatusCode.NotFound:       dataResponse.Data = "Resource not found, ops... [ 404 ]"; break;
-                        case HttpStatusCode.NotAcceptable:  dataResponse.Data = "Think that schedule is unavaliable for now... Or check the group may be?"; break;
-                        case HttpStatusCode.BadRequest:     dataResponse.Data = "Server got some unexpected error...  [ ITMO : Students] | [ 0 : 1 ]"; break;
-                        case HttpStatusCode.Forbidden:      dataResponse.Data = "Think that we are outdated... Contact Developers or check ITMO site"; break;
-                        case HttpStatusCode.NoContent:      dataResponse.Data = "Invalid Login/Password"; isAuthiticated = false; break;
-                        default:                            dataResponse.Data = "Somethink extraodinary happened... Contact developer"; break;
-                    }
+                    case HttpStatusCode.OK:
+                        switch (type)
+                        {
+                            case TRequest.DeAuth:   break;
+                            default:                dataResponse.Data = await response.Content.ReadAsStringAsync(); break;
+                        }
+                        dataResponse.isValid = true;
+                        break;
+                    case HttpStatusCode.NotFound:       dataResponse.Data = "Resource Not Found [ 404 ]";                       break;
+                    case HttpStatusCode.NotAcceptable:  dataResponse.Data = "Schedule is Unavaliable / Invalid Group";          break;
+                    case HttpStatusCode.BadRequest:     dataResponse.Data = "Unexpected Server Error";                          break;
+                    case HttpStatusCode.Forbidden:      dataResponse.Data = "Outdated... Check ITMO site / [Contact Developer]"; break;
+                    case HttpStatusCode.NoContent:      dataResponse.Data = "Perhaps Invalid Login/Password";                   break;
+                    default:                            dataResponse.Data = "Unexpected HttpCodeResponse [Contact Developer]";  break;
+                }
+
+                switch (type)
+                {
+                    // For DE AUTH requests
+                    case TRequest.DeAuth:
+                    case TRequest.DeMessages:
+                    case TRequest.DeJournal:
+                    case TRequest.DeJournalChangeLog:
+                        if (dataResponse.Code == HttpStatusCode.OK)
+                            isAuthiticated = true;
+                        else
+                            isAuthiticated = false;
+                        break;
+
+                    // For ISU & DE unAUTH requests
+                    default: break;
                 }
             }
-            catch(HttpRequestException ex)  { dataResponse.Data = "Some Network Connectivity Error.. Check your Network"; }
-            catch(Exception ex)             { dataResponse.Data = "Some unexpected error.."; }
+            catch(InvalidOperationException ex) { dataResponse.Data = ex.ToString(); }
+            catch(ArgumentNullException ex)     { dataResponse.Data = ex.ToString() + " : " + ex.Message; }
+            catch(HttpRequestException ex)      { dataResponse.Data = "Network Error.. Check Network Connection"; }
+            catch(Exception ex)                 { dataResponse.Data = "Unexpected Error.."; }
 
             return dataResponse;
         }
@@ -234,7 +317,7 @@ namespace iTMO.Help.Controller
                 case TRequest.DeAuthAttestation:
                     if (!isAuthiticated)
                     {
-                        var authResult = await AuthOnDe(user);
+                        var authResult = await ProcessRequest(TRequest.DeAuth, user);
                         if (authResult.Code != HttpStatusCode.OK)
                             return authResult;
                     }
