@@ -184,19 +184,31 @@ namespace iTMO.Help.Utils
             return serializedData;
         }
 
-        public static SerializeData<AttestationDe>          ToAttestationDeView(string data)
+        public static SerializeData<AttestationDe>          ToAttestationDeView(string data, int semId)
         {
-            SerializeData<AttestationDe> serializedData 
-                                    = new SerializeData<AttestationDe>()
-                                        { Data = new AttestationDe(LanguageOption.EN) };
+            SerializeData<AttestationDe> serializedData = new SerializeData<AttestationDe>();
+
             try
             {
                 var dom = new HtmlParser().Parse(data);
 
-                serializedData.Data.Subjects = ToAttestationSubjectList(dom);
+                AttestationDe storedAttestationDe = DatabaseController.Me.DAttestationDe;
 
-                serializedData.Data.Schedule = ToAttestationSchedule(dom);
+                if (storedAttestationDe == null)
+                    storedAttestationDe = AtteScheduleFillStrategy(ToAttestationSchedule(dom));
 
+                if (semId == 1 && storedAttestationDe.First.Subjects.Count == 0)
+                {
+                    storedAttestationDe.First.Subjects = ToAttestationSubjectList(dom);
+                    storedAttestationDe.First = FillAttestationSemester(storedAttestationDe.First);
+                }
+                else if (semId == 2 && storedAttestationDe.Last.Subjects.Count == 0)
+                {
+                    storedAttestationDe.Last.Subjects = ToAttestationSubjectList(dom);
+                    storedAttestationDe.Last = FillAttestationSemester(storedAttestationDe.Last);
+                }
+
+                DatabaseController.Me.DAttestationDe = serializedData.Data = storedAttestationDe;
                 serializedData.isValid = true;
             }
             catch (Exception ex) { serializedData.Message = ex.ToString(); }
@@ -204,75 +216,10 @@ namespace iTMO.Help.Utils
             return serializedData;
         }
 
-        private static Regex WhiteSpaces = new Regex(@"\s+");
-
         /// <summary>
-        /// 
+        /// Used DOM document structure to parse & fill subjects
         /// </summary>
-        private static AttestationSchedule                  ToAttestationSchedule(IHtmlDocument dom)
-        {
-            // div with class 
-            string scheduleDivClassName = "div.f-block";
-            // week name value
-            string weekDivClassName     = "div.pull-left";
-            // value period dates
-            string intervalDivClassName = "div.pull-right";
-            // semester href
-            string linkSemesterClassName = "active";
-            // week href
-            string linkWeekClassName    = "sub";
-
-            List<AttestationTimeTable> weeks = new List<AttestationTimeTable>();
-
-            try
-            {
-                var divWithWeeks = dom.QuerySelectorAll(scheduleDivClassName)[1];
-                var weeksTimeTable = divWithWeeks.QuerySelectorAll("a");
-                foreach (IElement weekAndTime in weeksTimeTable) 
-                {
-                    if (weekAndTime.ClassName != null)
-                    {
-                        var className = Regex.Replace(weekAndTime.ClassName.ToString(), @"\s+", "");
-                        if (className.ToString().Equals(linkWeekClassName))
-                        {
-                            weeks.Add(new AttestationTimeTable()
-                            {
-                                Interval = weekAndTime.QuerySelector(intervalDivClassName).TextContent,
-                                Week = weekAndTime.QuerySelector(weekDivClassName).TextContent,
-                                Link = weekAndTime.GetAttribute("href")
-                            });
-                        }
-                    }
-                }
-            }
-            catch(Exception ex) { var str = ex.ToString(); }
-
-            return AtteScheduleFillStrategy(weeks);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private static AttestationSchedule                  AtteScheduleFillStrategy(List<AttestationTimeTable> timeTables)
-        {
-            string firstWeekName = "1";
-
-            var atteSchedule = new AttestationSchedule(LanguageOption.EN);
-
-            var firstSemWeekIndex = timeTables.FindLastIndex(week => week.Week.Split(' ')[1] == firstWeekName);
-
-            if (firstSemWeekIndex != -1)
-            {
-                atteSchedule.First.TimeTable.AddRange(timeTables.GetRange(0, firstSemWeekIndex));
-                atteSchedule.Last.TimeTable.AddRange(timeTables.GetRange(firstSemWeekIndex, timeTables.Count - firstSemWeekIndex));
-            }
-            return atteSchedule;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private static List<AttesatationSubjectDe>          ToAttestationSubjectList(IHtmlDocument dom)
+        private static List<AttesatationSubjectDe> ToAttestationSubjectList(IHtmlDocument dom)
         {
             var subjectList = new List<AttesatationSubjectDe>();
 
@@ -302,7 +249,7 @@ namespace iTMO.Help.Utils
                             if (td.ChildElementCount > 0)
                                 test.Name = td.QuerySelector("li").TextContent;
                             else
-                                test.DateAndWeek = td.TextContent;
+                                test.Week = td.TextContent;
                         }
                         subjectList[i].Tests.Add(test);
                     }
@@ -311,6 +258,92 @@ namespace iTMO.Help.Utils
             }
             catch (Exception ex) { subjectList.Add(new AttesatationSubjectDe() { Name = "PARSE ERROR" }); }
             return subjectList;
+        }
+
+        /// <summary>
+        /// Used DOM document structure to fill parse & AttestationSchedule
+        /// </summary>
+        private static List<AttestationTimeTable> ToAttestationSchedule(IHtmlDocument dom)
+        {
+            // div with class 
+            string scheduleDivClassName = "div.f-block";
+            // week name value
+            string weekDivClassName     = "div.pull-left";
+            // value period dates
+            string intervalDivClassName = "div.pull-right";
+            // semester href
+            string linkSemesterClassName = "active";
+            // week href
+            string linkWeekClassName     = "sub";
+
+            List<AttestationTimeTable> weeks = new List<AttestationTimeTable>();
+
+            try
+            {
+                var divWithWeeks = dom.QuerySelectorAll(scheduleDivClassName)[1];
+                var weeksTimeTable = divWithWeeks.QuerySelectorAll("a");
+                foreach (IElement weekAndTime in weeksTimeTable) 
+                {
+                    if (weekAndTime.ClassName != null)
+                    {
+                        var className = Regex.Replace(weekAndTime.ClassName.ToString(), @"\s+", "");
+                        if (className.ToString().Equals(linkWeekClassName))
+                        {
+                            weeks.Add(new AttestationTimeTable()
+                            {
+                                Interval = weekAndTime.QuerySelector(intervalDivClassName).TextContent,
+                                Week = weekAndTime.QuerySelector(weekDivClassName).TextContent,
+                                Link = weekAndTime.GetAttribute("href")
+                            });
+                        }
+                    }
+                }
+            }
+            catch(Exception ex) { var str = ex.ToString(); }
+
+            return weeks;
+        }
+
+        /// <summary>
+        /// Correctly splits all <see cref="AttestationTimeTable"/> objects 
+        /// to fill <see cref="AttestationSchedule.First"/> & <see cref="AttestationSchedule.Last"/> Semesters
+        /// </summary>
+        private static AttestationDe AtteScheduleFillStrategy( List<AttestationTimeTable> timeTable)
+        {
+            string firstWeekName = "1";
+
+            var attestation = new AttestationDe(DatabaseController.Me.LangOpt);
+
+            // Can't find by "Неделя 1", may be due to UTF-8 or... Who knows
+            var lastSemFirstWeekIndex = timeTable.FindLastIndex(week => week.Week.Split(' ')[1] == firstWeekName);
+
+            if (lastSemFirstWeekIndex != -1)
+            {
+                attestation.First.TimeTable.AddRange(timeTable.GetRange(0, lastSemFirstWeekIndex));
+                attestation.Last.TimeTable.AddRange(timeTable.GetRange(lastSemFirstWeekIndex, timeTable.Count - lastSemFirstWeekIndex));
+            }
+
+            return attestation;
+        }
+
+        /// <summary>
+        /// Sorts and Fills missing semester's & AtteTimeTable anr others fields
+        /// </summary>
+        private static AttestationSemesters FillAttestationSemester(AttestationSemesters semester)
+        {
+            var filledSemester = semester;
+            foreach(AttesatationSubjectDe subject in filledSemester.Subjects)
+            {
+                foreach(AttestationTestDe test in subject.Tests)
+                {
+                    var week = filledSemester.TimeTable.Find((w => w.Week.Split(' ')[1] == test.Week.Split(' ')[0]));
+                    test.Link = week.Link;
+                    test.Week = week.Week;
+                    test.Interval = week.Interval;
+                }
+            }
+
+            return filledSemester;
         }
     }
 }

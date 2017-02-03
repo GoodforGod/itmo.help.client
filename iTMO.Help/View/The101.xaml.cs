@@ -9,6 +9,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -38,6 +39,12 @@ namespace iTMO.Help.Model
 
         private async void NavigateWeb()
         {
+            ProgressRing.IsActive = true;
+
+            //Web.Navigate(new Uri("http://de.ifmo.ru/?node=schedule&index=sched&semiId=1&group=P3100"));
+
+            ProgressRing.IsActive = false;
+
             var user_data = new UserData();
             user_data.Data.Group = "P3100";
             user_data.Data.Opts.Add("1");
@@ -47,13 +54,11 @@ namespace iTMO.Help.Model
             {
                 RememberUserData(user_data);
 
-                var dataVR = SerializeUtils.ToAttestationDeView(response.Data);
-                /*
-                if (dataVR.isValid)
-                    DeMsgList.ItemsSource = new ObservableCollection<MessageDe>(DatabaseController.Me.DMessageDe = DeMessages = dataVR.Data);
-                else
-                    Message.Text = dataVR.Message;
-                    */
+                var dataVR = SerializeUtils.ToAttestationDeView(response.Data, 1);
+                //if (dataVR.isValid)
+                //    DeMsgList.ItemsSource = new ObservableCollection<MessageDe>(DatabaseController.Me.DMessageDe = DeMessages = dataVR.Data);
+                //else
+                //    Message.Text = dataVR.Message;
             }
             else
                 Message.Text = response.Data;
