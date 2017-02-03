@@ -2,8 +2,6 @@
 
 namespace iTMO.Help.Model
 {
-    //variable":"Семестр 1","max":"100","limit":"60","value
-
     public class Points
     {
         public string variable  { get; set; } = "";
@@ -39,6 +37,9 @@ namespace iTMO.Help.Model
         public List<Subject>    subjects  { get; set; } 
     }
 
+    /// <summary>
+    /// JSON serialized object of "de.ifmo.ru" API
+    /// </summary>
     public class Journal 
     {
         public List<Year> years { get; set; }

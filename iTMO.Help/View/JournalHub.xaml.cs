@@ -53,8 +53,8 @@ namespace iTMO.Help.View
             TermBox.ItemsSource = new List<TermItem>()
             {
                 new TermItem() { Term = "All" },
-                new TermItem() { Term = "First Part" },
-                new TermItem() { Term = "Last Part"  }
+                new TermItem() { Term = "First" },
+                new TermItem() { Term = "Last"  }
             };
             TermBox.SelectedIndex = DatabaseController.Me.TermLastSelectedIndex; ;
         }

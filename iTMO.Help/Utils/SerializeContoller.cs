@@ -8,6 +8,10 @@ using System.Text.RegularExpressions;
 
 namespace iTMO.Help.Utils
 {
+    /// <summary>
+    /// Serialisation response with valid state and exception method
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
     class SerializeData<TValue>
     {
         public TValue   Data    { get; set; }
@@ -15,9 +19,12 @@ namespace iTMO.Help.Utils
         public string   Message { get; set; } = "";
     }
 
+    /// <summary>
+    /// Used to serialize objects from JSON format to Object represantaton
+    /// </summary>
     class SerializeUtils
     {
-        public static SerializeData<List<ExamVR>> ToExamView(string data)
+        public static SerializeData<List<ExamVR>>           ToExamView(string data)
         {
             SerializeData<List<ExamVR>> serializedData = new SerializeData<List<ExamVR>>() { Data = new List<ExamVR>() };
             ScheduleExam exams = null;
@@ -70,7 +77,7 @@ namespace iTMO.Help.Utils
             return serializedData;
         }
 
-        public static SerializeData<List<ScheduleVR>> ToScheduleView(string data)
+        public static SerializeData<List<ScheduleVR>>       ToScheduleView(string data)
         {
             SerializeData<List<ScheduleVR>> serializedData = new SerializeData<List<ScheduleVR>>();
             Schedule schedule = null;
@@ -88,7 +95,7 @@ namespace iTMO.Help.Utils
             return serializedData;
         }
 
-        public static SerializeData<Journal> ToJournalView(string data)
+        public static SerializeData<Journal>                ToJournalView(string data)
         {
             SerializeData<Journal> serializedData = new SerializeData<Journal>() { IsValid = true };
 
@@ -156,7 +163,7 @@ namespace iTMO.Help.Utils
             return serializedData;
         }
 
-        public static SerializeData<List<MessageDe>> ToMessageDeView(string data)
+        public static SerializeData<List<MessageDe>>        ToMessageDeView(string data)
         {
             SerializeData<List<MessageDe>> serializedData = new SerializeData<List<MessageDe>>();
 

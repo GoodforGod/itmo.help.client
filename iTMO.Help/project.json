@@ -1,5 +1,6 @@
 ﻿{
   "dependencies": {
+    "AngleSharp": "0.9.9",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
     "Newtonsoft.Json": "9.0.1",
     "SQLite.Net-PCL": "3.1.1"

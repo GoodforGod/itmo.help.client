@@ -58,6 +58,9 @@ namespace iTMO.Help.Model
         public List<Department> departments { get; set; }
     }
 
+    /// <summary>
+    /// JSON serialized object of "www.ifmo.ru/ru/" API
+    /// </summary>
     public class ScheduleExam
     {
         public List<Faculty> faculties { get; set; }

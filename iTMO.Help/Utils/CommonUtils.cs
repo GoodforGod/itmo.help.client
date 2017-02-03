@@ -4,10 +4,22 @@ using System.Text.RegularExpressions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
+using iTMO.Help.Model;
+
 namespace iTMO.Help.Utils
 {
+    /// <summary>
+    /// Common utils for all classes, use
+    /// </summary>
     class CommonUtils
     {
+        /// <summary>
+        /// Used to retrive all ViewControlls childrens of the parent object
+        /// </summary>
+        /// <param name="parent">
+        /// ViewControll parent XAML object
+        /// </param>
+        /// <returns></returns>
         public static List<FrameworkElement> GetChildren(DependencyObject parent)
         {
             List<FrameworkElement> controls = new List<FrameworkElement>();
@@ -22,6 +34,13 @@ namespace iTMO.Help.Utils
             return controls;
         }
 
+        /// <summary>
+        /// Clean HTML from HTML tags, transfer <br/> to \n and etc
+        /// </summary>
+        /// <param name="html">
+        /// Plain html text represantation
+        /// </param>
+        /// <returns></returns>
         public static string HtmlToPlainText(string html)
         {
             //matches one or more (white space or line breaks) between '>' and '<'

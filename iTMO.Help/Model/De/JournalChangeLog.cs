@@ -8,6 +8,9 @@
         public string threshold { get; set; } = "";
     }
 
+    /// <summary>
+    /// JSON serialized object of "de.ifmo.ru" API
+    /// </summary>
     public class JournalChangeLog
     {
         public string subject   { get; set; } = "";

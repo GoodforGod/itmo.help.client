@@ -4,9 +4,13 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net;
 using System.Collections.Generic;
+using iTMO.Help.Model;
 
 namespace iTMO.Help.Controller
 {
+    /// <summary>
+    /// Request types of the HttpController
+    /// </summary>
     public enum RequestTypes
     {
         AuthDe,
@@ -19,13 +23,9 @@ namespace iTMO.Help.Controller
         ScheduleExamTeacher
     }
 
-    class DataResponse<TValue>
-    {
-        public TValue           Data    { get; set; }
-        public HttpStatusCode   Code    { get; set; }
-        public bool             isValid { get; set; }
-    }
-
+    /// <summary>
+    /// 
+    /// </summary>
     class HttpController
     {
         private static HttpClient httpClient = new HttpClient();

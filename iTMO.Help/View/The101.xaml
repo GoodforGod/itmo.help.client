@@ -17,5 +17,12 @@
 
     <Grid Background="{StaticResource DeepBlue}">
         <WebView x:Name="Web"/>
+
+        <ProgressRing x:Name="ProgressRing"
+                      IsActive="True"
+                      Margin="0,-50,0,0"
+                      Width="50"
+                      Height="50"
+                      Foreground="White"/>
     </Grid>
 </Page>

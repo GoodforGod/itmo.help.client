@@ -95,6 +95,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\ApplicationModels.cs" />
+    <Compile Include="Model\De\AttestationDe.cs" />
     <Compile Include="Utils\CommonUtils.cs" />
     <Compile Include="Controller\CommunicateController.cs" />
     <Compile Include="Controller\DatabaseController.cs" />
@@ -105,7 +107,6 @@
     </Compile>
     <Compile Include="Model\De\Journal.cs" />
     <Compile Include="Model\De\JournalChangeLog.cs" />
-    <Compile Include="Model\AppModels.cs" />
     <Compile Include="Model\De\MessageDe.cs" />
     <Compile Include="Model\Isu\Schedule.cs" />
     <Compile Include="Model\Isu\ScheduleExam.cs" />

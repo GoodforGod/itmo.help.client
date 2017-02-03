@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace iTMO.Help.Controller
 {
+    /// <summary>
+    /// Used to send mails to developer, to me
+    /// </summary>
     class CommunicateController
     {
         public static async void ReportStackTrace(string stackTrace, string error, string msg, params string[] opts)

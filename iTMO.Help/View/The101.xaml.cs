@@ -34,7 +34,7 @@ namespace iTMO.Help.Model
 
         private async void NavigateWeb()
         {
-            //Web.Navigate(new Uri());
+            //Web.Navigate(new Uri(""));
         }
     }
 }

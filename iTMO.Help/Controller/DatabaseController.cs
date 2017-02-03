@@ -11,6 +11,9 @@ using Windows.Storage;
 
 namespace iTMO.Help.Controller
 {
+    /// <summary>
+    /// Used to communicate with SQLLite database as singleton object
+    /// </summary>
     class DatabaseController
     {
         private static object syncRoot = new object();
@@ -38,7 +41,10 @@ namespace iTMO.Help.Controller
                 DataBaseConnection.InsertOrReplace(new User { Id = 1 });
         }
 
-        // Cache/Store Part
+        /// <summary>
+        /// Application Cache/Store objects, used to cache JSON reprisantation/HTML responses or other DB info
+        /// </summary>
+    
         private volatile User _DUser;
         public           User  DUser
         {
@@ -55,8 +61,6 @@ namespace iTMO.Help.Controller
             set {
                 DataBaseConnection.Update(_DUser = value);
             } }
-
-        
 
         public int              TermLastSelectedIndex           { get { return _TermLastSelectedIndex; } set { _TermLastSelectedIndex = value; } }
         private volatile int   _TermLastSelectedIndex = 0;
@@ -82,7 +86,10 @@ namespace iTMO.Help.Controller
         public List<JournalChangeLog>  DJournalChangeLog { get { return _DJournalChangeLog; } set { _DJournalChangeLog = value; } }
         public volatile List<JournalChangeLog> _DJournalChangeLog = null;
 
-        // DB part
+        /// <summary>
+        /// This part, where we communicate with SQLLite database
+        /// </summary>
+
         private static string       PathToBase = Path.Combine(ApplicationData.Current.LocalFolder.Path, "iTMO.db.sqlite");
         private SQLiteConnection    DataBaseConnection { get { return new SQLiteConnection(new SQLitePlatformWinRT(), PathToBase); } }
         private const int           UserTargetId = 1;

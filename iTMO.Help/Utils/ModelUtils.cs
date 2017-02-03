@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace iTMO.Help.Utils
 {
+    /// <summary>
+    /// Contains methods to check models validation states
+    /// </summary>
     class ModelUtils
     {
         public static bool IsJournalValid(Journal data)

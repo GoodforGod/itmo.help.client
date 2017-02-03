@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Navigation;
 using iTMO.Help.Model;
 using iTMO.Help.Controller;
 using Windows.Foundation;
+using System.Collections.Generic;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -17,6 +18,19 @@ namespace iTMO.Help
     public sealed partial class MainPage : Page
     {
         private User User = null;
+
+        /// <summary>
+        /// Main menu item's list <see cref="MenuItem"/>
+        /// </summary>
+        List<MenuItem> MenuOptions = new List<MenuItem>()
+        {
+            new MenuItem() { Page = typeof(JournalHub),     Title = "Journal",  Icon = "\xE2AC" },
+            new MenuItem() { Page = typeof(ScheduleHub),    Title = "Schedule", Icon = "\xE163" },
+            new MenuItem() { Page = typeof(ExamHub),        Title = "Exams",    Icon = "\xE184" },
+            new MenuItem() { Page = typeof(CustomHub),      Title = "Custom",   Icon = "\xE113" },
+            new MenuItem() { Page = typeof(MessageHub),     Title = "Messages", Icon = "\xE119" },
+            new MenuItem() { Page = typeof(The101),         Title = "Room 101", Icon = "\xE70C" }
+        };
 
         public MainPage()
         {

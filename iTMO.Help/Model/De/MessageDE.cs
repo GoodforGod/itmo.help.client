@@ -1,5 +1,8 @@
 ﻿namespace iTMO.Help.Model
 {
+    /// <summary>
+    /// JSON serialized object of "de.ifmo.ru" API
+    /// </summary>
     class MessageDe
     {
         public int      id              { get; set; } = -1;
