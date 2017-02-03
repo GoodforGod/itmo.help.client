@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:iTMO.Help"
-    xmlns:data="using:iTMO.Help"
+    xmlns:data="using:iTMO.Help.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -27,18 +27,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <!--
-        <Grid Width="50" HorizontalAlignment="Left" Background="{StaticResource LightWhite}">
-            <Button x:Name="BtnHiddenBar"
-                Width="50"
-                HorizontalAlignment="Left"
-                Foreground="#EC1946" 
-                Content="&#xE71D;"
-                FontSize="22"
-                FontFamily="Segoe MDL2 Assets" 
-                Click="btnBar_Click"/>
-        </Grid>
-        -->
+     
         <SplitView x:Name="MBar" 
                    DisplayMode="CompactOverlay" 
                    IsPaneOpen="False" 

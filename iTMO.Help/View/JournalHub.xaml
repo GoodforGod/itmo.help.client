@@ -189,10 +189,9 @@
                                                                            Grid.Row="1"
                                                                            VerticalAlignment="Top"
                                                                            HorizontalAlignment="Left"
-                                                                           Style="{StaticResource ListTextBlock}">
-                                                                    <Run>Variable : </Run>
-                                                                    <Run FontStyle="Italic" Text="{x:Bind variable}"/>
-                                                                </TextBlock>
+                                                                           FontStyle="Italic" 
+                                                                           Text="{x:Bind variable}"
+                                                                           Style="{StaticResource ListTextBlock}"/>
                                                                 <TextBlock x:Name="InfoValue" 
                                                                            Grid.Column="0"
                                                                            Grid.Row="2"

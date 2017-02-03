@@ -53,6 +53,11 @@ namespace iTMO.Help.Model
             Data = new UserAccount();
         }
 
+        public UserData(List<string> opts)
+        {
+            this.Data.Opts = opts;
+        }
+
         public UserData(string group) : this()
         {
             Data.Group = group;

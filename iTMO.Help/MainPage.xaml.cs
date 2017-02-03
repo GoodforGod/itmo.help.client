@@ -7,6 +7,7 @@ using iTMO.Help.Model;
 using iTMO.Help.Controller;
 using Windows.Foundation;
 using System.Collections.Generic;
+using iTMO.Help.View;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 

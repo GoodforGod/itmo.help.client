@@ -40,7 +40,7 @@ namespace iTMO.Help.View
             if (string.IsNullOrWhiteSpace(AllSearchBox.Text))
                 return;
 
-            HttpData<string> data = await HttpController.RetrieveData(TRequest.Schedule, AllSearchBox.Text);
+            HttpData<string> data = await HttpController.RetrieveData(TRequest.Schedule, new UserData(new List<string>() { AllSearchBox.Text }));
 
             if (data != null)
             {

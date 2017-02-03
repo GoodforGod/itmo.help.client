@@ -158,7 +158,7 @@ namespace iTMO.Help.Controller
                 default: throw new ArgumentNullException("[ UNKNOWN TRequest ]");
             }
 
-            if (string.IsNullOrWhiteSpace(request.ToString()))
+            if (string.IsNullOrWhiteSpace(resultUri.ToString()))
                 throw new ArgumentNullException("[ Invalid Arguments ]", type.ToString());
 
             request = new HttpRequestMessage(HttpMethod.Get, resultUri.ToString());
@@ -198,9 +198,9 @@ namespace iTMO.Help.Controller
                 case TRequest.DeJournal:
                     return true;
 
+                // Valid Drop through case 
                 case TRequest.DeJournalChangeLog:
                 case TRequest.DeMessages:
-                
                 // ISU
                 case TRequest.ScheduleTeacher:
                 case TRequest.ScheduleExamTeacher:

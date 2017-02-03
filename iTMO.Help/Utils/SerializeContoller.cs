@@ -25,6 +25,9 @@ namespace iTMO.Help.Utils
 
                 if (ModelUtils.IsExamValid(exams))
                 {
+                    if (exams.faculties[0].departments[0].groups[0].exams_schedule.Count == 0)
+                        throw new ArgumentException();
+
                     foreach (ExamsSchedule exam in exams.faculties[0].departments[0].groups[0].exams_schedule)
                     {
                         try
@@ -58,10 +61,11 @@ namespace iTMO.Help.Utils
                     }
                     serializedData.isValid = true;
                 }
-                else throw new ArgumentNullException("Group number is probably Invalid!");
+                else throw new ArgumentNullException();
             }
             catch (JsonSerializationException ex)   { serializedData.Message = "Json Parse Error"; }
-            catch (ArgumentNullException ex)        { serializedData.Message = ex.Message; }
+            catch (ArgumentNullException ex)        { serializedData.Message = "Group number is probably Invalid!"; }
+            catch (ArgumentException ex)            { serializedData.Message = "Empty"; }
             catch (Exception ex)                    { serializedData.Message = "Unexpected Server Response"; }
 
             return serializedData;
