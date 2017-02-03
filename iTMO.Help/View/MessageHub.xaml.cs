@@ -28,8 +28,8 @@ namespace iTMO.Help.View
     /// </summary>
     public sealed partial class MessageHub : Page
     {
-        private List<MessageDe> MessageDE = null;
-        private TextBlock LastSelected = null;
+        private List<MessageDe> DeMessages = null;
+        private TextBlock LastSelectedDeMsg = null;
 
         public MessageHub()
         {
@@ -38,91 +38,94 @@ namespace iTMO.Help.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if ((MessageDE = DatabaseController.Me.DMessageDe) != null)
-                DEList.ItemsSource = MessageDE;
+            if ((DeMessages = DatabaseController.Me.DMessageDe) != null)
+                DeMsgList.ItemsSource = DeMessages;
             else
                 ProcessMessageDE();
         }
 
         private async void ProcessMessageDE()
         {
-            if (string.IsNullOrWhiteSpace(DeSearch.Text))
+            int days = 14;
+            if (string.IsNullOrWhiteSpace(DeMsgSearch.Text) || !int.TryParse(DeMsgSearch.Text, out days))
+            {
+                Message.Text = "Invalid Days Input";
                 return;
+            }
 
             var user_data = await CollectUserData();
-
-            if (!user_data.IsValid)
+            if (!user_data.isValid)
             {
                 Message.Text = user_data.Message;
                 return;
             }
 
-            DEList.ItemsSource = null;
             Message.Text = "";
-            ProcessRing.IsActive = true;
+            DeMsgList.ItemsSource = DeMessages = null;
 
-            DataResponse<string> response = await HttpController.RetrieveData(RequestTypes.MessagesFromDe, 
-                                                                                            user_data.Login,
-                                                                                            user_data.Password,
-                                                                                            DeSearch.Text);
+            user_data.Data.Opts.Add(DeMsgSearch.Text);
+
+            ProcessRing.IsActive = true;
+            HttpData<string> response = await HttpController.RetrieveData(TRequest.DeMessages, user_data);
+
             if (response.isValid)
             {
+                RememberUserData(user_data);
+
                 var dataVR = SerializeUtils.ToMessageDeView(response.Data);
 
-                if (dataVR.IsValid)
-                {
-                    RememberUserData(user_data);
-                    DEList.ItemsSource = new ObservableCollection<MessageDe>(DatabaseController.Me.DMessageDe = MessageDE = dataVR.Data);
-                }
+                if (dataVR.isValid)
+                    DeMsgList.ItemsSource = new ObservableCollection<MessageDe>(DatabaseController.Me.DMessageDe = DeMessages = dataVR.Data);
                 else
                     Message.Text = dataVR.Message;
             }
-            else Message.Text = response.Data;
+            else
+                Message.Text = response.Data;
 
             ProcessRing.IsActive = false;
         }
 
-        private void RememberUserData(CheckResponse response)
+        private void RememberUserData(UserData response)
         {
-            if (response.IsRemember)
+            if (response.isRemember)
             {
                 var usr = DatabaseController.Me.DUser;
-                usr.Login = response.Login;
-                usr.Password = response.Password;
+                usr.Login = response.Data.Login;
+                usr.Password = response.Data.Password;
                 DatabaseController.Me.DUser = usr;
             }
         }
 
-        private async Task<CheckResponse> CollectUserData()
+        private async Task<UserData> CollectUserData()
         {
-            CheckResponse response = new CheckResponse();
+            UserData response = new UserData();
 
-            if ((string.IsNullOrWhiteSpace(response.Login = DatabaseController.Me.DUser.Login)
-              || string.IsNullOrWhiteSpace(response.Password = DatabaseController.Me.DUser.Password)))
+            if ((string.IsNullOrWhiteSpace(response.Data.Login = DatabaseController.Me.DUser.Login)
+              || string.IsNullOrWhiteSpace(response.Data.Password = DatabaseController.Me.DUser.Password)))
             {
-                if (response.Login != null)
-                    Login.Text = response.Login;
-                if (response.Password != null)
-                    Password.Password = response.Password;
+                if (response.Data.Login != null)
+                    Login.Text = response.Data.Login;
+                if (response.Data.Password != null)
+                    Password.Password = response.Data.Password;
 
                 switch (await DeFormDialog.ShowAsync())
                 {
                     case ContentDialogResult.Primary:
-                        if (string.IsNullOrWhiteSpace(response.Login = Login.Text)
-                            || string.IsNullOrWhiteSpace(response.Password = Password.Password))
+                        if (string.IsNullOrWhiteSpace(response.Data.Login = Login.Text)
+                            || string.IsNullOrWhiteSpace(response.Data.Password = Password.Password))
                             response.Message = "Fill Login And Password Correctly";
                         else
                         {
                             if ((bool)RememberMeBox.IsChecked)
-                                response.IsRemember = true;
-                            response.IsValid = true;
+                                response.isRemember = true;
+                            response.isValid = true;
                         }
                         break;
                     default:
                         break;
                 }
             }
-            else response.IsValid = true;
+            else response.isValid = true;
 
             Login.Text = Password.Password = "";
             return response;
@@ -147,14 +150,14 @@ namespace iTMO.Help.View
         {
             var list = sender as ListView;
             var listItem = list.SelectedItem as DependencyObject;
-            var container = ((ListViewItem)(DEList.ContainerFromItem(list.SelectedItem)));
+            var container = ((ListViewItem)(DeMsgList.ContainerFromItem(list.SelectedItem)));
 
             var textBlock = (TextBlock)CommonUtils.GetChildren(container).First(x => x.Name == "Text");
-            textBlock.Text = MessageDE[int.Parse(textBlock.Tag.ToString())].text;
+            textBlock.Text = DeMessages[int.Parse(textBlock.Tag.ToString())].text;
 
-            if(LastSelected != null)
-                LastSelected.Text = "";
-            LastSelected = textBlock;
+            if(LastSelectedDeMsg != null)
+                LastSelectedDeMsg.Text = "";
+            LastSelectedDeMsg = textBlock;
 
             /*
             // WEBView Stratagy

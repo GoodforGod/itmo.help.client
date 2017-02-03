@@ -251,7 +251,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
 
-                    <AutoSuggestBox x:Name="SearchAutoSuggestBox" 
+                    <AutoSuggestBox x:Name="ChangeLogSearch" 
                                     PlaceholderText="Group"
                                     Grid.Row="0"
                                     Width="220"

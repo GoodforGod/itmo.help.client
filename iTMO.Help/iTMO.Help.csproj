@@ -121,7 +121,7 @@
     <Compile Include="View\The101.xaml.cs">
       <DependentUpon>The101.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controller\HttpController.cs" />
     <Compile Include="View\JournalHub.xaml.cs">

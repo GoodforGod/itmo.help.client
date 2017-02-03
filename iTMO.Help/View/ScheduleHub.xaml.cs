@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Navigation;
 using iTMO.Help.Model.ViewReady;
 using System.Collections.Generic;
+using iTMO.Help.Model;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -39,7 +40,7 @@ namespace iTMO.Help.View
             if (string.IsNullOrWhiteSpace(AllSearchBox.Text))
                 return;
 
-            DataResponse<string> data = await HttpController.RetrieveData(RequestTypes.Schedule, AllSearchBox.Text);
+            HttpData<string> data = await HttpController.RetrieveData(TRequest.Schedule, AllSearchBox.Text);
 
             if (data != null)
             {

@@ -1,6 +1,7 @@
 ﻿using SQLite.Net.Attributes;
 
 using iTMO.Help.View;
+using System.Collections.Generic;
 
 namespace iTMO.Help.Model
 {
@@ -24,6 +25,17 @@ namespace iTMO.Help.Model
     }
 
     /// <summary>
+    /// User account object, to use in HttpRequest proceed
+    /// </summary>
+    class UserAccount
+    {
+        public string       Login    { get; set; } = "";
+        public string       Password { get; set; } = "";
+        public string       Group    { get; set; } = "";
+        public List<string> Opts     { get; set; } = new List<string>();
+    }
+
+    /// <summary>
     /// Custom journal object, used to store link to user's custom journals
     /// 
     /// EXAMPLE (Like Google Doc, where tutor stores points/scores instead of DE)
@@ -35,23 +47,5 @@ namespace iTMO.Help.Model
 
         public string Name { get; set; } = "";
         public string Link { get; set; } = "";
-    }
-
-    /// <summary>
-    /// Used to Create/Change objects locale state
-    /// </summary>
-    enum LanguageOption
-    {
-        EN = 0,
-        RU = 1,
-        CN = 2 // Reserved for China, If some Chieese want to help, contact me, lets push chinese dictionary together
-    }
-
-    /// <summary>
-    /// Used as Term select item on the <see cref="JournalHub"/> term ComboBox
-    /// </summary>
-    class TermItem
-    {
-        public string Term { get; set; } = "";
     }
 }

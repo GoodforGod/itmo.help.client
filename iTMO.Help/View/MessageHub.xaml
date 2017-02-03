@@ -30,7 +30,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     
-                    <AutoSuggestBox Name="DeSearch" 
+                    <AutoSuggestBox Name="DeMsgSearch" 
                                     PlaceholderText="Days"
                                     Width="220"
                                     Grid.Row="0"
@@ -41,7 +41,7 @@
                                     Style="{StaticResource ExamSearch}"
                                     QuerySubmitted="DeSearch_QuerySubmitted"/>
 
-                    <ListView x:Name="DEList"
+                    <ListView x:Name="DeMsgList"
                               Margin="2,5,2,5"
                               Grid.Row="1"
                               HorizontalAlignment="Center"

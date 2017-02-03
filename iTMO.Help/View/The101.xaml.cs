@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTMO.Help.Controller;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,7 +35,8 @@ namespace iTMO.Help.Model
 
         private async void NavigateWeb()
         {
-            //Web.Navigate(new Uri(""));
+            var user_data = new UserData();
+            HttpData<string> response = await HttpController.RetrieveData(TRequest.DeAttestationSchedule, user_data);
         }
     }
 }

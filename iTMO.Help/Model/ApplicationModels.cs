@@ -8,47 +8,93 @@ using System.Threading.Tasks;
 namespace iTMO.Help.Model
 {
     /// <summary>
-    /// HttpController 
+    /// Data object inteface, may be usefull in future, or.. true OOP
+    /// </summary>
+    interface IData
+    {
+        bool    isValid { get; set; }        
+        string  Message { get; set; }
+    }
+
+    /// <summary>
+    /// Common generic for data objects
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
-    class DataResponse<TValue>
+    class CommonData<TValue> : IData
     {
-        public TValue           Data    { get; set; }
-        public HttpStatusCode   Code    { get; set; }
-        public bool             isValid { get; set; }
-        public string           Message { get; set; }
+        public TValue   Data    { get; set; }
+        public bool     isValid { get; set; } = false;
+        public string   Message { get; set; } = "";
+    }
+
+    /// <summary>
+    /// HttpController response object
+    /// </summary>
+    class HttpData<TValue> : CommonData<TValue>
+    {
+        public HttpStatusCode   Code    { get; set; } = HttpStatusCode.Forbidden;
     }
 
     /// <summary>
     /// Serialisation response with valid state and exception method
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
-    class SerializeData<TValue>
-    {
-        public TValue   Data    { get; set; }
-        public bool     IsValid { get; set; } = false;
-        public string   Message { get; set; } = "";
-    }
+    class SerializeData<TValue> : CommonData<TValue> { }
 
     /// <summary>
-    /// Used as response from methods which try to ChechOrAndRemember user's info
+    /// Used as response from methods which try to CheckOrAndRemember user's info
     /// </summary>
-    public class CheckResponse
+    class UserData : CommonData<UserAccount>
     {
-        public bool     IsRemember  { get; set; } = false;
-        public bool     IsValid     { get; set; } = false;
-        public string   Login       { get; set; } = "";
-        public string   Password    { get; set; } = "";
-        public string   Message     { get; set; } = "";
+        public bool isRemember  { get; set; } = false;
+
+        public UserData()
+        {
+            Data = new UserAccount();
+        }
+
+        public UserData(string group) : this()
+        {
+            Data.Group = group;
+        }
+
+        public UserData(string login, string password) : this()
+        {
+            Data.Login = login;
+            Data.Password = password;
+        }
+
+        public UserData(string login, string password, string group) : this(login, password)
+        {
+            Data.Group = group;
+        }
     }
 
     /// <summary>
     /// Used for Main menu <see cref="MainPage"/>
     /// </summary>
-    public class MenuItem
+    class MenuItem
     {
         public string Title { get; set; } = "";
-        public string Icon { get; set; } = "";
-        public Type Page { get; set; }
+        public string Icon  { get; set; } = "";
+        public Type   Page  { get; set; }
+    }
+
+    /// <summary>
+    /// Used as Term select item on the <see cref="JournalHub"/> term ComboBox
+    /// </summary>
+    class TermItem
+    {
+        public string Term { get; set; } = "";
+    }
+
+     /// <summary>
+    /// Used to Create/Change objects locale state
+    /// </summary>
+    enum LanguageOption
+    {
+        EN = 0,
+        RU = 1,
+        CN = 2 // Reserved for China, If some Chieese want to help, contact me, lets push chinese dictionary together
     }
 }

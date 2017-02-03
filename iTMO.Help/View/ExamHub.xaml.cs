@@ -7,6 +7,7 @@ using iTMO.Help.Utils;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
+using iTMO.Help.Model;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -53,13 +54,13 @@ namespace iTMO.Help.View
             Message.Text = "";
             ExamRing.IsActive = true;
 
-            DataResponse<string> response = await HttpController.RetrieveData(RequestTypes.ScheduleExam, SearchAutoSuggestBox.Text);
+            HttpData<string> response = await HttpController.RetrieveData(TRequest.ScheduleExam, new UserData(SearchAutoSuggestBox.Text));
 
             if (response.isValid)
             {
                 var dataVR = SerializeUtils.ToExamView(response.Data);
 
-                if (dataVR.IsValid)
+                if (dataVR.isValid)
                 {
                     var usr = DatabaseController.Me.DUser;
                     usr.GroupLastUsed = SearchAutoSuggestBox.Text;

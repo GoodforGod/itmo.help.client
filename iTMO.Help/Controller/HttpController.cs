@@ -9,40 +9,86 @@ using iTMO.Help.Model;
 namespace iTMO.Help.Controller
 {
     /// <summary>
-    /// Request types of the HttpController
+    /// Avaliable request types of the HttpController
     /// </summary>
-    public enum RequestTypes
+    public enum TRequest
     {
-        AuthDe,
-        Journal,
-        JournalChangeLog,
-        MessagesFromDe,
-        Schedule,
-        ScheduleExam,
-        ScheduleTeacher,
-        ScheduleExamTeacher
+        /// <summary>
+        /// Reqiure 2 params, LOGIN & PASSWD
+        /// </summary>
+        DeAuth              = 1,
+        /// <summary>
+        /// Doesn't reqiure params
+        /// </summary>
+        DeJournal           = 3,
+        /// <summary>
+        /// Require 1 param, DAYS
+        /// </summary>
+        DeJournalChangeLog  = 5,
+        /// <summary>
+        /// Require 1 param, DAYS
+        /// </summary>
+        DeMessages          = 7,
+        /// <summary>
+        /// Require 3 params, DATA & LOGIN & PASSWD
+        /// </summary>
+        DeAuthAttestation   = 9,
+        /// <summary>
+        /// Require 3 params, DATA & LOGIN & PASSWD
+        /// </summary>
+        DeAttestationRegister = 11,
+        /// <summary>
+        /// Require 2 params, SEMESTER_ID & GROUP
+        /// </summary>
+        DeAttestationSchedule = 100,
+        /// <summary>
+        /// Require 1 param, GROUP
+        /// </summary>
+        Schedule            = 0,
+        /// <summary>
+        /// Require 1 param, GROUP
+        /// </summary>
+        ScheduleExam        = 2,
+        /// <summary>
+        /// Require 1 param, TEACHER_ID
+        /// </summary>
+        ScheduleTeacher     = 4,
+        /// <summary>
+        /// Require 1 param, TEACHER_ID
+        /// </summary>
+        ScheduleExamTeacher = 6
     }
 
     /// <summary>
-    /// 
+    /// Used to communicate with (ISU & DE) API throught HTTP(S) transport protocol
     /// </summary>
     class HttpController
     {
+        /// <summary>
+        /// Main application Http end point client
+        /// </summary>
         private static HttpClient httpClient = new HttpClient();
 
+        /// <summary>
+        /// Indicates is user Authiticated on DE services
+        /// </summary>
         private static bool isAuthiticated = false;
-        private static List<string> SessionCookie = null;
 
-        private static HttpRequestMessage BuildRequest(RequestTypes type, params string[] opts)
+        /// <summary>
+        /// Builds HttpRequests for <see cref="ProcessRequest(TRequest, UserData)"/>
+        /// </summary>
+        private static HttpRequestMessage BuildHttpRequest(TRequest type, UserData user)
         {
             HttpRequestMessage  request = null;
             StringBuilder       resultUri = new StringBuilder();
 
-            string ApiKey       = "/AYPlvngDDdVoZdJgPAKoeHQnWUDrvOwEHpEXxNGNfaAKsugiJyCGxotWsTdqCdHL/";
+            string isuApiKey         = "/AYPlvngDDdVoZdJgPAKoeHQnWUDrvOwEHpEXxNGNfaAKsugiJyCGxotWsTdqCdHL/";
+            string isuBaseLink       = "https://isu.ifmo.ru/ords/isurest/v1/api/public";
 
-            string isuBaseLink  = "https://isu.ifmo.ru/ords/isurest/v1/api/public";
-            string deBaseLink   = "https://de.ifmo.ru/api/private";
-            string deAuthLink   = "https://de.ifmo.ru/servlet/?Rule=LOGON&LOGIN={0}&PASSWD={1}";
+            string deBaseLink        = "https://de.ifmo.ru/api/private";
+            string deAuthLink        = "https://de.ifmo.ru/servlet/?Rule=LOGON&LOGIN={0}&PASSWD={1}";
+            string deAuthAttestation = "https://de.ifmo.ru/--schedule/index.php?data={0}&login={1}&passwd={2}&role=%D1%F2%F3%E4%E5%ED%F2";
+            string deAttestationSchedule    = "http://de.ifmo.ru/?node=schedule&index=sched&semiId={0}&group={1}";
 
             // ISU
             string schedule         = "/schedule";
@@ -54,18 +100,43 @@ namespace iTMO.Help.Controller
             // DE
             string journal          = "/eregister";
             string journalChangeLog = "/eregisterlog?days={0}";
-            string messageDe        = "/mail?days={0}";// &unreadOnly={0}";
+            string messageDe        = "/mail?days={0}"; // &unreadOnly={0}";
 
             switch (type)
             {
-                case RequestTypes.AuthDe:           resultUri.AppendFormat(deAuthLink, opts[0], opts[1]);                           break;
-                case RequestTypes.Journal:          resultUri.Append(deBaseLink + journal);                                         break;
-                case RequestTypes.JournalChangeLog: resultUri.AppendFormat(deBaseLink + journalChangeLog, opts[2]);                 break;
-                case RequestTypes.MessagesFromDe:   resultUri.AppendFormat(deBaseLink + messageDe, opts[2]);               break;
-                case RequestTypes.Schedule:         resultUri.Append(isuBaseLink + schedule + common + group + ApiKey + opts[0]);   break;
-                case RequestTypes.ScheduleExam:     resultUri.Append(isuBaseLink + exams + common + group + ApiKey + opts[0]);      break;
-                case RequestTypes.ScheduleTeacher:  resultUri.Append(isuBaseLink + schedule + common + teacher + ApiKey + opts[0]); break;
-                case RequestTypes.ScheduleExamTeacher: resultUri.Append(isuBaseLink + exams + common + teacher + ApiKey + opts[0]); break;
+                // DE
+                case TRequest.DeAttestationSchedule:
+                    resultUri.AppendFormat(deAttestationSchedule, user.Data.Opts[0], user.Data.Group);
+                    break;
+                case TRequest.DeAuthAttestation:
+                    resultUri.AppendFormat(deAuthAttestation, user.Data.Opts[0], user.Data.Login, user.Data.Password);
+                    break;                                
+                case TRequest.DeAuth:
+                    resultUri.AppendFormat(deAuthLink, user.Data.Login, user.Data.Password);
+                    break;
+                case TRequest.DeJournal:
+                    resultUri.Append(deBaseLink + journal);
+                    break;
+                case TRequest.DeJournalChangeLog:
+                    resultUri.AppendFormat(deBaseLink + journalChangeLog, user.Data.Opts[0]);
+                    break;
+                case TRequest.DeMessages:
+                    resultUri.AppendFormat(deBaseLink + messageDe, user.Data.Opts[0]);
+                    break;
+
+                // ISU
+                case TRequest.Schedule:
+                    resultUri.Append(isuBaseLink + schedule + common + group + isuApiKey + user.Data.Group);
+                    break;
+                case TRequest.ScheduleExam:
+                    resultUri.Append(isuBaseLink + exams + common + group + isuApiKey + user.Data.Group);
+                    break;
+                case TRequest.ScheduleTeacher:
+                    resultUri.Append(isuBaseLink + schedule + common + teacher + isuApiKey + user.Data.Opts[0]);
+                    break;
+                case TRequest.ScheduleExamTeacher:
+                    resultUri.Append(isuBaseLink + exams + common + teacher + isuApiKey + user.Data.Opts[0]);
+                    break;
                 default: return null;
             }
 
@@ -73,28 +144,22 @@ namespace iTMO.Help.Controller
             request.Headers.Add("User-Agent", "Mozilla/5.0");
             request.Headers.Add("Connection", "keep-alive");
 
-            switch(type)
-            {
-                case RequestTypes.Journal:
-                case RequestTypes.JournalChangeLog:
-                case RequestTypes.MessagesFromDe:
-                  
-                    break;
-                default: break;
-            }
-
             return request;
         }
 
-        private static async Task<DataResponse<string>> AuthOnDe(params string[] opts)
+        /// <summary>
+        /// Authorize on DE account "de.ifmo.ru"
+        /// </summary>
+        /// <returns> <see cref="HttpData{TValue}"/> </returns>
+        private static async Task<HttpData<string>> AuthOnDe(UserData user)
         {
-            var authResult = new DataResponse<string>() { Code = HttpStatusCode.Unauthorized, isValid = false };
+            var authResult = new HttpData<string>() { Code = HttpStatusCode.Unauthorized, isValid = false };
 
-            if (opts.Length > 1)
+            if (user.Data.Opts.Count > 1)
             {
                 try
                 {
-                    var response = await httpClient.SendAsync(BuildRequest(RequestTypes.AuthDe, opts));
+                    var response = await httpClient.SendAsync(BuildHttpRequest(TRequest.DeAuth, user));
                     if ((authResult.Code = response.StatusCode) == HttpStatusCode.OK)
                         authResult.isValid = true;
                     else
@@ -106,13 +171,17 @@ namespace iTMO.Help.Controller
             return authResult;
         }
 
-        public static async Task<DataResponse<string>> ProccessRequest(RequestTypes type, params string[] opts)
+        /// <summary>
+        /// Process httpRequest
+        /// </summary>
+        /// <returns> <see cref="HttpData{TValue}"/> </returns>
+        private static async Task<HttpData<string>> ProcessRequest(TRequest type, UserData user)
         {
-            DataResponse<string> dataResponse = new DataResponse<string>() { Data = "", isValid = false };
+            HttpData<string> dataResponse = new HttpData<string>() { Data = "", isValid = false };
 
             try
             {
-                var response = await httpClient.SendAsync(BuildRequest(type, opts));
+                var response = await httpClient.SendAsync(BuildHttpRequest(type, user));
 
                 if (response != null)
                 {
@@ -122,9 +191,9 @@ namespace iTMO.Help.Controller
                             dataResponse.Data = await response.Content.ReadAsStringAsync();
                             switch (type)
                             {
-                                case RequestTypes.MessagesFromDe:
-                                case RequestTypes.Journal:
-                                case RequestTypes.JournalChangeLog: isAuthiticated = true; break;
+                                case TRequest.DeMessages:
+                                case TRequest.DeJournal:
+                                case TRequest.DeJournalChangeLog: isAuthiticated = true; break;
                                 default: break;
                             }
                             dataResponse.isValid = true;
@@ -144,25 +213,36 @@ namespace iTMO.Help.Controller
             return dataResponse;
         }
 
-        public static async Task<DataResponse<string>> RetrieveData(RequestTypes type, params string[] opts)
+        /// <summary>
+        /// Retrive data from DE/ISU
+        /// </summary>
+        /// <param name="type">
+        /// Request paramer type, used to process stratagy for specific request
+        /// </param>
+        /// <param name="opts">
+        /// Parameters for the specific request type, read REQUEST TYPE SUMMARY!
+        /// </param>
+        /// <returns></returns>
+        public static async Task<HttpData<string>> RetrieveData(TRequest type, UserData user)
         {
             switch (type)
             {
-                // DE
-                case RequestTypes.Journal:
-                case RequestTypes.JournalChangeLog:
-                case RequestTypes.MessagesFromDe:
+                // Process DE
+                case TRequest.DeJournal:
+                case TRequest.DeJournalChangeLog:
+                case TRequest.DeMessages:
+                case TRequest.DeAuthAttestation:
                     if (!isAuthiticated)
                     {
-                        var authResult = await AuthOnDe(opts);
-
+                        var authResult = await AuthOnDe(user);
                         if (authResult.Code != HttpStatusCode.OK)
-                            return new DataResponse<string>() { Data = authResult.Data.ToString(), isValid = isAuthiticated = false };
+                            return authResult;
                     }
-                    return await ProccessRequest(type, opts);
-                // ISU
+                    return await ProcessRequest(type, user);
+
+                // Process ISU & DE AttestationSchedule
                 default:
-                    return await ProccessRequest(type, opts);
+                    return await ProcessRequest(type, user);
             }
         }
     }

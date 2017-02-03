@@ -61,31 +61,26 @@ namespace iTMO.Help.View
 
         private async void ProccessJournalVR()
         {
-            JournalMessage.Text = "";
-
-            if (JournalList.ItemsSource != null)
-                JournalList.ItemsSource = DJournal = null;
-
             var user_data = await CollectUserData();
-
-            if(!user_data.IsValid)
+            if(!user_data.isValid)
             {
                 JournalMessage.Text = user_data.Message;
                 return;
             }
 
-            JournalRing.IsActive = true;
+            JournalMessage.Text = "";
+            JournalList.ItemsSource = DJournal = null;
 
-            DataResponse<string> response = await HttpController.RetrieveData(RequestTypes.Journal, 
-                                                                                user_data.Login, 
-                                                                                user_data.Password);
+            JournalRing.IsActive = true;
+            HttpData<string> response = await HttpController.RetrieveData(TRequest.DeJournal, user_data);
+
             if (response.isValid)
             {
                 RememberUserData(user_data);
 
                 var dataVR = SerializeUtils.ToJournalView(response.Data);
 
-                if (dataVR.IsValid)
+                if (dataVR.isValid)
                 {
                     DatabaseController.Me.DJournal = DJournal = dataVR.Data;
                     GroupsBox.ItemsSource = DJournal.years;
@@ -108,48 +103,41 @@ namespace iTMO.Help.View
 
         private async void ProccesJournalChangeLogVR()
         {
-            JournalChangeMessage.Text = "";
-
-            if (JournalChangeList.Items != null)
-                JournalChangeList.ItemsSource = DJournalChange = null;
+            int days = 14;
+            if (string.IsNullOrWhiteSpace(ChangeLogSearch.Text) || !int.TryParse(ChangeLogSearch.Text, out days))
+            {
+                JournalChangeMessage.Text = "Invalid Days Input";
+                return;
+            }
 
             var user_data = await CollectUserData();
-
-            if(!user_data.IsValid)
+            if(!user_data.isValid)
             {
                 JournalMessage.Text = user_data.Message;
                 return;
             }
 
-            int days = 14;
+            JournalChangeMessage.Text = "";
+            JournalChangeList.ItemsSource = DJournalChange = null;
 
-            if (int.TryParse(SearchAutoSuggestBox.Text, out days))
+            user_data.Data.Opts.Add(ChangeLogSearch.Text);
+
+            JournalRing.IsActive = true;
+            HttpData<string> response = await HttpController.RetrieveData(TRequest.DeJournalChangeLog, user_data);
+
+            if (response.isValid)
             {
-                JournalRing.IsActive = true;
+                RememberUserData(user_data);
 
-                DataResponse<string> response = await HttpController.RetrieveData(RequestTypes.JournalChangeLog, 
-                                                                                    user_data.Login, 
-                                                                                    user_data.Password, 
-                                                                                    days.ToString());
-                if (response.isValid)
-                {
-                    RememberUserData(user_data);
+                var dataVR = SerializeUtils.ToJournalChangeLogView(response.Data);
 
-                    var dataVR = SerializeUtils.ToJournalChangeLogView(response.Data);
-
-                    if (dataVR.IsValid)
-                        JournalChangeList.ItemsSource = new ObservableCollection<JournalChangeLog>(DatabaseController.Me.DJournalChangeLog = DJournalChange = dataVR.Data);
-                    else
-                        JournalMessage.Text = dataVR.Message;
-                }
+                if (dataVR.isValid)
+                    JournalChangeList.ItemsSource = new ObservableCollection<JournalChangeLog>(DatabaseController.Me.DJournalChangeLog = DJournalChange = dataVR.Data);
                 else
-                { 
-                    if (response.Code != System.Net.HttpStatusCode.NoContent)
-                        JournalList.ItemsSource = null;
-                    JournalChangeMessage.Text = response.Data;
-                }
+                    JournalMessage.Text = dataVR.Message;
             }
-            else JournalChangeMessage.Text = "Invalid Days Input";
+            else
+                JournalChangeMessage.Text = response.Data;
 
             RememberMeBox.IsChecked = JournalRing.IsActive = false;
         }
@@ -158,7 +146,7 @@ namespace iTMO.Help.View
         {
             return DJournal != null
                     && DJournal.years != null
-                    && DJournal.years.Count != 0;
+                        && DJournal.years.Count != 0;
         }
 
         private void JournalFillStrategy()
@@ -184,47 +172,47 @@ namespace iTMO.Help.View
             }
         }
 
-        private void RememberUserData(CheckResponse response)
+        private void RememberUserData(UserData response)
         {
-            if (response.IsRemember)
+            if (response.isRemember)
             {
                 var usr = DatabaseController.Me.DUser;
-                usr.Login = response.Login;
-                usr.Password = response.Password;
+                usr.Login = response.Data.Login;
+                usr.Password = response.Data.Password;
                 DatabaseController.Me.DUser = usr;
             }
         }
 
-        private async Task<CheckResponse> CollectUserData()
+        private async Task<UserData> CollectUserData()
         {
-            CheckResponse response = new CheckResponse();
+            UserData response = new UserData();
 
-            if ((string.IsNullOrWhiteSpace(response.Login = DatabaseController.Me.DUser.Login)
-              || string.IsNullOrWhiteSpace(response.Password = DatabaseController.Me.DUser.Password)))
+            if ((string.IsNullOrWhiteSpace(response.Data.Login = DatabaseController.Me.DUser.Login)
+              || string.IsNullOrWhiteSpace(response.Data.Password = DatabaseController.Me.DUser.Password)))
             {
-                if (response.Login != null)
-                    Login.Text = response.Login;
-                if (response.Password != null)
-                    Password.Password = response.Password;
+                if (response.Data.Login != null)
+                    Login.Text = response.Data.Login;
+                if (response.Data.Password != null)
+                    Password.Password = response.Data.Password;
 
                 switch (await JournalFormDialog.ShowAsync())
                 {
                     case ContentDialogResult.Primary:
-                        if (string.IsNullOrWhiteSpace(response.Login = Login.Text)
-                            || string.IsNullOrWhiteSpace(response.Password = Password.Password))
+                        if (string.IsNullOrWhiteSpace(response.Data.Login = Login.Text)
+                            || string.IsNullOrWhiteSpace(response.Data.Password = Password.Password))
                             response.Message = "Fill Login And Password Correctly";
                         else
                         {
                             if ((bool)RememberMeBox.IsChecked)
-                                response.IsRemember = true;
-                            response.IsValid = true;
+                                response.isRemember = true;
+                            response.isValid = true;
                         }
                         break;
                     default:
                         break;
                 }
             }
-            else response.IsValid = true;
+            else response.isValid = true;
 
             Login.Text = Password.Password = "";
             return response;

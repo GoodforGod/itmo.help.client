@@ -108,5 +108,6 @@ namespace iTMO.Help.Model
     {
         public string Week      { get; set; } = "";
         public string Interval  { get; set; } = "";
+        public string Link      { get; set; } = "";
     }
 }
