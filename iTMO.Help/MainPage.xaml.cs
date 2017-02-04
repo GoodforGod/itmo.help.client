@@ -152,5 +152,10 @@ namespace iTMO.Help
         {
             DatabaseController.Me.DUser = User;
         }
+
+        private void LanguageOption_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

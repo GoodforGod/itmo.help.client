@@ -17,8 +17,24 @@
     </Page.Resources>
 
     <Grid Background="{StaticResource DeepBlue}">
-        <WebView x:Name="Web"/>
+       <!-- <WebView x:Name="Web"/> -->
+        
+        <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button x:Name="DE101" 
+                    Content="101 Chair" 
+                    Margin="5"
+                    Width="120"
+                    Background="White"
+                    Click="DE101_Click"/>
+            <Button x:Name="Rank" 
+                    Width="120"
+                    Margin="5"
+                    Background="White"
+                    Content="Rating" 
+                    Click="Rank_Click"/>
+        </StackPanel>
 
+        <!--
         <ContentDialog x:Name="DeFormDialog"
                        VerticalAlignment="Stretch"
                        PrimaryButtonText="OK"
@@ -57,6 +73,7 @@
                       Width="50"
                       Height="50"
                       Foreground="White"/>
+        -->
 
     </Grid>
 </Page>

@@ -18,7 +18,7 @@ namespace iTMO.Help.Controller
     {
         private static object syncRoot = new object();
         private volatile static DatabaseController _Me;
-        public static           DatabaseController  Me
+        public  static          DatabaseController  Me
         {
             get {
                     if (_Me == null)
@@ -36,6 +36,11 @@ namespace iTMO.Help.Controller
         {
             DataBaseConnection.CreateTable<User>();
             DataBaseConnection.CreateTable<JournalCustom>();
+
+            var journals = GetCustomJournals();
+
+            if (journals == null || journals.Count == 0)
+                SaveCustomJournal(new JournalCustom() { Id = 1, Link = "http://www.ifmo.ru/ru/", Name = "ifmo" });
 
             if (DUser == null)
                 DataBaseConnection.InsertOrReplace(new User { Id = 1 });

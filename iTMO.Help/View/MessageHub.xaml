@@ -117,6 +117,7 @@
                     </ListView>
                 </Grid>
             </PivotItem>
+            <!--
             <PivotItem Header="ISU" HorizontalAlignment="Center">
                 <Grid>
                     <Grid HorizontalAlignment="Center">
@@ -137,6 +138,7 @@
                     </Grid>
                 </Grid>
             </PivotItem>
+            -->
         </Pivot>
 
         <ContentDialog x:Name="DeFormDialog"

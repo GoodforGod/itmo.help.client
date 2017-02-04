@@ -42,6 +42,10 @@ namespace iTMO.Help.Controller
         /// </summary>
         DeAttestationSchedule = 100,
         /// <summary>
+        /// Require 1 param, NODE LINK <see cref="AttestationTimeTable.Link"/>
+        /// </summary>
+        DeAttestationScheduleNode = 200,
+        /// <summary>
         /// Require 1 param, GROUP
         /// </summary>
         Schedule            = 0,
@@ -85,10 +89,11 @@ namespace iTMO.Help.Controller
             string isuApiKey         = "/AYPlvngDDdVoZdJgPAKoeHQnWUDrvOwEHpEXxNGNfaAKsugiJyCGxotWsTdqCdHL/";
             string isuBaseLink       = "https://isu.ifmo.ru/ords/isurest/v1/api/public";
 
+            string deHostBaseLink    = "http://de.ifmo.ru";
             string deBaseLink        = "https://de.ifmo.ru/api/private";
             string deAuthLink        = "https://de.ifmo.ru/servlet/?Rule=LOGON&LOGIN={0}&PASSWD={1}";
             string deAuthAttestation = "https://de.ifmo.ru/--schedule/index.php?data={0}&login={1}&passwd={2}&role=%D1%F2%F3%E4%E5%ED%F2";
-            string deAttestationSchedule    = "http://de.ifmo.ru/?node=schedule&index=sched&semiId={0}&group={1}";
+            string deAttestationSchedule    = deHostBaseLink + "/?node=schedule&index=sched&semiId={0}&group={1}";
 
             // ISU
             string schedule         = "/schedule";
@@ -108,6 +113,11 @@ namespace iTMO.Help.Controller
                 case TRequest.DeAttestationSchedule:
                     if (IsRequestParamsValid(type, user))
                         resultUri.AppendFormat(deAttestationSchedule, user.Data.Opts[0], user.Data.Group);
+                    break;
+
+                case TRequest.DeAttestationScheduleNode:
+                    if (IsRequestParamsValid(type, user))
+                        resultUri.Append(deHostBaseLink + user.Data.Opts[0]);
                     break;
 
                 case TRequest.DeAuthAttestation:
@@ -201,6 +211,7 @@ namespace iTMO.Help.Controller
                 // Valid Drop through case 
                 case TRequest.DeJournalChangeLog:
                 case TRequest.DeMessages:
+                case TRequest.DeAttestationScheduleNode:
                 // ISU
                 case TRequest.ScheduleTeacher:
                 case TRequest.ScheduleExamTeacher:
@@ -275,6 +286,7 @@ namespace iTMO.Help.Controller
                 {
                     // For DE AUTH requests
                     case TRequest.DeAuth:
+                    case TRequest.DeAuthAttestation:
                     case TRequest.DeMessages:
                     case TRequest.DeJournal:
                     case TRequest.DeJournalChangeLog:
@@ -314,7 +326,6 @@ namespace iTMO.Help.Controller
                 case TRequest.DeJournal:
                 case TRequest.DeJournalChangeLog:
                 case TRequest.DeMessages:
-                case TRequest.DeAuthAttestation:
                     if (!isAuthiticated)
                     {
                         var authResult = await ProcessRequest(TRequest.DeAuth, user);

@@ -163,6 +163,16 @@
                                 <TextBlock Text="Notification" Style="{StaticResource ListTextBlock}" />
                             </CheckBox>
                         </StackPanel>
+
+                        <!--
+                        <ComboBox x:Name="LanguageOption"
+                                  SelectionChanged="LanguageOption_SelectionChanged"
+                                  Style="{StaticResource ComboBoxCustom}"
+                                  Margin="5">
+                            <ComboBoxItem/>
+                            <ComboBoxItem/>
+                        </ComboBox>
+                        -->
                         
                         <Button HorizontalAlignment="Center" 
                                 Margin="5" 
@@ -178,5 +188,26 @@
                 </RelativePanel>
             </SplitView.Pane>
         </SplitView>
+
+        <ContentDialog x:Name="ContactFormDialog"
+                       VerticalAlignment="Stretch"
+                       PrimaryButtonText="Send"
+                       Margin="5"
+                       IsPrimaryButtonEnabled="{Binding IsChecked, ElementName=checkBoxAgree, Mode=OneWay}"
+                       SecondaryButtonText="Cancel">
+            <StackPanel>
+                <TextBlock Text="Describe your problem or advice"
+                           Width="auto"
+                           Style="{StaticResource BarTextBlock}"/>
+                <TextBox x:Name="FormText" 
+                         Style="{StaticResource TextBoxCustom}"
+                         Margin="5"
+                         Width="auto"
+                         Header="auto"
+                         PlaceholderText="Text"/>
+       
+            </StackPanel>
+        </ContentDialog>
+
     </Grid>
 </Page>

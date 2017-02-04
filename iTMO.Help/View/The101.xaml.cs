@@ -39,15 +39,18 @@ namespace iTMO.Help.Model
 
         private async void NavigateWeb()
         {
+            var user_data = DatabaseController.Me.DUser;
+            var success = await Windows.System.Launcher.LaunchUriAsync(new Uri("http://de.ifmo.ru/?node=schedule&index=sched&semiId=1&group=" + user_data.Group));
+
+            /*
             ProgressRing.IsActive = true;
 
             //Web.Navigate(new Uri("http://de.ifmo.ru/?node=schedule&index=sched&semiId=1&group=P3100"));
 
-            ProgressRing.IsActive = false;
-
             var user_data = new UserData();
             user_data.Data.Group = "P3100";
             user_data.Data.Opts.Add("1");
+
             HttpData<string> response = await HttpController.RetrieveData(TRequest.DeAttestationSchedule, user_data);
 
             if (response.isValid)
@@ -55,18 +58,38 @@ namespace iTMO.Help.Model
                 RememberUserData(user_data);
 
                 var dataVR = SerializeUtils.ToAttestationDeView(response.Data, 1);
+
+                if (dataVR.isValid)
+                {
+                    user_data = new UserData();
+                    user_data.Data.Opts.Add(dataVR.Data.First.Subjects[1].Tests[1].Link);
+
+                    HttpData<string> nodeResponse
+                        = await HttpController.RetrieveData(TRequest.DeAttestationScheduleNode, user_data);
+
+                    if(nodeResponse.isValid)
+                    {
+
+                        //var nodeVR
+
+                    }
+
+                }
+
+
                 //if (dataVR.isValid)
                 //    DeMsgList.ItemsSource = new ObservableCollection<MessageDe>(DatabaseController.Me.DMessageDe = DeMessages = dataVR.Data);
                 //else
                 //    Message.Text = dataVR.Message;
             }
             else
-                Message.Text = response.Data;
+                Message.Text = response.Message;
 
             ProgressRing.IsActive = false;
+            */
         }
 
-        private void RememberUserData(UserData response)
+        /* private void RememberUserData(UserData response)
         {
             if (response.isRemember)
             {
@@ -76,8 +99,9 @@ namespace iTMO.Help.Model
                 DatabaseController.Me.DUser = usr;
             }
         }
+        */
 
-        private async Task<UserData> CollectUserData()
+        /* private async Task<UserData> CollectUserData()
         {
             UserData response = new UserData();
 
@@ -110,6 +134,17 @@ namespace iTMO.Help.Model
 
             Login.Text = Password.Password = "";
             return response;
+        }
+        */
+
+        private void DE101_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateWeb();
+        }
+
+        private async void Rank_Click(object sender, RoutedEventArgs e)
+        {
+            var success = await Windows.System.Launcher.LaunchUriAsync(new Uri("http://de.ifmo.ru/?node=rating"));
         }
     }
 }
