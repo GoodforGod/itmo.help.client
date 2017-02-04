@@ -153,6 +153,8 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Resources\media\ifmo_background_sized.png" />
+    <Content Include="Resources\media\ifmo_background_white_sized.png" />
     <Content Include="Resources\media\itmo_medium.png" />
     <Content Include="Resources\media\itmo_small.png" />
     <Content Include="Resources\media\logo_small.png" />

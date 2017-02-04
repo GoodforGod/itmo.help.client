@@ -34,7 +34,7 @@ namespace iTMO.Help.Model
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            NavigateWeb();
+
         }
 
         private async void NavigateWeb()

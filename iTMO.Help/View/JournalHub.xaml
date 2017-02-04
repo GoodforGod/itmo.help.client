@@ -24,6 +24,16 @@
     </Page.Resources>
     
     <Grid Background="{StaticResource DeepBlue}">
+        <Image HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   Source="/Resources/media/ifmo_background_sized.png" 
+                   Width="300"/>
+
+        <Image HorizontalAlignment="Right" 
+                   VerticalAlignment="Top" 
+                   Source="/Resources/media/ifmo_background_white_sized.png" 
+                   Width="280"/>
+
         <Pivot HorizontalAlignment="Center" 
                HorizontalContentAlignment="Center" 
                SelectionChanged="Pivot_SelectionChanged">

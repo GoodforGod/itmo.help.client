@@ -23,6 +23,17 @@
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+
+        <Image HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   Source="/Resources/media/ifmo_background_sized.png" 
+                   Width="300"/>
+
+        <Image HorizontalAlignment="Right" 
+                   VerticalAlignment="Top" 
+                   Source="/Resources/media/ifmo_background_white_sized.png" 
+                   Width="280"/>
+
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
             
             <AutoSuggestBox Name="SearchAutoSuggestBox" 

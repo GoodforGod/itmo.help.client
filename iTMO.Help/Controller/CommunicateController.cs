@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Email;
 
 namespace iTMO.Help.Controller
 {
@@ -16,9 +17,20 @@ namespace iTMO.Help.Controller
 
         }
 
-        public static async void ContactDeveloper(string login, string group, string lastSearchGroup)
+        public static async void ContactDeveloper(string text, string group, string lastSearchGroup)
         {
+            EmailMessage emailMessage = new EmailMessage();
+            emailMessage.To.Add(new EmailRecipient("goodforgod.dev@gmail.com"));
 
+            string grp = group;
+            if (string.IsNullOrWhiteSpace(grp))
+                grp = lastSearchGroup;
+            if (string.IsNullOrWhiteSpace(grp))
+                grp = "";
+
+            emailMessage.Subject = "iTMO.Help : Report";
+            emailMessage.Body = text + "\n" + "From Student : " + grp + "\n";
+            await EmailManager.ShowComposeNewEmailAsync(emailMessage);
         }
     }
 }

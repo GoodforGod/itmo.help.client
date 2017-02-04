@@ -8,6 +8,7 @@ using iTMO.Help.Controller;
 using Windows.Foundation;
 using System.Collections.Generic;
 using iTMO.Help.View;
+using System;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -155,7 +156,18 @@ namespace iTMO.Help
 
         private void LanguageOption_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+        }
 
+        private async void Contacn_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialogResult res = await ContactFormDialog.ShowAsync();
+        }
+
+        private void ContactFormDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            var user = DatabaseController.Me.DUser;
+            CommunicateController.ContactDeveloper(FormText.Text, user.Group, user.GroupLastUsed);
+            FormText.Text = "";
         }
     }
 }

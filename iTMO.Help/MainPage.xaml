@@ -99,6 +99,7 @@
             
             <SplitView.Content>
                 <Frame Name="FrameContent">
+                    <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Source="/Resources/media/ifmo_background_sized.png" Width="100"/>
                     <Frame.ContentTransitions>
                         <TransitionCollection>
                             <NavigationThemeTransition>
@@ -174,9 +175,11 @@
                         </ComboBox>
                         -->
                         
-                        <Button HorizontalAlignment="Center" 
+                        <Button x:Name="Contacn" 
+                                HorizontalAlignment="Center" 
                                 Margin="5" 
-                                Content="Contact Developer" 
+                                Content="Contact Developer"
+                                Click="Contacn_Click"
                                 Width="auto"/>
                     </StackPanel>
                     
@@ -188,11 +191,12 @@
                 </RelativePanel>
             </SplitView.Pane>
         </SplitView>
-
+        
         <ContentDialog x:Name="ContactFormDialog"
                        VerticalAlignment="Stretch"
                        PrimaryButtonText="Send"
                        Margin="5"
+                       PrimaryButtonClick="ContactFormDialog_PrimaryButtonClick"
                        IsPrimaryButtonEnabled="{Binding IsChecked, ElementName=checkBoxAgree, Mode=OneWay}"
                        SecondaryButtonText="Cancel">
             <StackPanel>
@@ -203,9 +207,8 @@
                          Style="{StaticResource TextBoxCustom}"
                          Margin="5"
                          Width="auto"
-                         Header="auto"
+                         Height="80"
                          PlaceholderText="Text"/>
-       
             </StackPanel>
         </ContentDialog>
 

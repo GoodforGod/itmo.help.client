@@ -18,7 +18,17 @@
 
     <Grid Background="{StaticResource DeepBlue}">
        <!-- <WebView x:Name="Web"/> -->
-        
+
+        <Image HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   Source="/Resources/media/ifmo_background_sized.png" 
+                   Width="300"/>
+
+        <Image HorizontalAlignment="Right" 
+                   VerticalAlignment="Top" 
+                   Source="/Resources/media/ifmo_background_white_sized.png" 
+                   Width="280"/>
+
         <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button x:Name="DE101" 
                     Content="101 Chair" 

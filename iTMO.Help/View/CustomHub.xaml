@@ -21,12 +21,20 @@
     </Page.Resources>
 
     <Grid x:Name="MainGrid" Background="{StaticResource DeepBlue}">
+            <Image HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   Source="/Resources/media/ifmo_background_sized.png" 
+                   Width="300"/>
+        
+            <Image HorizontalAlignment="Right" 
+                   VerticalAlignment="Top" 
+                   Source="/Resources/media/ifmo_background_white_sized.png" 
+                   Width="280"/>
         <Grid HorizontalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            
             <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="5">
                 <Grid Background="{StaticResource LightWhite}" Margin="5">
                     <TextBox x:Name="NameBox" 
