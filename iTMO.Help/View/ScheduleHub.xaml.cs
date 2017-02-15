@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Navigation;
 using iTMO.Help.Model.ViewReady;
 using System.Collections.Generic;
 using iTMO.Help.Model;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,17 +23,35 @@ namespace iTMO.Help.View
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        {
-            DatabaseController.Me.DSchedule = Sсhedule;
-        }
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if((Sсhedule = DatabaseController.Me.DSchedule) != null)
             {
 
             }
+        }
+
+        private async Task<List<ScheduleVR>> RetrieveSchedule(string group)
+        {
+            HttpData<string> data = await HttpController.RetrieveData(TRequest.Schedule, new UserData(new List<string>() { AllSearchBox.Text }));
+
+            if (data != null)
+            {
+                if (data.isValid)
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+
+            }
+
+            return null;
         }
 
         private async void AllSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -57,6 +76,31 @@ namespace iTMO.Help.View
             {
 
             }
+        }
+
+        private void EvenSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+
+        }
+
+        private void OddSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+
+        }
+
+        private void OddShareBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
+        }
+
+        private void EvenShareBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
+        }
+
+        private void AllShareBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -36,8 +36,13 @@ namespace iTMO.Help.Utils
 
         public static bool IsScheduleValid(Schedule data)
         {
-
-            return false;
+            return data.faculties != null
+                    && data.faculties.Capacity != 0
+                    && data.faculties[0].departments != null
+                    && data.faculties[0].departments.Capacity != 0
+                    && data.faculties[0].departments[0].groups != null
+                    && data.faculties[0].departments[0].groups.Capacity != 0
+                    && data.faculties[0].departments[0].groups[0].study_schedule != null;
         }
 
         public static bool IsExamValid(ScheduleExam data)

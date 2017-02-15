@@ -19,6 +19,7 @@ namespace iTMO.Help.View
     public sealed partial class ExamHub : Page
     {
         List<ExamVR> exams = null;
+        private User userData = null;
 
         public ExamHub()
         {
@@ -27,21 +28,20 @@ namespace iTMO.Help.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if ((exams = DatabaseController.Me.DExams) != null && exams.Count != 0)
-                ExamList.ItemsSource = exams;
-            if (DatabaseController.Me.DUser != null && DatabaseController.Me.DUser.GroupLastUsed != null)
-            {
-                SearchAutoSuggestBox.Text = DatabaseController.Me.DUser.GroupLastUsed;
-                if (ExamList.ItemsSource == null)
-                    ProccessExamVR();
-            }
+            RestorePage();
+
+            if (ExamList.ItemsSource == null)
+                ProccessExamVR();
         }
 
         private void RestorePage()
         {
-            if ((exams = DatabaseController.Me.DExams) != null && exams.Count != 0)
+             if ((exams = DatabaseController.Me.DExams) != null && exams.Count != 0)
                 ExamList.ItemsSource = exams;
-            if (DatabaseController.Me.DUser != null && DatabaseController.Me.DUser.GroupLastUsed != null)
+
+            if ((userData = DatabaseController.Me.DUser) != null && string.IsNullOrWhiteSpace(userData.Group))
+                SearchAutoSuggestBox.Text = userData.Group;
+            else if(DatabaseController.Me.DUser.GroupLastUsed != null)
                 SearchAutoSuggestBox.Text = DatabaseController.Me.DUser.GroupLastUsed;
         }
 

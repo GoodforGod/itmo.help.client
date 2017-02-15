@@ -19,12 +19,9 @@ namespace iTMO.Help.Utils
         public static SerializeData<List<ExamVR>>           ToExamView(string data)
         {
             SerializeData<List<ExamVR>> serializedData = new SerializeData<List<ExamVR>>() { Data = new List<ExamVR>() };
-            ScheduleExam exams = null;
-
             try
             {
-                exams = JsonConvert.DeserializeObject<ScheduleExam>(data);
-
+                ScheduleExam exams = JsonConvert.DeserializeObject<ScheduleExam>(data);
                 if (ModelUtils.IsExamValid(exams))
                 {
                     if (exams.faculties[0].departments[0].groups[0].exams_schedule.Count == 0)
@@ -76,18 +73,93 @@ namespace iTMO.Help.Utils
         public static SerializeData<List<ScheduleVR>>       ToScheduleView(string data)
         {
             SerializeData<List<ScheduleVR>> serializedData = new SerializeData<List<ScheduleVR>>();
-            Schedule schedule = null;
             try
             {
-                if ((schedule = JsonConvert.DeserializeObject<Schedule>(data)) == null)
+                Schedule schedule = JsonConvert.DeserializeObject<Schedule>(data);
+                if (ModelUtils.IsScheduleValid(schedule))
                 {
+                    if (schedule.faculties[0].departments[0].groups[0].study_schedule.Count == 0)
+                        throw new ArgumentException();
 
+                    foreach (StudySchedule week in schedule.faculties[0].departments[0].groups[0].study_schedule)
+                    {
+                        try
+                        {
+                            var weekText = "Unknown";
+
+                            switch(int.Parse(week.weekday.ToString()))
+                            {
+                                case 1: weekText = "Monday";    break;
+                                case 2: weekText = "Tuesday";   break;
+                                case 3: weekText = "Wednesday"; break;
+                                case 4: weekText = "Thursday";  break;
+                                case 5: weekText = "Friday";    break;
+                                case 6: weekText = "Saturday";  break;
+                                case 7: weekText = "Sunday";    break;
+                                default:                        break;
+                            }
+
+                            List<LessonVR> weekLessons = new List<LessonVR>();
+
+                            foreach(Lesson lesson in week.lessons)
+                            {
+                                var teacherName = "";
+                                var teacherId = "";
+
+                                var address = "";
+                                var room = "";
+
+                                if(lesson.auditories != null && lesson.auditories.Count != 0)
+                                {
+                                    if (!string.IsNullOrWhiteSpace(lesson.auditories[0].auditory_address))
+                                        address = lesson.auditories[0].auditory_address;
+                                    if (!string.IsNullOrWhiteSpace(lesson.auditories[0].auditory_name))
+                                        room = lesson.auditories[0].auditory_name;
+                                }
+
+                                if(lesson.teachers != null && lesson.teachers.Count != 0)
+                                {
+                                    if (!string.IsNullOrWhiteSpace(lesson.teachers[0].teacher_name))
+                                        teacherName = lesson.teachers[0].teacher_name;
+                                    if (!string.IsNullOrWhiteSpace(lesson.teachers[0].teacher_id))
+                                        teacherId = lesson.teachers[0].teacher_id;
+                                }
+
+                                weekLessons.Add(new LessonVR()
+                                {
+                                    Subject = lesson.subject,
+                                    SubjectType = lesson.type_name,
+                                    Teacher = teacherName,
+                                    TeacherId = teacherId,
+                                    Parity = lesson.parity.ToString(),
+                                    ParityText = lesson.parity_text,
+                                    DateStart = lesson.date_start,
+                                    DateEnd = lesson.date_end,
+                                    RoomAddress = address,
+                                    RoomName = room,
+                                    TimeStart = lesson.time_start,
+                                    TimeEnd = lesson.time_end
+                                });
+                            }
+
+                            serializedData.Data.Add(new ScheduleVR() {
+                                WeekdayText = weekText,
+                                Weekday = week.weekday.ToString(),
+                                Lessons = weekLessons
+                            });
+                        }
+                        catch (ArgumentNullException ex) { }
+                        catch (FormatException ex) { }
+                    }
+                    serializedData.isValid = true;
                 }
+                else throw new ArgumentNullException();
             }
-            catch (JsonSerializationException ex)
-            {
-
-            }
+            catch (JsonSerializationException ex)   { serializedData.Message = "Json Parse Error"; }
+            catch (ArgumentNullException ex)        { serializedData.Message = "Group number is probably Invalid!"; }
+            catch (ArgumentException ex)            { serializedData.Message = "Empty"; }
+            catch (Exception ex)                    { serializedData.Message = "Unexpected Server Response"; }
+       
             return serializedData;
         }
 
