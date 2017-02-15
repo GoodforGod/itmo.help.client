@@ -6,11 +6,19 @@ using iTMO.Help.Model.ViewReady;
 using System.Collections.Generic;
 using iTMO.Help.Model;
 using System.Threading.Tasks;
+using iTMO.Help.Utils;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace iTMO.Help.View
 {
+    enum ScheduleType
+    {
+        ALL,
+        ODD,
+        EVEN
+    }
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -33,25 +41,24 @@ namespace iTMO.Help.View
 
         private async Task<List<ScheduleVR>> RetrieveSchedule(string group)
         {
-            HttpData<string> data = await HttpController.RetrieveData(TRequest.Schedule, new UserData(new List<string>() { AllSearchBox.Text }));
+            Message.Text = "";
+            ProgressRing.IsActive = true;
+            List<ScheduleVR> scheduleReceived = null;
 
-            if (data != null)
+            HttpData<string> response = await HttpController.RetrieveData(TRequest.Schedule, new UserData(new List<string>() { AllSearchBox.Text }));
+
+            if (response.isValid)
             {
-                if (data.isValid)
-                {
+                var dataVR = SerializeUtils.ToScheduleView(response.Data);
 
-                }
-                else
-                {
-
-                }
+                if (dataVR.isValid)
+                    scheduleReceived = dataVR.Data;
+                else Message.Text = dataVR.Message;
             }
-            else
-            {
+            else Message.Text = response.Data;
 
-            }
-
-            return null;
+            ProgressRing.IsActive = false;
+            return scheduleReceived;
         }
 
         private async void AllSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -59,33 +66,29 @@ namespace iTMO.Help.View
             if (string.IsNullOrWhiteSpace(AllSearchBox.Text))
                 return;
 
-            HttpData<string> data = await HttpController.RetrieveData(TRequest.Schedule, new UserData(new List<string>() { AllSearchBox.Text }));
-
-            if (data != null)
-            {
-                if(data.isValid)
-                {
-
-                }
-                else
-                {
-
-                }
-            }
-            else
-            {
-
-            }
+            var schedule = Sсhedule = await RetrieveSchedule(AllSearchBox.Text);
         }
 
-        private void EvenSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private async void EvenSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
+            if (string.IsNullOrWhiteSpace(EvenSearchBox.Text))
+                return;
 
+            var schedule = Sсhedule = await RetrieveSchedule(EvenSearchBox.Text);
         }
 
-        private void OddSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private async void OddSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            if (string.IsNullOrWhiteSpace(OddSearchBox.Text))
+                return;
+
+            var schedule = Sсhedule = await RetrieveSchedule(OddSearchBox.Text);
+        }
+
+        private List<ScheduleVR> FillScheduleType(ScheduleType type)
         {
 
+            return null;
         }
 
         private void OddShareBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)

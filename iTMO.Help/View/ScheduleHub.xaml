@@ -130,10 +130,15 @@
                 </Grid>
             </PivotItem>
         </Pivot>
-        
+
+        <TextBlock x:Name="Message"
+                   Margin="5"
+                   Grid.Row="1"
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Center"/>
 
         <ProgressRing x:Name="ProgressRing"
-                      IsActive="True"
+                      IsActive="False"
                       Margin="0,-50,0,0"
                       Width="50"
                       Height="50"
