@@ -50,9 +50,9 @@ namespace iTMO.Help.View
             if (string.IsNullOrWhiteSpace(SearchAutoSuggestBox.Text))
                 return;
 
-            ExamList.ItemsSource = null;
             Message.Text = "";
             ExamRing.IsActive = true;
+            ExamList.ItemsSource = null;
 
             HttpData<string> response = await HttpController.RetrieveData(TRequest.ScheduleExam, new UserData(SearchAutoSuggestBox.Text));
 

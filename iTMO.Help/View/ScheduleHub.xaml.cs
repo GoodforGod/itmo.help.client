@@ -45,7 +45,7 @@ namespace iTMO.Help.View
             ProgressRing.IsActive = true;
             List<ScheduleVR> scheduleReceived = null;
 
-            HttpData<string> response = await HttpController.RetrieveData(TRequest.Schedule, new UserData(new List<string>() { AllSearchBox.Text }));
+            HttpData<string> response = await HttpController.RetrieveData(TRequest.Schedule, new UserData(new List<string>() { group }));
 
             if (response.isValid)
             {
@@ -66,7 +66,7 @@ namespace iTMO.Help.View
             if (string.IsNullOrWhiteSpace(AllSearchBox.Text))
                 return;
 
-            var schedule = Sсhedule = await RetrieveSchedule(AllSearchBox.Text);
+            var schedule = Sсhedule = DatabaseController.Me.DSchedule = await RetrieveSchedule(AllSearchBox.Text);
         }
 
         private async void EvenSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -74,7 +74,7 @@ namespace iTMO.Help.View
             if (string.IsNullOrWhiteSpace(EvenSearchBox.Text))
                 return;
 
-            var schedule = Sсhedule = await RetrieveSchedule(EvenSearchBox.Text);
+            var schedule = Sсhedule = DatabaseController.Me.DSchedule = await RetrieveSchedule(EvenSearchBox.Text);
         }
 
         private async void OddSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -82,7 +82,7 @@ namespace iTMO.Help.View
             if (string.IsNullOrWhiteSpace(OddSearchBox.Text))
                 return;
 
-            var schedule = Sсhedule = await RetrieveSchedule(OddSearchBox.Text);
+            var schedule = Sсhedule = DatabaseController.Me.DSchedule = await RetrieveSchedule(OddSearchBox.Text);
         }
 
         private List<ScheduleVR> FillScheduleType(ScheduleType type)

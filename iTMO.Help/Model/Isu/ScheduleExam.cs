@@ -39,6 +39,8 @@ namespace iTMO.Help.Model
         public string              group_name     { get; set; } = "";
 
         public List<object>        study_schedule { get; set; } = new List<object>();
+
+        // Think that when this list is empty in JSON response, library can't parse it
         public List<ExamsSchedule> exams_schedule { get; set; } = new List<ExamsSchedule>();
     }
 
