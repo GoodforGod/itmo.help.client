@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using iTMO.Help.Model;
 using System.Threading.Tasks;
 using iTMO.Help.Utils;
+using Windows.UI.Xaml;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -45,7 +46,7 @@ namespace iTMO.Help.View
             ProgressRing.IsActive = true;
             List<ScheduleVR> scheduleReceived = null;
 
-            HttpData<string> response = await HttpController.RetrieveData(TRequest.Schedule, new UserData(new List<string>() { group }));
+            HttpData<string> response = await HttpController.RetrieveData(TRequest.Schedule, new UserData(group));
 
             if (response.isValid)
             {
@@ -69,39 +70,28 @@ namespace iTMO.Help.View
             var schedule = Sсhedule = DatabaseController.Me.DSchedule = await RetrieveSchedule(AllSearchBox.Text);
         }
 
-        private async void EvenSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            if (string.IsNullOrWhiteSpace(EvenSearchBox.Text))
-                return;
-
-            var schedule = Sсhedule = DatabaseController.Me.DSchedule = await RetrieveSchedule(EvenSearchBox.Text);
-        }
-
-        private async void OddSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            if (string.IsNullOrWhiteSpace(OddSearchBox.Text))
-                return;
-
-            var schedule = Sсhedule = DatabaseController.Me.DSchedule = await RetrieveSchedule(OddSearchBox.Text);
-        }
-
-        private List<ScheduleVR> FillScheduleType(ScheduleType type)
+        private List<ScheduleVR> FillScheduleType(ScheduleType type, List<ScheduleVR> schedule)
         {
 
             return null;
         }
 
-        private void OddShareBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void OddShareBtn_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void EvenShareBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void EvenShareBtn_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void AllShareBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void AllShareBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void WeekBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

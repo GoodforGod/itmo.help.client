@@ -93,6 +93,14 @@ namespace iTMO.Help.Model
         public string Term { get; set; } = "";
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    class WeekItem
+    {
+        public string WeekPart { get; set; } = "";
+    }
+
      /// <summary>
     /// Used to Create/Change objects locale state
     /// </summary>

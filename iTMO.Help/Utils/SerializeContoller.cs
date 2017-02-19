@@ -31,28 +31,30 @@ namespace iTMO.Help.Utils
                     {
                         try
                         {
-                            var realDayExam = exam.exam_day_text;
+                            ExamsSchedule noNullExam = toNonNullExamSchedule(exam);
+
+                            var realDayExam = noNullExam.exam_day_text;
                             if (realDayExam.Length > 7)
                                 realDayExam = realDayExam.Substring(0, 7);
 
-                            var realDayAdvice = exam.advice_day_text;
+                            var realDayAdvice = noNullExam.advice_day_text;
                             if (realDayAdvice.Length > 7)
                                 realDayAdvice = realDayAdvice.Substring(0, 7);
 
                             serializedData.Data.Add(new ExamVR
                             {
-                                DateAdvice  = exam.advice_date.Substring(0, exam.advice_date.LastIndexOf('.')),
-                                DateExam    = exam.exam_date.Substring(0, exam.exam_date.LastIndexOf('.')),
+                                DateAdvice  = noNullExam.advice_date,
+                                DateExam    = noNullExam.exam_date,
                                 DayExam     = realDayExam,
-                                DayAdvice   = exam.advice_day_text,
-                                TimeAdvice  = exam.advice_time,
-                                TimeExam    = exam.exam_time,
+                                DayAdvice   = noNullExam.advice_day_text,
+                                TimeAdvice  = noNullExam.advice_time,
+                                TimeExam    = noNullExam.exam_time,
 
-                                Subject     = exam.subject,
-                                Teacher     = exam.teachers[0].teacher_name,
-                                TeacherId   = exam.teachers[0].teacher_id,
-                                RoomAdvice  = exam.auditories[1].auditory_name,
-                                RoomExam    = exam.auditories[0].auditory_name,
+                                Subject     = noNullExam.subject,
+                                Teacher     = noNullExam.teachers[0].teacher_name,
+                                TeacherId   = noNullExam.teachers[0].teacher_id,
+                                RoomAdvice  = noNullExam.auditories[1].auditory_name,
+                                RoomExam    = noNullExam.auditories[0].auditory_name,
                             });
                         }
                         catch (ArgumentNullException ex) { }
@@ -72,7 +74,7 @@ namespace iTMO.Help.Utils
 
         public static SerializeData<List<ScheduleVR>>       ToScheduleView(string data)
         {
-            SerializeData<List<ScheduleVR>> serializedData = new SerializeData<List<ScheduleVR>>();
+            SerializeData<List<ScheduleVR>> serializedData = new SerializeData<List<ScheduleVR>>() { Data = new List<ScheduleVR>() };
             try
             {
                 Schedule schedule = JsonConvert.DeserializeObject<Schedule>(data);
@@ -86,59 +88,44 @@ namespace iTMO.Help.Utils
                         try
                         {
                             var weekText = "Unknown";
-
-                            switch(int.Parse(week.weekday.ToString()))
+                            var weekDayNumber = 0;
+                            if (!string.IsNullOrWhiteSpace(week.weekday) && int.TryParse(week.weekday, out weekDayNumber))
                             {
-                                case 1: weekText = "Monday";    break;
-                                case 2: weekText = "Tuesday";   break;
-                                case 3: weekText = "Wednesday"; break;
-                                case 4: weekText = "Thursday";  break;
-                                case 5: weekText = "Friday";    break;
-                                case 6: weekText = "Saturday";  break;
-                                case 7: weekText = "Sunday";    break;
-                                default:                        break;
+                                switch (weekDayNumber)
+                                {
+                                    case 1: weekText = "Monday";    break;
+                                    case 2: weekText = "Tuesday";   break;
+                                    case 3: weekText = "Wednesday"; break;
+                                    case 4: weekText = "Thursday";  break;
+                                    case 5: weekText = "Friday";    break;
+                                    case 6: weekText = "Saturday";  break;
+                                    case 7: weekText = "Sunday";    break;
+                                    default: break;
+                                }
                             }
 
                             List<LessonVR> weekLessons = new List<LessonVR>();
 
                             foreach(Lesson lesson in week.lessons)
                             {
-                                var teacherName = "";
-                                var teacherId = "";
-
-                                var address = "";
-                                var room = "";
-
-                                if(lesson.auditories != null && lesson.auditories.Count != 0)
-                                {
-                                    if (!string.IsNullOrWhiteSpace(lesson.auditories[0].auditory_address))
-                                        address = lesson.auditories[0].auditory_address;
-                                    if (!string.IsNullOrWhiteSpace(lesson.auditories[0].auditory_name))
-                                        room = lesson.auditories[0].auditory_name;
-                                }
-
-                                if(lesson.teachers != null && lesson.teachers.Count != 0)
-                                {
-                                    if (!string.IsNullOrWhiteSpace(lesson.teachers[0].teacher_name))
-                                        teacherName = lesson.teachers[0].teacher_name;
-                                    if (!string.IsNullOrWhiteSpace(lesson.teachers[0].teacher_id))
-                                        teacherId = lesson.teachers[0].teacher_id;
-                                }
+                                var nonNullLesson = toNonNullLesson(lesson);
 
                                 weekLessons.Add(new LessonVR()
                                 {
-                                    Subject = lesson.subject,
-                                    SubjectType = lesson.type_name,
-                                    Teacher = teacherName,
-                                    TeacherId = teacherId,
-                                    Parity = lesson.parity.ToString(),
-                                    ParityText = lesson.parity_text,
-                                    DateStart = lesson.date_start,
-                                    DateEnd = lesson.date_end,
-                                    RoomAddress = address,
-                                    RoomName = room,
-                                    TimeStart = lesson.time_start,
-                                    TimeEnd = lesson.time_end
+                                    Subject     = nonNullLesson.subject,
+                                    SubjectType = nonNullLesson.type_name,
+
+                                    Teacher     = nonNullLesson.teachers[0].teacher_name,
+                                    TeacherId   = nonNullLesson.teachers[0].teacher_id,
+                                    RoomAddress = nonNullLesson.auditories[0].auditory_address,
+                                    RoomName    = nonNullLesson.auditories[0].auditory_name,
+
+                                    Parity      = nonNullLesson.parity,
+                                    ParityText  = nonNullLesson.parity_text,
+                                    DateStart   = nonNullLesson.date_start,
+                                    DateEnd     = nonNullLesson.date_end,
+                                    TimeStart   = nonNullLesson.time_start,
+                                    TimeEnd     = nonNullLesson.time_end
                                 });
                             }
 
@@ -286,6 +273,137 @@ namespace iTMO.Help.Utils
             catch (Exception ex) { serializedData.Message = ex.ToString(); }
 
             return serializedData;
+        }
+
+        private static Lesson toNonNullLesson(Lesson lesson)
+        {
+            Lesson nonNullLesson = new Lesson();
+            nonNullLesson.auditories.Add(new Auditory());
+            nonNullLesson.teachers.Add(new Teacher());
+
+            if (lesson.auditories != null && lesson.auditories.Count != 0)
+            {
+                if (!string.IsNullOrWhiteSpace(lesson.auditories[0].auditory_address))
+                    nonNullLesson.auditories[0].auditory_address = lesson.auditories[0].auditory_address;
+                if (!string.IsNullOrWhiteSpace(lesson.auditories[0].auditory_name))
+                    nonNullLesson.auditories[0].auditory_name = lesson.auditories[0].auditory_name;
+
+                //if (string.IsNullOrWhiteSpace(lesson.auditories[0].auditory_name)
+                //    && string.IsNullOrWhiteSpace(lesson.auditories[0].auditory_address)
+                //    && lesson.auditories.Count == 2)
+                //{
+                //    if (!string.IsNullOrWhiteSpace(lesson.auditories[1].auditory_address))
+                //        nonNullLesson.auditories[0].auditory_address = lesson.auditories[1].auditory_address;
+                //    if (!string.IsNullOrWhiteSpace(lesson.auditories[1].auditory_name))
+                //        nonNullLesson.auditories[0].auditory_name = lesson.auditories[1].auditory_name;
+                //}
+            }
+
+            if (lesson.teachers != null && lesson.teachers.Count != 0)
+            {
+                if (!string.IsNullOrWhiteSpace(lesson.teachers[0].teacher_name))
+                    nonNullLesson.teachers[0].teacher_name = lesson.teachers[0].teacher_name;
+                if (!string.IsNullOrWhiteSpace(lesson.teachers[0].teacher_id))
+                    nonNullLesson.teachers[0].teacher_id = lesson.teachers[0].teacher_id;
+
+                //if (string.IsNullOrWhiteSpace(lesson.teachers[0].teacher_name) 
+                //    && string.IsNullOrWhiteSpace(lesson.teachers[0].teacher_id)
+                //    && lesson.teachers.Count == 2)
+                //{
+                //    if (!string.IsNullOrWhiteSpace(lesson.teachers[1].teacher_name))
+                //        nonNullLesson.teachers[0].teacher_name = lesson.teachers[1].teacher_name;
+                //    if (!string.IsNullOrWhiteSpace(lesson.teachers[1].teacher_id))
+                //        nonNullLesson.teachers[0].teacher_id = lesson.teachers[1].teacher_id;
+                //}
+            }
+
+            if (!string.IsNullOrWhiteSpace(lesson.subject))
+                nonNullLesson.subject = lesson.subject;
+            if(!string.IsNullOrWhiteSpace(lesson.type_name))
+                nonNullLesson.type_name = lesson.type_name;
+            if(!string.IsNullOrWhiteSpace(lesson.parity))
+                nonNullLesson.parity = lesson.parity;
+            if(!string.IsNullOrWhiteSpace(lesson.parity_text))
+                nonNullLesson.parity_text = lesson.parity_text;
+            if(!string.IsNullOrWhiteSpace(lesson.date_start))
+                nonNullLesson.date_start = lesson.date_start;
+            if(!string.IsNullOrWhiteSpace(lesson.date_end))
+                nonNullLesson.date_end = lesson.date_end;
+            if(!string.IsNullOrWhiteSpace(lesson.time_start))
+                nonNullLesson.time_start = lesson.time_start;
+            if(!string.IsNullOrWhiteSpace(lesson.time_end))
+                nonNullLesson.time_end= lesson.time_end;
+
+            return nonNullLesson;
+        }
+
+        private static ExamsSchedule toNonNullExamSchedule(ExamsSchedule exam)
+        {
+            ExamsSchedule nonNullExam = new ExamsSchedule();
+            nonNullExam.auditories.Add(new Auditory());
+            nonNullExam.auditories.Add(new Auditory());
+            nonNullExam.teachers.Add(new Teacher());
+
+            // ADVICE
+            if (!string.IsNullOrWhiteSpace(exam.advice_date) && exam.advice_date.Contains("."))
+                nonNullExam.exam_date = exam.advice_date.Substring(0, exam.advice_date.LastIndexOf('.'));
+            if (!string.IsNullOrWhiteSpace(exam.advice_day))
+                nonNullExam.advice_day = exam.advice_day;
+            if (!string.IsNullOrWhiteSpace(exam.advice_day_text))
+                nonNullExam.advice_day_text = exam.advice_day_text;
+            if (!string.IsNullOrWhiteSpace(exam.advice_time))
+                nonNullExam.advice_time = exam.advice_time;
+
+            // AUDITORIES
+            if (exam.auditories.Count != 0)
+            {
+                if (!string.IsNullOrWhiteSpace(exam.auditories[0].auditory_address))
+                    nonNullExam.auditories[0].auditory_address = exam.auditories[0].auditory_address;
+                if (!string.IsNullOrWhiteSpace(exam.auditories[0].auditory_name))
+                    nonNullExam.auditories[0].auditory_name = exam.auditories[0].auditory_name;
+                if (!string.IsNullOrWhiteSpace(exam.auditories[0].type))
+                    nonNullExam.auditories[0].type = exam.auditories[0].type;
+                //if (exam.auditories.Count == 2)
+                //{
+                //    nonNullExam.auditories.Add(new Auditory());
+
+                //    if (!string.IsNullOrWhiteSpace(exam.auditories[1].auditory_address))
+                //        nonNullExam.auditories[1].auditory_address = exam.auditories[1].auditory_address;
+                //    if (!string.IsNullOrWhiteSpace(exam.auditories[1].auditory_name))
+                //        nonNullExam.auditories[1].auditory_name = exam.auditories[1].auditory_name;
+                //    if (!string.IsNullOrWhiteSpace(exam.auditories[1].type))
+                //        nonNullExam.auditories[1].type = exam.auditories[1].type;
+                //}
+            }
+            if(exam.dates.Count != 0)
+                nonNullExam.dates = exam.dates;
+
+            // EXAM
+            if (!string.IsNullOrWhiteSpace(exam.exam_date) && exam.exam_date.Contains("."))
+                nonNullExam.exam_date = exam.exam_date.Substring(0, exam.exam_date.LastIndexOf('.'));
+            if(!string.IsNullOrWhiteSpace(exam.exam_day))
+                nonNullExam.exam_day = exam.exam_day;
+            if(!string.IsNullOrWhiteSpace(exam.exam_day_text))
+                nonNullExam.exam_day_text= exam.exam_day_text;
+            if(!string.IsNullOrWhiteSpace(exam.exam_time))
+                nonNullExam.exam_time= exam.exam_time;
+
+            // TEACHERS & SUBJECT
+            if(!string.IsNullOrWhiteSpace(exam.subject))
+                nonNullExam.subject= exam.subject;
+            if (exam.teachers.Count != 0)
+            {
+                if (string.IsNullOrWhiteSpace(exam.teachers[0].teacher_id))
+                    nonNullExam.teachers[0].teacher_id = exam.teachers[0].teacher_id;
+                if (string.IsNullOrWhiteSpace(exam.teachers[0].teacher_name))
+                    nonNullExam.teachers[0].teacher_name= exam.teachers[0].teacher_name;
+            }
+            if(!string.IsNullOrWhiteSpace(exam.type))
+                nonNullExam.type= exam.type;
+            if(!string.IsNullOrWhiteSpace(exam.type_name))
+                nonNullExam.type_name= exam.type_name;
+
+            return nonNullExam;
         }
 
         /// <summary>

@@ -100,6 +100,7 @@
                                     <Button x:Name="Share" 
                                             Width="auto"
                                             Height="auto"
+                                            FontSize="22"
                                             Tag="{x:Bind Id}" 
                                             Content="&#xE72D;"
                                             FontFamily="Segoe MDL2 Assets"

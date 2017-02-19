@@ -2014,7 +2014,7 @@
                         <Border x:Name="Background" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
-                                Background="{StaticResource LightBlue}" 
+                                Background="{StaticResource LightWhite}" 
                                 Grid.ColumnSpan="2" 
                                 Grid.Row="1"/>
                         <Border x:Name="HighlightBackground" 

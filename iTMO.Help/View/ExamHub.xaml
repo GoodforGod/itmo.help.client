@@ -31,8 +31,9 @@
                Width="300"/>
 
         <Image HorizontalAlignment="Right" 
-               VerticalAlignment="Top" 
-               Grid.Row="0"
+               VerticalAlignment="Top"
+               Grid.Row="1"
+               Margin="0,-40,0,0"
                Source="/Resources/media/ifmo_background_white_sized.png" 
                Width="280"/>
 

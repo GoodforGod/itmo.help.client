@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:iTMO.Help.View"
+    xmlns:data="using:iTMO.Help.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -20,7 +21,13 @@
     </Page.Resources>
 
     <Grid Background="{StaticResource DeepBlue}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
         <Image HorizontalAlignment="Left" 
+                   Grid.Row="1"
                    VerticalAlignment="Bottom" 
                    Source="/Resources/media/ifmo_background_sized.png" 
                    Width="300"/>
@@ -28,118 +35,61 @@
                    VerticalAlignment="Top" 
                    Source="/Resources/media/ifmo_background_white_sized.png" 
                    Width="280"/>
-        <Pivot>
-            <PivotItem Header="All" 
-                       HorizontalContentAlignment="Center" 
-                       HorizontalAlignment="Center">
-                <Grid HorizontalAlignment="Center" Margin="2,5,5,5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal" 
-                                HorizontalAlignment="Center" 
-                                VerticalAlignment="Top" 
-                                Grid.Row="0">
-                    <AutoSuggestBox Name="AllSearchBox" 
-                                    PlaceholderText="Group"
-                                    Width="200"
-                                    Grid.Row="0"
-                                    QueryIcon="Find"
-                                    Margin="5" 
-                                    Style="{StaticResource ExamSearch}"
-                                    QuerySubmitted="AllSearchBox_QuerySubmitted"/>
-                        <Button x:Name="AllShareBtn" 
-                                Content="&#xE72D;"
-                                FontFamily="Segoe MDL2 Assets"
-                                Click="AllShareBtn_Click"
-                                FontSize="18"
-                                Padding="6"
-                                Width="{Binding ActualHeight, ElementName=ShareBtn}"
-                                Background="{StaticResource LightWhite}"
-                                Style="{StaticResource ButtonCustom}"/>
-                    </StackPanel>
-                </Grid>
-            </PivotItem>
-            <PivotItem Header="Even" 
-                       HorizontalContentAlignment="Center" 
-                       HorizontalAlignment="Center">
-                <Grid HorizontalAlignment="Center" Margin="2,5,5,5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Orientation="Horizontal" 
-                                HorizontalAlignment="Center" 
-                                VerticalAlignment="Top" 
-                                Grid.Row="0">
-                    <AutoSuggestBox Name="EvenSearchBox" 
-                                    PlaceholderText="Group"
-                                    MinWidth="200"
-                                    Grid.Row="0"
-                                    QueryIcon="Find"
-                                    Margin="5" 
-                                    Style="{StaticResource ExamSearch}"
-                                    QuerySubmitted="EvenSearchBox_QuerySubmitted"/>
-                        <Button x:Name="EvenShareBtn" 
-                                Content="&#xE72D;"
-                                FontFamily="Segoe MDL2 Assets"
-                                Click="EvenShareBtn_Click"
-                                FontSize="18"
-                                Padding="6"
-                                Width="{Binding ActualHeight, ElementName=ShareBtn}"
-                                Background="{StaticResource LightWhite}"
-                                Style="{StaticResource ButtonCustom}"/>
-                    </StackPanel>
-                </Grid>
-            </PivotItem>
-            <PivotItem Header="Odd" 
-                       HorizontalContentAlignment="Center" 
-                       HorizontalAlignment="Center">
-                <Grid HorizontalAlignment="Center" Margin="2,5,5,5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Orientation="Horizontal" 
-                                HorizontalAlignment="Center" 
-                                VerticalAlignment="Top" 
-                                Grid.Row="0">
-
-                        <AutoSuggestBox Name="OddSearchBox" 
-                                        PlaceholderText="Group"
-                                        Width="200"
-                                        Grid.Row="0"
-                                        QueryIcon="Find"
-                                        Margin="5" 
-                                        Style="{StaticResource ExamSearch}"
-                                        QuerySubmitted="OddSearchBox_QuerySubmitted"/>
-                        <Button x:Name="OddShareBtn" 
-                                Content="&#xE72D;"
-                                FontFamily="Segoe MDL2 Assets"
-                                Click="OddShareBtn_Click"
-                                FontSize="18"
-                                Padding="6"
-                                Width="{Binding ActualHeight, ElementName=ShareBtn}"
-                                Background="{StaticResource LightWhite}"
-                                Style="{StaticResource ButtonCustom}"/>
-                    </StackPanel>
-                </Grid>
-            </PivotItem>
-        </Pivot>
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Top" 
+                    Grid.Row="0">
+            <AutoSuggestBox Name="AllSearchBox" 
+                            PlaceholderText="Group"
+                            Width="160"
+                            Height="35"
+                            Grid.Row="0"
+                            QueryIcon="Find"
+                            Margin="0,5,0,5" 
+                            Style="{StaticResource ExamSearch}"
+                            QuerySubmitted="AllSearchBox_QuerySubmitted"/>
+            
+            <ComboBox x:Name="WeekBox"
+                      Margin="5"
+                      Background="{StaticResource LightWhite}"
+                      MinWidth="80" 
+                      MaxWidth="260"
+                      HorizontalAlignment="Center"
+                      SelectionChanged="WeekBox_SelectionChanged" Style="{StaticResource ComboBoxCustom}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="data:WeekItem">
+                        <StackPanel Orientation="Horizontal" Width="Auto" Height="Auto">
+                            <TextBlock Foreground="{StaticResource MediumBlue}" 
+                                       Text="{x:Bind WeekPart}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <Button x:Name="AllShareBtn" 
+                    Content="&#xE72D;"
+                    FontFamily="Segoe MDL2 Assets"
+                    Click="AllShareBtn_Click"
+                    FontSize="18"
+                    Padding="6"
+                    Width="{Binding ActualHeight, ElementName=ShareBtn}"
+                    Background="{StaticResource LightWhite}"
+                    Style="{StaticResource ButtonCustom}"/>
+        </StackPanel>
 
         <TextBlock x:Name="Message"
-                   Margin="5"
                    Grid.Row="1"
+                   Margin="5,-150,5,5"
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Center"/>
 
         <ProgressRing x:Name="ProgressRing"
+                      Grid.Row="1"
                       IsActive="False"
-                      Margin="0,-50,0,0"
+                      VerticalAlignment="Center" 
+                      HorizontalAlignment="Center"
+                      Margin="5,-150,5,5"
                       Width="50"
                       Height="50"
                       Foreground="White"/>
