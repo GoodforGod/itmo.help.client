@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace iTMO.Help.Model.ViewReady
+namespace iTMO.Help.Model
 {
     /// <summary>
     /// Object used to struct compact representation of the API's object <see cref="Schedule/>

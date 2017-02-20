@@ -3,7 +3,6 @@ using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using iTMO.Help.Controller;
 using iTMO.Help.Model;
-using iTMO.Help.Model.ViewReady;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

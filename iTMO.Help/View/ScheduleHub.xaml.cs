@@ -2,7 +2,6 @@
 using iTMO.Help.Controller;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Navigation;
-using iTMO.Help.Model.ViewReady;
 using System.Collections.Generic;
 using iTMO.Help.Model;
 using System.Threading.Tasks;
@@ -60,6 +59,16 @@ namespace iTMO.Help.View
 
             ProgressRing.IsActive = false;
             return scheduleReceived;
+        }
+
+        private void ProcessWeekPart()
+        {
+            WeekBox.ItemsSource = new List<WeekItem>()
+            {
+                new WeekItem() { WeekPart = "All" },
+                new WeekItem() { WeekPart = "Odd" },
+                new WeekItem() { WeekPart = "Even"  }
+            };
         }
 
         private async void AllSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

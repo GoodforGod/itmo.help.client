@@ -1,5 +1,4 @@
 ﻿using iTMO.Help.Model;
-using iTMO.Help.Model.ViewReady;
 using SQLite.Net;
 using SQLite.Net.Platform.WinRT;
 using System;
