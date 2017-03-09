@@ -87,6 +87,7 @@
                   ScrollViewer.IsVerticalRailEnabled="True" 
                   ScrollViewer.VerticalScrollMode="Auto" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  SelectionChanged="ScheduleList_SelectionChanged"
                   MaxWidth="{Binding ActualWidth, ElementName = MainGrid}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:ScheduleVR">
@@ -119,6 +120,7 @@
                                            Width="auto"
                                            Style="{StaticResource ListTextBlock}" 
                                            Text="{x:Bind WeekdayText}" 
+                                           Tag="{x:Bind Weekday}"
                                            Foreground="{StaticResource DeepPink}"
                                            FontWeight="Bold"
                                            FontSize="22"/>
@@ -127,9 +129,11 @@
                                       Margin="2,5,5,5"
                                       Grid.Row="1"
                                       ItemContainerStyle="{StaticResource BarListView}"
+                                      IsItemClickEnabled="False"
+                                      IsTapEnabled="False"
                                       ScrollViewer.IsVerticalRailEnabled="True" 
                                       ScrollViewer.VerticalScrollMode="Auto" 
-                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                       MaxWidth="{Binding ActualWidth, ElementName = MainGrid}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="data:LessonVR">
@@ -162,7 +166,7 @@
                                                             Orientation="Vertical" 
                                                             Width="auto"
                                                             Margin="5"
-                                                            HorizontalAlignment="Center"
+                                                            RelativePanel.AlignLeftWithPanel="True"
                                                             RelativePanel.AlignVerticalCenterWithPanel="True">
 
                                                     <TextBlock x:Name="Time"  
@@ -190,23 +194,25 @@
                                                         RelativePanel.AlignVerticalCenterWith="DateTimePanel"
                                                         BorderBrush="{StaticResource LightBlue}"/>
 
-                                                <TextBlock x:Name="Room" 
+                                                <StackPanel x:Name="RoomPanel"
+                                                            RelativePanel.RightOf="Border"
+                                                            Margin="2">
+                                                    <TextBlock x:Name="Room" 
                                                                Width="auto"
                                                                Style="{StaticResource ListTextBlock}" 
                                                                Text="{x:Bind RoomName}" 
                                                                Foreground="{StaticResource DeepPink}"
                                                                FontSize="22"/>
 
-                                                <TextBlock x:Name="Address" 
+                                                    <TextBlock x:Name="Address" 
                                                                Width="auto"
                                                                Style="{StaticResource ListTextBlock}" 
                                                                Text="{x:Bind RoomAddress}" 
-                                                               Foreground="{StaticResource DeepPink}"
-                                                               FontWeight="Bold"
-                                                               FontSize="22"/>
+                                                               Foreground="{StaticResource DeepPink}"/>
+                                                </StackPanel>
 
                                                 <TextBlock x:Name="Subject" 
-                                                           RelativePanel.RightOf="Border"
+                                                           RelativePanel.RightOf="RoomPanel"
                                                            RelativePanel.AlignTopWithPanel="True" 
                                                            Style="{StaticResource ListTextBlock}" 
                                                            HorizontalAlignment="Left"
@@ -217,8 +223,7 @@
                                                 </TextBlock>
 
                                                 <HyperlinkButton x:Name="TeacherHyper" 
-                                                                 HorizontalAlignment="Left"
-                                                                 RelativePanel.RightOf="Border"
+                                                                 RelativePanel.RightOf="RoomPanel"
                                                                  RelativePanel.Below="Subject"
                                                                  Tag="{x:Bind TeacherId}"
                                                                  Tapped="TeacherHyper_Tapped">

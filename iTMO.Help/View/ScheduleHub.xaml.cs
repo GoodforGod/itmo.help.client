@@ -7,6 +7,7 @@ using iTMO.Help.Model;
 using System.Threading.Tasks;
 using iTMO.Help.Utils;
 using Windows.UI.Xaml;
+using System;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -25,18 +26,31 @@ namespace iTMO.Help.View
     public sealed partial class ScheduleHub : Page
     {
         private List<ScheduleVR> Sсhedules = null;
+        private ListView lastSelectedLessons = null;
 
         public ScheduleHub()
         {
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            if((Sсhedules = DatabaseController.Me.DSchedule) != null)
-                ScheduleList.ItemsSource = Sсhedules;
-
             ProcessWeekPart();
+
+            if ((Sсhedules = DatabaseController.Me.DSchedule) != null)
+                ScheduleList.ItemsSource = Sсhedules;
+            else if(!string.IsNullOrWhiteSpace(AllSearchBox.Text = GetUserGroup()))
+                ScheduleList.ItemsSource = Sсhedules = DatabaseController.Me.DSchedule = await RetrieveSchedule(AllSearchBox.Text);
+        }
+
+        private string GetUserGroup()
+        {
+            string grp = DatabaseController.Me.DUser.Group;
+
+            if (string.IsNullOrWhiteSpace(grp))
+                grp = DatabaseController.Me.DUser.GroupLastUsed;
+
+            return grp;
         }
 
         private async Task<List<ScheduleVR>> RetrieveSchedule(string group)
@@ -87,12 +101,7 @@ namespace iTMO.Help.View
             return null;
         }
 
-        private void OddShareBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void EvenShareBtn_Click(object sender, RoutedEventArgs e)
+        private void TeacherHyper_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
 
         }
@@ -102,12 +111,30 @@ namespace iTMO.Help.View
 
         }
 
-        private void WeekBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ScheduleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            try
+            {
 
+                var list = sender as ListView;
+                var listItem = list.SelectedItem as DependencyObject;
+                var container = ((ListViewItem)(ScheduleList.ContainerFromItem(list.SelectedItem)));
+
+                var weekday = (TextBlock)CommonUtils.GetChildren(container).Find(x => x.Name == "Day");
+                var lessons = (ListView)CommonUtils.GetChildren(container).Find(x => x.Name == "Lessons");
+                lessons.ItemsSource = Sсhedules[int.Parse(weekday.Tag.ToString()) - 1].Lessons;
+
+                if (lastSelectedLessons != null)
+                    lastSelectedLessons.ItemsSource = new List<ScheduleVR>();
+                lastSelectedLessons = lessons;
+            }
+            catch(Exception ex)
+            {
+                Message.Text = ex.Message;
+            }
         }
 
-        private void TeacherHyper_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void WeekBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
