@@ -24,7 +24,7 @@ namespace iTMO.Help.View
     /// </summary>
     public sealed partial class ScheduleHub : Page
     {
-        private List<ScheduleVR> Sсhedule = null;
+        private List<ScheduleVR> Sсhedules = null;
 
         public ScheduleHub()
         {
@@ -33,17 +33,17 @@ namespace iTMO.Help.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if((Sсhedule = DatabaseController.Me.DSchedule) != null)
-            {
+            if((Sсhedules = DatabaseController.Me.DSchedule) != null)
+                ScheduleList.ItemsSource = Sсhedules;
 
-            }
+            ProcessWeekPart();
         }
 
         private async Task<List<ScheduleVR>> RetrieveSchedule(string group)
         {
             Message.Text = "";
             ProgressRing.IsActive = true;
-            List<ScheduleVR> scheduleReceived = null;
+            List<ScheduleVR> scheduleReceived = new List<ScheduleVR>();
 
             HttpData<string> response = await HttpController.RetrieveData(TRequest.Schedule, new UserData(group));
 
@@ -76,7 +76,9 @@ namespace iTMO.Help.View
             if (string.IsNullOrWhiteSpace(AllSearchBox.Text))
                 return;
 
-            var schedule = Sсhedule = DatabaseController.Me.DSchedule = await RetrieveSchedule(AllSearchBox.Text);
+            var schedule = Sсhedules = DatabaseController.Me.DSchedule = await RetrieveSchedule(AllSearchBox.Text);
+
+            ScheduleList.ItemsSource = schedule;
         }
 
         private List<ScheduleVR> FillScheduleType(ScheduleType type, List<ScheduleVR> schedule)
@@ -101,6 +103,11 @@ namespace iTMO.Help.View
         }
 
         private void WeekBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void TeacherHyper_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
 
         }
