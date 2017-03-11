@@ -115,7 +115,6 @@ namespace iTMO.Help.View
         {
             try
             {
-
                 var list = sender as ListView;
                 var listItem = list.SelectedItem as DependencyObject;
                 var container = ((ListViewItem)(ScheduleList.ContainerFromItem(list.SelectedItem)));

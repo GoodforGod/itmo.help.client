@@ -92,7 +92,12 @@
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:ScheduleVR">
                     <UserControl>
-                        <RelativePanel Width="auto" Margin="1,3,3,3" BorderBrush="#BCD6FF" Background="White">
+                        <Grid Background="{StaticResource LightWhite}"
+                              Margin="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup>
                                     <VisualState x:Name="Narrow">
@@ -115,15 +120,16 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-
-                                <TextBlock x:Name="Day" 
-                                           Width="auto"
-                                           Style="{StaticResource ListTextBlock}" 
-                                           Text="{x:Bind WeekdayText}" 
-                                           Tag="{x:Bind Weekday}"
-                                           Foreground="{StaticResource DeepPink}"
-                                           FontWeight="Bold"
-                                           FontSize="22"/>
+                            
+                            <TextBlock x:Name="Day" 
+                                       HorizontalAlignment="Left"
+                                       Grid.Row="0"
+                                       Style="{StaticResource ListTextBlock}" 
+                                       Text="{x:Bind WeekdayText}" 
+                                       Tag="{x:Bind Weekday}"
+                                       Foreground="{StaticResource DeepPink}"
+                                       FontWeight="Bold"
+                                       FontSize="22"/>
 
                             <ListView Name="Lessons" 
                                       Margin="2,5,5,5"
@@ -134,11 +140,11 @@
                                       ScrollViewer.IsVerticalRailEnabled="True" 
                                       ScrollViewer.VerticalScrollMode="Auto" 
                                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                      MaxWidth="{Binding ActualWidth, ElementName = MainGrid}">
+                                      MaxWidth="{Binding ActualWidth, ElementName = ScheduleList}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="data:LessonVR">
                                         <UserControl>
-                                            <RelativePanel Width="auto" Margin="1,3,3,3" BorderBrush="#BCD6FF" Background="White">
+                                            <RelativePanel MaxWidth="{Binding ActualWidth, ElementName = ScheduleList}" Margin="1,3,3,3" BorderBrush="#BCD6FF" Background="White">
                                                 <VisualStateManager.VisualStateGroups>
                                                     <VisualStateGroup>
                                                         <VisualState x:Name="Narrow">
@@ -146,31 +152,101 @@
                                                                 <AdaptiveTrigger MinWindowWidth="0"/>
                                                             </VisualState.StateTriggers>
                                                             <VisualState.Setters>
-                                                                <Setter Target="ExamAdvicePanel.(RelativePanel.Below)" Value="TeacherHyper"/>
-                                                                <Setter Target="ExamAdvicePanel.(RelativePanel.RightOf)" Value="DateTimePanel"/>
+                                                                <Setter Target="SubjectInfo.(RelativePanel.Below)" Value="InfoGrid"/>
+                                                                <Setter Target="SubjectInfo.(RelativePanel.AlignLeftWithPanel)" Value="True"/>
                                                             </VisualState.Setters>
                                                         </VisualState>
                                                         <VisualState>
                                                             <VisualState.StateTriggers>
-                                                                <AdaptiveTrigger MinWindowWidth="700"/>
+                                                                <AdaptiveTrigger MinWindowWidth="620"/>
                                                             </VisualState.StateTriggers>
                                                             <VisualState.Setters>
-                                                                <Setter Target="ExamAdvicePanel.(RelativePanel.AlignRightWithPanel)" Value="True"/>
-                                                                <Setter Target="ExamAdvicePanel.(RelativePanel.AlignTopWithPanel)" Value="True"/>
+                                                                <Setter Target="SubjectInfo.(RelativePanel.RightOf)" Value="InfoGrid"/>
+                                                                <Setter Target="SubjectInfo.(RelativePanel.AlignVerticalCenterWith)" Value="InfoGrid"/>
                                                             </VisualState.Setters>
                                                         </VisualState>
                                                     </VisualStateGroup>
                                                 </VisualStateManager.VisualStateGroups>
 
+                                                    <Grid x:Name="InfoGrid" Width="auto">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition/>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition />
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <TextBlock x:Name="Time"  
+                                                               TextWrapping="Wrap"
+                                                               FontFamily="Consolas"
+                                                               Grid.Row="0"
+                                                               Grid.Column="0"
+                                                               Style="{StaticResource ListTextBlock}" 
+                                                               Margin="3">
+                                                        <Run Text="{x:Bind TimeStart}"/>
+                                                        <Run Text="-"/>
+                                                        <Run Text="{x:Bind TimeEnd}"/>
+                                                        </TextBlock>
+
+                                                        <TextBlock x:Name="Week" 
+                                                               Style="{StaticResource ListTextBlock}" 
+                                                               Text="{x:Bind ParityText}" 
+                                                               Foreground="{StaticResource DeepPink}"
+                                                               Grid.Row="1"
+                                                               Grid.Column="0"
+                                                               FontWeight="Bold"
+                                                               FontSize="22"
+                                                               Margin="3"/>
+
+                                                        <Border x:Name="BorderTime"
+                                                        BorderThickness="1"
+                                                        Height="50%"
+                                                        Grid.RowSpan="2"
+                                                        Grid.Column="1"
+                                                        BorderBrush="{StaticResource LightBlue}"
+                                                        Margin="3"/>
+
+                                                        <TextBlock x:Name="Room" 
+                                                               Style="{StaticResource ListTextBlock}" 
+                                                               Text="{x:Bind RoomName}" 
+                                                               Foreground="{StaticResource DeepPink}"
+                                                               TextWrapping="WrapWholeWords"
+                                                               Grid.Row="0"
+                                                               Grid.Column="2"
+                                                               FontSize="20"
+                                                               Margin="3"/>
+
+                                                        <TextBlock x:Name="Address" 
+                                                               Style="{StaticResource ListTextBlock}" 
+                                                               TextWrapping="Wrap"
+                                                               Text="{x:Bind RoomAddress}" 
+                                                               Grid.Row="1"
+                                                               Grid.Column="2"
+                                                               Foreground="{StaticResource DeepPink}"
+                                                               Margin="3"/>
+
+                                                        <Border x:Name="BorderRoom"
+                                                        BorderThickness="1"
+                                                        Height="50%"
+                                                        Grid.RowSpan="2"       
+                                                        Grid.Column="3"
+                                                        BorderBrush="{StaticResource LightBlue}"
+                                                        Margin="3"/>
+
+                                                    </Grid>
+
+                                                    <!--
                                                 <StackPanel x:Name="DateTimePanel" 
                                                             Orientation="Vertical" 
-                                                            Width="auto"
-                                                            Margin="5"
                                                             RelativePanel.AlignLeftWithPanel="True"
-                                                            RelativePanel.AlignVerticalCenterWithPanel="True">
+                                                            Margin="5">
 
                                                     <TextBlock x:Name="Time"  
-                                                               Width="auto"
+                                                               TextWrapping="Wrap"
                                                                FontFamily="Consolas"
                                                                Style="{StaticResource ListTextBlock}" >
                                                         <Run Text="{x:Bind TimeStart}"/>
@@ -179,7 +255,6 @@
                                                     </TextBlock>
 
                                                     <TextBlock x:Name="Week" 
-                                                               Width="auto"
                                                                Style="{StaticResource ListTextBlock}" 
                                                                Text="{x:Bind ParityText}" 
                                                                Foreground="{StaticResource DeepPink}"
@@ -187,49 +262,65 @@
                                                                FontSize="22"/>
                                                 </StackPanel>
 
-                                                <Border x:Name="Border"
+                                                <Border x:Name="BorderTime"
                                                         BorderThickness="1"
-                                                        Margin="5"
+                                                        Height="50%"
                                                         RelativePanel.RightOf="DateTimePanel"
                                                         RelativePanel.AlignVerticalCenterWith="DateTimePanel"
-                                                        BorderBrush="{StaticResource LightBlue}"/>
+                                                        BorderBrush="{StaticResource LightBlue}"
+                                                        Margin="5"/>
 
                                                 <StackPanel x:Name="RoomPanel"
-                                                            RelativePanel.RightOf="Border"
+                                                            RelativePanel.RightOf="BorderTime"
+                                                            RelativePanel.AlignVerticalCenterWith="BorderTime"
+                                                            Orientation="Vertical"
                                                             Margin="2">
                                                     <TextBlock x:Name="Room" 
-                                                               Width="auto"
                                                                Style="{StaticResource ListTextBlock}" 
                                                                Text="{x:Bind RoomName}" 
                                                                Foreground="{StaticResource DeepPink}"
-                                                               FontSize="22"/>
+                                                               TextWrapping="WrapWholeWords"
+                                                               FontSize="20"/>
 
                                                     <TextBlock x:Name="Address" 
-                                                               Width="auto"
                                                                Style="{StaticResource ListTextBlock}" 
+                                                               TextWrapping="Wrap"
                                                                Text="{x:Bind RoomAddress}" 
                                                                Foreground="{StaticResource DeepPink}"/>
                                                 </StackPanel>
 
-                                                <TextBlock x:Name="Subject" 
-                                                           RelativePanel.RightOf="RoomPanel"
-                                                           RelativePanel.AlignTopWithPanel="True" 
-                                                           Style="{StaticResource ListTextBlock}" 
-                                                           HorizontalAlignment="Left"
-                                                           TextWrapping="WrapWholeWords"
-                                                           FontWeight="Bold">
-                                                    <Run Text="{x:Bind Subject}"/>
-                                                    <Run Text="{x:Bind SubjectType}"/>
-                                                </TextBlock>
+                                                <Border x:Name="BorderRoom"
+                                                        BorderThickness="1"
+                                                        Height="50%"
+                                                        RelativePanel.RightOf="RoomPanel"
+                                                        RelativePanel.AlignVerticalCenterWith="DateTimePanel"
+                                                        BorderBrush="{StaticResource LightBlue}"
+                                                        Margin="5"/>
+                                                -->
+                                                    <Grid x:Name="SubjectInfo">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition />
+                                                            <RowDefinition />
+                                                        </Grid.RowDefinitions>
+                                                        <TextBlock x:Name="Subject" 
+                                                               Style="{StaticResource ListTextBlock}" 
+                                                               TextWrapping="WrapWholeWords"
+                                                               FontWeight="Bold"
+                                                               Grid.Row="0"
+                                                               Margin="3">
+                                                        <Run Text="{x:Bind Subject}"/>
+                                                        <Run Text="{x:Bind SubjectType}"/>
+                                                        </TextBlock>
 
-                                                <HyperlinkButton x:Name="TeacherHyper" 
-                                                                 RelativePanel.RightOf="RoomPanel"
-                                                                 RelativePanel.Below="Subject"
-                                                                 Tag="{x:Bind TeacherId}"
-                                                                 Tapped="TeacherHyper_Tapped">
+                                                        <HyperlinkButton x:Name="TeacherHyper" 
+                                                                     Tag="{x:Bind TeacherId}"
+                                                                     Tapped="TeacherHyper_Tapped"
+                                                                     Grid.Row="1"
+                                                                     Margin="3">
 
-                                                        <TextBlock Foreground="{StaticResource MediumBlue}"
+                                                            <TextBlock Foreground="{StaticResource MediumBlue}"
                                                                    Style="{StaticResource ListTextBlock}" 
+                                                                   TextWrapping="WrapWholeWords"
                                                                    FontStyle="Italic">
                                                             <Run Text="{x:Bind Teacher}"/>
                                                             <Run FontFamily="Segoe MDL2 Assets"
@@ -237,16 +328,16 @@
                                                                  FontSize="12"
                                                                  Foreground="{StaticResource DeepPink}"
                                                                  Text="&#xE13D;"/>
-                                                        </TextBlock>
-                                                    </HyperlinkButton>
-
+                                                            </TextBlock>
+                                                        </HyperlinkButton>
+                                                    </Grid>
                                             </RelativePanel>
                                         </UserControl>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
 
-                        </RelativePanel>
+                        </Grid>
                     </UserControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
